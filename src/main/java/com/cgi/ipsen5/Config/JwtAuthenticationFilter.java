@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("jwt")) {
+                if ("token".equals(cookie.getName())) {
                     jwt = cookie.getValue();
                     break;
                 }
@@ -46,37 +46,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
-        final String userId;
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        jwt = authHeader.substring(7);
-        userId = jwtService.extractUserId(jwt);
-
+        final String userId = jwtService.extractUserId(jwt);
         if (userId == null || SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
 
         Optional<User> user = userDAO.findById(UUID.fromString(userId));
-        if (user.isEmpty()) {
+        if (user.isEmpty() || !jwtService.isTokenValid(jwt, user.get().getId())) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        if (!jwtService.isTokenValid(jwt, user.get().getId())) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user.get().getId(), null, user.get().getAuthorities());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                user.get().getId(), null, user.get().getAuthorities());
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
     }
+
 }

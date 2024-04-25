@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,12 +47,14 @@ public class AuthenticationService {
         User user = userDAO.loadUserByUsername(username);
         String token = jwtService.generateToken(Map.of("id", user.getId()), user.getId());
 
-        Cookie cookie = new Cookie("jwt", token);
+        Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 7);
         response.addCookie(cookie);
     }
+
+
 
     public boolean isValidToken(String token) {
         try {

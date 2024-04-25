@@ -54,13 +54,16 @@ public class SpringConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserSecurity userSecurity) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/user/register").permitAll()
+                        .requestMatchers("/api/v1/user").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/user/{id}/edit").access(userSecurity)
+                        .requestMatchers("/api/v1/user/test").hasAuthority("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
