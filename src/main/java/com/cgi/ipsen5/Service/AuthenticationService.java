@@ -4,6 +4,8 @@ package com.cgi.ipsen5.Service;
 import com.cgi.ipsen5.Dao.UserDao;
 import com.cgi.ipsen5.Model.Role;
 import com.cgi.ipsen5.Model.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,15 +36,21 @@ public class AuthenticationService {
                 .build();
 
         userDAO.save(user);
-        String token = jwtService.generateToken(Map.of("role", user.getRole()), user.getId() );
+        String token = jwtService.generateToken(Map.of("id", user.getId()), user.getId() );
         return Optional.of(token);
     }
 
-    public String login(String username, String password) {
+    public void login(String username, String password, HttpServletResponse response) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         User user = userDAO.loadUserByUsername(username);
-        return jwtService.generateToken(Map.of("role", user.getRole()), user.getId());
+        String token = jwtService.generateToken(Map.of("id", user.getId()), user.getId());
+
+        Cookie cookie = new Cookie("jwt", token);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+        response.addCookie(cookie);
     }
 
     public boolean isValidToken(String token) {
