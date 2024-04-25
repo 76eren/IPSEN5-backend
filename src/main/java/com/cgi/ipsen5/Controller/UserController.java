@@ -9,7 +9,6 @@ import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Service.AuthenticationService;
-import com.cgi.ipsen5.Service.UserVerification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,9 +26,7 @@ public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
     private final AuthenticationService authenticationService;
-    private final UserVerification userVerification;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     @ResponseBody
     public ApiResponse<List<UserResponseDTO>> getUsers() {
@@ -65,7 +62,7 @@ public class UserController {
         }
     }
 
-    @PutMapping(path = {"/{id}"})
+    @PutMapping(path = {"/{id}/edit"})
     public ApiResponse<UserResponseDTO> editUser(
             @PathVariable("id") UUID id,
             @RequestBody UserEditDTO userEditDTO,
@@ -78,11 +75,6 @@ public class UserController {
 
         User user = foundUser.get();
 
-        // Checks if the user is authorized to edit this user (so the user is editing themselves)
-        if (!userVerification.verifyUser(authentication, String.valueOf(user.getId()))) {
-            return new ApiResponse<>("You are not authorized to edit this user", HttpStatus.UNAUTHORIZED);
-        }
-
         if (userEditDTO.getUsername() != null) {
             user.setUsername(userEditDTO.getUsername());
         }
@@ -93,6 +85,12 @@ public class UserController {
 
         User createdUser = userDAO.save(user);
         return new ApiResponse<>(userMapper.fromEntity(createdUser));
+    }
+
+    @GetMapping(path = {"/test"})
+    public ApiResponse<String> test(@CookieValue(name = "token", defaultValue = "No cookie found") String token) {
+        System.out.println("Cookie value is: " + token);
+        return new ApiResponse<>("Test");
     }
 
 }
