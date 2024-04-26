@@ -1,5 +1,7 @@
 package com.cgi.ipsen5.Dao;
 
+import com.cgi.ipsen5.Dto.User.UserEditDTO;
+import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,18 @@ public class UserDao implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public List<User> findAll() {
+    public List<UserResponseDTO> findAllDto() {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(userMapper::fromEntity)
+                .toList();
+    }
+
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+
     public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
     }
@@ -42,5 +53,24 @@ public class UserDao implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow();
+    }
+
+    public User updateUser(UUID id, UserEditDTO userEditDTO) {
+        Optional<User> foundUser = findById(id);
+        if(foundUser.isPresent()) {
+            User user = foundUser.get();
+
+            if (userEditDTO.getUsername() != null) {
+                user.setUsername(userEditDTO.getUsername());
+            }
+
+            if (userEditDTO.getRole() != null) {
+                user.setRole(userEditDTO.getRole());
+            }
+
+            return save(user);
+        }
+
+        return null;
     }
 }

@@ -30,13 +30,7 @@ public class UserController {
     @GetMapping
     @ResponseBody
     public ApiResponse<List<UserResponseDTO>> getUsers() {
-        List<UserResponseDTO> res = userDAO
-                .findAll()
-                .stream()
-                .map(userMapper::fromEntity)
-                .toList();
-
-        return new ApiResponse<>(res);
+        return new ApiResponse<>(userDAO.findAllDto());
     }
 
     @PostMapping(value = "/register")
@@ -65,26 +59,14 @@ public class UserController {
     @PutMapping(path = {"/{id}/edit"})
     public ApiResponse<UserResponseDTO> editUser(
             @PathVariable("id") UUID id,
-            @RequestBody UserEditDTO userEditDTO,
-            Authentication authentication
+            @RequestBody UserEditDTO userEditDTO
     ) {
-        Optional<User> foundUser = userDAO.findById(id);
-        if(foundUser.isEmpty()) {
+        User updatedUser = userDAO.updateUser(id, userEditDTO);
+        if (updatedUser == null) {
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        User user = foundUser.get();
-
-        if (userEditDTO.getUsername() != null) {
-            user.setUsername(userEditDTO.getUsername());
-        }
-
-        if (userEditDTO.getRole() != null) {
-            user.setRole(userEditDTO.getRole());
-        }
-
-        User createdUser = userDAO.save(user);
-        return new ApiResponse<>(userMapper.fromEntity(createdUser));
+        return new ApiResponse<>(userMapper.fromEntity(updatedUser));
     }
 
     @GetMapping(path = {"/test"})
