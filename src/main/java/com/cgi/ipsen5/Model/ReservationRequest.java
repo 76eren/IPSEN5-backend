@@ -1,11 +1,10 @@
 package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
 import java.util.UUID;
 
 @Setter
@@ -28,11 +27,11 @@ public class ReservationRequest {
     private Reservation reservation;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "requester_id", referencedColumnName = "id")
     private User requesterId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User ownerId;
 
     @Column(name = "message")

@@ -30,6 +30,7 @@ public class AuthenticationService {
             return Optional.empty();
         }
 
+        // TODO: This is temporary, we need to be able to authenticate using email too later on
         User user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
