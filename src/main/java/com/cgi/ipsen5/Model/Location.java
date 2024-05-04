@@ -23,8 +23,10 @@ public class Location {
     @Column(nullable = false, unique = true)
     @JsonProperty
     private UUID id;
-    //FK
-    private UUID wingId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wing_id", referencedColumnName = "id")
+    private Wing wing;
 
     @Column(name = "name")
     @JsonProperty

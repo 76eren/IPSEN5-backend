@@ -23,9 +23,14 @@ public class ReservationHistory {
     @Column(nullable = false, unique = true)
     @JsonProperty
     private UUID id;
-    //FKs
-    private UUID userId;
-    private UUID locationId;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private Location location;
 
     @Column(name = "status")
     @JsonProperty

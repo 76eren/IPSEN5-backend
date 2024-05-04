@@ -22,8 +22,10 @@ public class Property {
     @Column(nullable = false, unique = true)
     @JsonProperty
     private UUID id;
-    //FK
-    private UUID locationId;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private Location location;
 
     @Column(name = "description")
     @JsonProperty

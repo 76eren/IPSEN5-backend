@@ -22,7 +22,12 @@ public class Warning {
     @Column(nullable = false, unique = true)
     @JsonProperty
     private UUID id;
-    //FK
-    private UUID userId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "count")
+    @JsonProperty
     private int count;
 }

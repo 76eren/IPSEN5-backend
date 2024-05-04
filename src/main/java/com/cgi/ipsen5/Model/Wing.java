@@ -23,7 +23,11 @@ public class Wing {
     @JsonProperty
     private UUID id;
 
-    //Foreign Keys
-    private UUID floorId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "floor_id", referencedColumnName = "id")
+    private Floor floor;
+
+    @Column(name = "name")
+    @JsonProperty
     private String name;
 }

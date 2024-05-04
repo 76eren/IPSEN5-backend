@@ -22,10 +22,18 @@ public class ReservationRequest {
     @Column(nullable = false, unique = true)
     @JsonProperty
     private UUID id;
-    //FKs
-    private UUID reservationId;
-    private UUID requesterId;
-    private UUID ownerId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
+    private Reservation reservation;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User requesterId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User ownerId;
 
     @Column(name = "message")
     @JsonProperty

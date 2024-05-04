@@ -23,7 +23,11 @@ public class DefaultLocation {
     @JsonProperty
     private UUID id;
 
-    //TODO Foreign Keys
-    private UUID wingId;
-    private UUID userId;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wing_id", referencedColumnName = "id")
+    private Wing wing;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }

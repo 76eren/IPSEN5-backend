@@ -22,8 +22,10 @@ public class Floor {
     @Column(nullable = false, unique = true)
     @JsonProperty
     private UUID id;
-    //FK
-    private UUID buildingId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "building_id", referencedColumnName = "id")
+    private Building building;
 
     @Column(name = "number")
     @JsonProperty
