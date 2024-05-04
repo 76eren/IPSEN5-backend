@@ -37,7 +37,7 @@ public class User {
 
     @Column(name = "phone_number")
     @JsonProperty
-    private String phoneNumber; //TODO check best datatype string or int?
+    private String phoneNumber;
 
     @Column(name = "role")
     @JsonProperty
