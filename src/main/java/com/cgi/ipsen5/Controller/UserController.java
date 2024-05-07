@@ -33,18 +33,6 @@ public class UserController {
         return new ApiResponse<>(userDAO.findAllDto());
     }
 
-    @PostMapping(value = "/register")
-    public ApiResponse<AuthResponseDTO> register(@RequestBody AuthRegisterDTO loginDTO) {
-        Optional<String> tokenResponse = authenticationService.register(loginDTO.getUsername(), loginDTO.getPassword());
-
-        if (tokenResponse.isEmpty()) {
-            return new ApiResponse<>("User already exists", HttpStatus.BAD_REQUEST);
-        }
-
-        String token = tokenResponse.get();
-        return new ApiResponse<>(new AuthResponseDTO(token));
-    }
-
     @GetMapping(path = {"/{id}"})
     public ApiResponse<UserResponseDTO> getUserById(@PathVariable UUID id) {
         if (userDAO.findById(id).isEmpty()) {
@@ -67,12 +55,6 @@ public class UserController {
         }
 
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
-    }
-
-    @GetMapping(path = {"/test"})
-    public ApiResponse<String> test(@CookieValue(name = "token", defaultValue = "No cookie found") String token) {
-        System.out.println("Cookie value is: " + token);
-        return new ApiResponse<>("Test");
     }
 
 }

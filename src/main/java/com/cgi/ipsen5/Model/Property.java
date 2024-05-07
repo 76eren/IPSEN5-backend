@@ -24,9 +24,9 @@ public class Property {
     @JsonProperty
     private UUID id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private List<Location> location;
+    private Location location;
 
     @Column(name = "description")
     @JsonProperty

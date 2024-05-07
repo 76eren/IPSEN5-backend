@@ -24,10 +24,9 @@ public class DefaultLocation {
     @JsonProperty
     private UUID id;
 
-    // Volgens mij klopt dit niet helemaal
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wing_id", referencedColumnName = "id")
-    private List<Wing> wings;
+    private Wing wing;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")

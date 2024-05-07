@@ -45,14 +45,17 @@ public class AuthenticationService {
     public void login(String username, String password, HttpServletResponse response) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-        User user = userDAO.loadUserByUsername(username);
-        String token = jwtService.generateToken(Map.of("id", user.getId()), user.getId());
+        Optional<User> user = userDAO.findByUsername(username);
+        if (user.isPresent()) {
+            String token = jwtService.generateToken(Map.of("id", user.get().getId()), user.get().getId());
 
-        Cookie cookie = new Cookie("token", token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24 * 7);
-        response.addCookie(cookie);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(60 * 60 * 24 * 7);
+            response.addCookie(cookie);
+        }
+
     }
 
 

@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "employee")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID")
