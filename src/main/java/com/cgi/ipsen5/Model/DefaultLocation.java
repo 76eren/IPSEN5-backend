@@ -1,11 +1,12 @@
 package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -23,7 +24,7 @@ public class DefaultLocation {
     @JsonProperty
     private UUID id;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wing_id", referencedColumnName = "id")
     private Wing wing;
 

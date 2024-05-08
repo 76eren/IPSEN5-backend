@@ -1,18 +1,24 @@
 package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
-@Setter
-@Getter
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "employee")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -23,9 +29,14 @@ public class User {
     @JsonProperty
     private UUID id;
 
+    // For now this will represent the username of the user and will be used to log in
     @Column(name = "first_name")
     @JsonProperty
-    private String firstName;
+    private String username; //TODO: the first name will represent the username for now.
+
+    @Column(name = "password")
+    @JsonProperty
+    private String password;
 
     @Column(name = "last_name")
     @JsonProperty
@@ -41,5 +52,31 @@ public class User {
 
     @Column(name = "role")
     @JsonProperty
-    private String role;
+    private Role role;
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
