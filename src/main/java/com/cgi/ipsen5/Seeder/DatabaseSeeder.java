@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DatabaseSeeder {
     private final BuildingSeeder buildingSeeder;
+    private final UserSeeder userSeeder;
 
     private boolean hasSeeded = false;
 
@@ -19,7 +20,8 @@ public class DatabaseSeeder {
             return;
         }
 
-        buildingSeeder.seed();
+        this.buildingSeeder.seed();
+        this.userSeeder.seed();
 
         this.hasSeeded = true;
     }

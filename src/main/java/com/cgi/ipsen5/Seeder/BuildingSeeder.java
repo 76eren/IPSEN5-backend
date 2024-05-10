@@ -12,6 +12,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class BuildingSeeder {
+    // All of this is temporary and for testing purposes
+
     private final BuildingDao buildingDao;
 
     public void seed() {
@@ -22,7 +24,6 @@ public class BuildingSeeder {
     }
 
 
-    // This is temporarily for now, later this should be editable from the frontend
     public ArrayList<Building> getBuildings() {
         ArrayList<Building> buildings = new ArrayList<>();
         buildings.add(new Building(UUID.randomUUID(), "De Entree 21 1101 BH "));
