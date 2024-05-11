@@ -13,6 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "wing")
+@Getter
+@Setter
 public class Wing {
     @Id
     @GeneratedValue(generator = "UUID")
