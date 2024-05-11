@@ -12,6 +12,7 @@ public class DatabaseSeeder {
     private final BuildingSeeder buildingSeeder;
     private final UserSeeder userSeeder;
     private final FloorSeeder floorSeeder;
+    private final WingSeeder wingSeeder;
 
     private boolean hasSeeded = false;
 
@@ -24,6 +25,7 @@ public class DatabaseSeeder {
         this.buildingSeeder.seed();
         this.userSeeder.seed();
         this.floorSeeder.seed();
+        this.wingSeeder.seed();
 
         this.hasSeeded = true;
     }

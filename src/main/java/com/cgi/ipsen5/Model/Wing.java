@@ -2,15 +2,15 @@ package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
 
-@Setter
-@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "wing")
 public class Wing {
@@ -24,7 +24,7 @@ public class Wing {
     @JsonProperty
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "floor_id", referencedColumnName = "id")
     private Floor floor;
 
