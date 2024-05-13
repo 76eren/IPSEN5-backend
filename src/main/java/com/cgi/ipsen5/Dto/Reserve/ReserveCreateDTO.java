@@ -11,11 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReserveCreateDTO {
     private String name;
-
     private String wingId;
-    private String floorId;
-    private String buildingId;
-
     private ReserveType type;
     private int capacity;
     private String created_at; // Needs to be yyyy-MM-dd'T'HH:mm:ss format from the front-end

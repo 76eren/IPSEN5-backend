@@ -14,34 +14,10 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class LocationDao {
-    private final LocationRepository locationRepository;
-    private final BuildingDao buildingDao;
-    private final FloorDao floorDao;
     private final WingDao wingDao;
 
     public Location create(ReserveCreateDTO reserveCreateDTO) {
-        Building building = buildingDao.getBuildingById(reserveCreateDTO.getBuildingId());
-        if (building == null) {
-            return null;
-        }
-
-        Floor floor = this.floorDao
-                .findAll()
-                .stream()
-                .filter(f -> f.getBuilding()
-                        .getId()
-                        .equals(building.getId()))
-                .findFirst()
-                .get();
-
-        Wing wing = this.wingDao
-                .findAll()
-                .stream()
-                .filter(w -> w.getFloor()
-                        .getId()
-                        .equals(floor.getId()))
-                .findFirst()
-                .get();
+        Wing wing = this.wingDao.findWingById(UUID.fromString(reserveCreateDTO.getWingId()));
 
 
         return Location
