@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -20,5 +21,9 @@ public class BuildingDao {
 
     public List<Building> getAll() {
         return this.buildingRepository.findAll();
+    }
+
+    public Building getBuildingById(String buildingId) {
+        return this.buildingRepository.findById(UUID.fromString(buildingId)).orElse(null);
     }
 }

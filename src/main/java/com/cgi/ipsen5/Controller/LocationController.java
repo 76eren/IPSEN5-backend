@@ -2,6 +2,8 @@ package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dto.Reserve.ReserveCreateDTO;
+import com.cgi.ipsen5.Model.ApiResponse;
+import com.cgi.ipsen5.Model.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +17,10 @@ public class LocationController {
     private final LocationDao reserveDao;
 
     @PostMapping("/{id}")
-    public void reserve(@RequestBody ReserveCreateDTO reserveCreateDTO) {
-        reserveDao.create(reserveCreateDTO);
+    public ApiResponse<?> reserve(@RequestBody ReserveCreateDTO reserveCreateDTO) {
+        Location location = reserveDao.create(reserveCreateDTO);
 
+        return new ApiResponse<>(location); // TODO: Make this return a DTO instead of the entity
     }
 
 
