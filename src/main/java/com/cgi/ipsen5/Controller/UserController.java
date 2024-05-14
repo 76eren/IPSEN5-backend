@@ -1,18 +1,17 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.UserDao;
-import com.cgi.ipsen5.Dto.Auth.AuthRegisterDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Service.AuthenticationService;
+import com.cgi.ipsen5.Service.UserService;
+import com.cgi.ipsen5.Exception.UserNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +25,7 @@ public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
     private final AuthenticationService authenticationService;
+    private UserService userService;
 
     @GetMapping
     @ResponseBody
@@ -55,6 +55,23 @@ public class UserController {
         }
 
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
+    }
+
+    @PostMapping("/resetPassword")
+    public ApiResponse<UserResponseDTO> resetPassword(HttpServletRequest request, @RequestParam("email") String email) throws UserNotFoundException {
+        Optional<User> optionalUser = userService.findUserByEmail(email);
+        if (optionalUser == null){
+            return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            String token = UUID.randomUUID().toString();
+            userService.createPasswordResetTokenForUser(user, token);
+            // TODO send email logic and return type
+            return new ApiResponse<>("", HttpStatus.OK);
+        }
+        //TODO proper handling of error
+        return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
     }
 
 }
