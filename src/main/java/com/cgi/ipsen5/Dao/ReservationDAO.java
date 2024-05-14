@@ -21,21 +21,21 @@ public class ReservationDAO {
     public boolean updateReservationStatus(LocalDateTime start, User userId){
     Optional<Reservation> optionalReservation = this.reservationRepository
             .getByStartDateTimeAndUser(start, userId);
-    if (optionalReservation.isPresent()){
-        Reservation reservation = optionalReservation.get();
-        LocalDateTime reservationTime = reservation.getStartDateTime();
-        LocalDateTime reservationTimePlus15Min = reservationTime.plusMinutes(15);
+        if (optionalReservation.isPresent()){
+            Reservation reservation = optionalReservation.get();
+            LocalDateTime reservationTime = reservation.getStartDateTime();
+            LocalDateTime reservationTimePlus15Min = reservationTime.plusMinutes(15);
 
-        if ((start.isBefore(reservationTime)
-                || start.isEqual(reservationTime))
-                && start.isAfter(reservationTimePlus15Min)) {
-            reservation.setStatus(ReservationStatus.CHECKED_IN);
-            this.reservationRepository.save(reservation);
-            return true;
+            if ((start.isBefore(reservationTime)
+                    || start.isEqual(reservationTime))
+                    && start.isAfter(reservationTimePlus15Min)) {
+                reservation.setStatus(ReservationStatus.CHECKED_IN);
+                this.reservationRepository.save(reservation);
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
     public Reservation createReservation(Reservation reservation){
         return this.reservationRepository.save(reservation);
