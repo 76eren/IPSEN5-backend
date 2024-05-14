@@ -64,6 +64,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/user/{id}/edit").access(userSecurity)
                         .requestMatchers("/api/v1/user/test").hasAuthority("USER")
+                        // Later wil ik deze aanpassen om te checken of de user die
+                        // de status wilt veranderen ook de user is die de reservering heeft
+                        .requestMatchers("/api/v1/reservation/check-in").hasAuthority("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
