@@ -41,16 +41,16 @@ public class ReservationDAOUnitTest {
     }
 
     @Test
-void should_return_false_when_user_is_late() {
-    LocalDateTime start = LocalDateTime.now();
-    User userId = testUser;
-    dummyReservation.setStartDateTime(start.minusMinutes(20));
-    when(this.reservationDAO.updateReservationStatus(start, userId)).thenReturn(false);
+    void should_return_false_when_user_is_late() {
+        LocalDateTime start = LocalDateTime.now();
+        User userId = testUser;
+        dummyReservation.setStartDateTime(start.minusMinutes(20));
+        when(this.reservationDAO.updateReservationStatus(start, userId)).thenReturn(false);
 
-    boolean result = this.reservationDAO.updateReservationStatus(start, userId);
+        boolean result = this.reservationDAO.updateReservationStatus(start, userId);
 
-    assertFalse(result);
-}
+        assertFalse(result);
+    }
 
     private Reservation createDummyReservation() {
         return Reservation.builder()
