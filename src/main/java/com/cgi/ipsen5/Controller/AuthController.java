@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.AuthenticationException;
 import java.util.Optional;
 
 @RestController
@@ -32,7 +31,7 @@ public class AuthController {
     // Voor testing doeleinden
     @PostMapping(value = "/register")
     public ApiResponse<AuthResponseDTO> register(@RequestBody AuthRegisterDTO loginDTO) {
-        Optional<String> tokenResponse = authenticationService.register(loginDTO.getUsername(), loginDTO.getPassword());
+        Optional<String> tokenResponse = authenticationService.register(loginDTO.getEmail(), loginDTO.getPassword(), loginDTO.getFirstName(), loginDTO.getLastName(), loginDTO.getPhoneNumber());
 
         if (tokenResponse.isEmpty()) {
             return new ApiResponse<>("User already exists", HttpStatus.BAD_REQUEST);

@@ -24,17 +24,19 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public Optional<String> register(String username, String password) {
-        Optional<User> foundUser = userDAO.findByUsername(username);
+    public Optional<String> register(String email, String password, String firstName, String lastName, String phoneNumber) {
+        Optional<User> foundUser = userDAO.findByUsername(email);
         if (foundUser.isPresent()) {
             return Optional.empty();
         }
 
-        // TODO: This is temporary, we need to be able to authenticate using email too later on
         User user = User.builder()
-                .username(username)
+                .username(email)
                 .password(passwordEncoder.encode(password))
                 .role(Role.USER)
+                .firstName(firstName)
+                .lastName(lastName)
+                .phoneNumber(phoneNumber)
                 .build();
 
         userDAO.save(user);
