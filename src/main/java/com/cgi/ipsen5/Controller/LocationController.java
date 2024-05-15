@@ -1,7 +1,7 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
-import com.cgi.ipsen5.Dto.Reserve.ReserveCreateDTO;
+import com.cgi.ipsen5.Dto.Location.LocationCreateDTO;
 import com.cgi.ipsen5.Mapper.LocationMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
@@ -19,8 +19,8 @@ public class LocationController {
     private final LocationMapper locationMapper;
 
     @PostMapping("/{id}")
-    public ApiResponse<?> reserve(@RequestBody ReserveCreateDTO reserveCreateDTO) {
-        Location location = reserveDao.create(reserveCreateDTO);
+    public ApiResponse<?> reserve(@RequestBody LocationCreateDTO locationCreateDTO) {
+        Location location = reserveDao.create(locationCreateDTO);
 
         return new ApiResponse<>(this.locationMapper.fromEntity(location));
     }

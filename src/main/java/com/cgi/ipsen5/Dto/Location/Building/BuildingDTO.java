@@ -1,4 +1,4 @@
-package com.cgi.ipsen5.Dto.Reserve.Building;
+package com.cgi.ipsen5.Dto.Location.Building;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

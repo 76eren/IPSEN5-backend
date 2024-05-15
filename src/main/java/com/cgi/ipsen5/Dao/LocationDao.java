@@ -1,36 +1,27 @@
 package com.cgi.ipsen5.Dao;
 
 
-import com.cgi.ipsen5.Dto.Reserve.ReserveCreateDTO;
+import com.cgi.ipsen5.Dto.Location.LocationCreateDTO;
 import com.cgi.ipsen5.Model.*;
 import com.cgi.ipsen5.Repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class LocationDao {
-    private final WingDao wingDao;
     private final LocationRepository locationRepository;
 
-    public Location create(ReserveCreateDTO reserveCreateDTO) {
-        Wing wing = this.wingDao.findWingById(UUID.fromString(reserveCreateDTO.getWingId()));
+    public Location create(LocationCreateDTO locationCreateDTO) {
+        Location location = this.findLocationById(UUID.fromString(locationCreateDTO.getLocationId()));
+        return this.save(location);
+    }
 
-
-        return Location
-                .builder()
-                .id(UUID.randomUUID())
-                .name(reserveCreateDTO.getName())
-                .type(reserveCreateDTO.getType().toString())
-                .createdAt(stringToLocalDate(reserveCreateDTO.getCreated_at()))
-                .capacity(reserveCreateDTO.getCapacity())
-                .multireservable(reserveCreateDTO.isMultireservable())
-                .wing(wing)
-                .build();
+    private Location findLocationById(UUID locationId) {
+        return this.locationRepository.findById(locationId).orElse(null);
     }
 
     private LocalDateTime stringToLocalDate(String date) {
@@ -43,7 +34,7 @@ public class LocationDao {
     }
 
 
-    public void save(Location location) {
-        this.locationRepository.save(location);
+    public Location save(Location location) {
+        return this.locationRepository.save(location);
     }
 }

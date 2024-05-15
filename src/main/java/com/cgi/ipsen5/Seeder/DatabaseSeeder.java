@@ -21,8 +21,6 @@ public class DatabaseSeeder {
     private final WingSeeder wingSeeder;
     private final LocationSeeder locationSeeder;
 
-    private final LocationRequestData locationRequestData;
-
     private boolean hasSeeded = false;
 
     @EventListener
@@ -38,7 +36,5 @@ public class DatabaseSeeder {
         this.locationSeeder.seed();
 
         this.hasSeeded = true;
-
-        this.locationRequestData.collectRandomLocationDataToMakeATestRequest();
     }
 }

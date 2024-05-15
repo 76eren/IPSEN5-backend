@@ -1,4 +1,4 @@
-package com.cgi.ipsen5.Dto.Reserve.Location;
+package com.cgi.ipsen5.Dto.Location.Location;
 
 import com.cgi.ipsen5.Model.Wing;
 import lombok.AllArgsConstructor;

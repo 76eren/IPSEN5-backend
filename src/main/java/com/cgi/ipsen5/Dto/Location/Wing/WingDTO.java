@@ -1,6 +1,6 @@
-package com.cgi.ipsen5.Dto.Reserve.Wing;
+package com.cgi.ipsen5.Dto.Location.Wing;
 
-import com.cgi.ipsen5.Dto.Reserve.Floor.FloorDTO;
+import com.cgi.ipsen5.Dto.Location.Floor.FloorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.cgi.ipsen5.Mapper;
 
-import com.cgi.ipsen5.Dto.Reserve.Location.LocationDTO;
+import com.cgi.ipsen5.Dto.Location.Location.LocationDTO;
 import com.cgi.ipsen5.Model.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
