@@ -19,26 +19,26 @@ public class ReservationDAO {
     }
 
     public boolean updateReservationStatus(LocalDateTime start, User userId){
-    Optional<Reservation> optionalReservation = this.reservationRepository
-            .getByStartDateTimeAndUser(start, userId);
-        if (optionalReservation.isPresent()){
-            Reservation reservation = optionalReservation.get();
-            LocalDateTime reservationTime = reservation.getStartDateTime();
-            LocalDateTime reservationTimePlus15Min = reservationTime.plusMinutes(15);
-
-            if ((start.isBefore(reservationTime)
-                    || start.isEqual(reservationTime))
-                    && start.isAfter(reservationTimePlus15Min)) {
-                reservation.setStatus(ReservationStatus.CHECKED_IN);
-                this.reservationRepository.save(reservation);
-                return true;
-            }
+        Optional<Reservation> optionalReservation = this.reservationRepository
+                .getByStartDateTimeAndUser(start, userId);
+        if (!optionalReservation.isPresent()) {
+            return false;
         }
-        return false;
+
+        Reservation reservation = optionalReservation.get();
+        LocalDateTime reservationTime = reservation.getStartDateTime();
+        LocalDateTime reservationTimePlus15Min = reservationTime.plusMinutes(15);
+
+        if (start.isBefore(reservationTime) || start.isEqual(reservationTime) || start.isAfter(reservationTimePlus15Min)) {
+            return false;
+        }
+
+        reservation.setStatus(ReservationStatus.CHECKED_IN);
+        this.reservationRepository.save(reservation);
+        return true;
     }
 
     public Reservation createReservation(Reservation reservation){
         return this.reservationRepository.save(reservation);
     }
-
 }
