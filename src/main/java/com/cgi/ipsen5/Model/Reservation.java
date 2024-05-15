@@ -11,7 +11,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//Deze twee kunnen verwijderd worden de setter en getter aangezien builder deze al aanmaakt
 @Setter
 @Getter
 @Entity
