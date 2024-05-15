@@ -21,7 +21,7 @@ public class ReservationDAO {
     public boolean updateReservationStatus(LocalDateTime start, User userId){
         Optional<Reservation> optionalReservation = this.reservationRepository
                 .getByStartDateTimeAndUser(start, userId);
-        if (!optionalReservation.isPresent()) {
+        if (optionalReservation.isEmpty()) {
             return false;
         }
 
@@ -29,7 +29,9 @@ public class ReservationDAO {
         LocalDateTime reservationTime = reservation.getStartDateTime();
         LocalDateTime reservationTimePlus15Min = reservationTime.plusMinutes(15);
 
-        if (start.isBefore(reservationTime) || start.isEqual(reservationTime) || start.isAfter(reservationTimePlus15Min)) {
+        if ((start.isBefore(reservationTime)
+                || start.isEqual(reservationTime))
+                && start.isAfter(reservationTimePlus15Min)) {
             return false;
         }
 
