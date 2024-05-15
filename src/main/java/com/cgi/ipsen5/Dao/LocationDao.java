@@ -15,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LocationDao {
     private final WingDao wingDao;
+    private final LocationRepository locationRepository;
 
     public Location create(ReserveCreateDTO reserveCreateDTO) {
         Wing wing = this.wingDao.findWingById(UUID.fromString(reserveCreateDTO.getWingId()));
@@ -42,4 +43,7 @@ public class LocationDao {
     }
 
 
+    public void save(Location location) {
+        this.locationRepository.save(location);
+    }
 }

@@ -25,7 +25,7 @@ public class Location {
     @JsonProperty
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "wing_id", referencedColumnName = "id")
     private Wing wing;
 

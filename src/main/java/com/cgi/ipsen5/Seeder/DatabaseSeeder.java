@@ -19,6 +19,7 @@ public class DatabaseSeeder {
     private final UserSeeder userSeeder;
     private final FloorSeeder floorSeeder;
     private final WingSeeder wingSeeder;
+    private final LocationSeeder locationSeeder;
 
     private final LocationRequestData locationRequestData;
 
@@ -34,6 +35,7 @@ public class DatabaseSeeder {
         this.userSeeder.seed();
         this.floorSeeder.seed();
         this.wingSeeder.seed();
+        this.locationSeeder.seed();
 
         this.hasSeeded = true;
 
