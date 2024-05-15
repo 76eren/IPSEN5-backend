@@ -27,11 +27,11 @@ public class ReservationDAO {
 
         Reservation reservation = optionalReservation.get();
         LocalDateTime reservationTime = reservation.getStartDateTime();
-        LocalDateTime reservationTimePlus15Min = reservationTime.plusMinutes(15);
+        LocalDateTime allowedLateTime = reservationTime.plusMinutes(15);
 
         if ((start.isBefore(reservationTime)
                 || start.isEqual(reservationTime))
-                && start.isAfter(reservationTimePlus15Min)) {
+                && start.isAfter(allowedLateTime)) {
             return false;
         }
 
