@@ -3,11 +3,10 @@ package com.cgi.ipsen5.Controller;
 import com.cgi.ipsen5.Dao.ReservationDAO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.ReservationUpdateRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+
+import java.util.UUID;
 
 
 @RestController
@@ -32,5 +31,14 @@ public class ReservationController {
         } else {
             return new ApiResponse<>("Could not update status of reservation.", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping(value = "/{id}/cancel")
+    public ApiResponse<String> cancelReservation(@PathVariable UUID id) {
+        boolean success = this.reservationDAO.cancelReservation(id);
+        if (!success) {
+            return new ApiResponse<>("Could not cancel reservation.", HttpStatus.NOT_FOUND);
+        }
+        return new ApiResponse<>("Reservation cancelled successfully.", HttpStatus.ACCEPTED);
     }
 }
