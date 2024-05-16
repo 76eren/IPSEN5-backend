@@ -65,6 +65,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/{id}/edit").access(userSecurity)
                         .requestMatchers("/api/v1/user/test").hasAuthority("USER")
                         .requestMatchers("/api/v1/reservation/check-in").hasAuthority("USER")
+                        .requestMatchers("/api/v1/reservation/{id}/cancel").hasAuthority("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

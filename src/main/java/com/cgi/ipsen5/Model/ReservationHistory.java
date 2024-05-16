@@ -2,13 +2,15 @@ package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 @Entity
@@ -24,6 +26,8 @@ public class ReservationHistory {
     @JsonProperty
     private UUID id;
 
+    private UUID oldReservationId;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -34,7 +38,9 @@ public class ReservationHistory {
 
     @Column(name = "status")
     @JsonProperty
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private ReservationStatus status = ReservationStatus.NOT_CHECKED_IN;
 
     @Column(name = "start_date_time")
     @JsonProperty
