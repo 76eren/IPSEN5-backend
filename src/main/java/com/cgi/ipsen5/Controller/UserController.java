@@ -25,7 +25,7 @@ public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
     private final AuthenticationService authenticationService;
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     @ResponseBody
@@ -37,8 +37,7 @@ public class UserController {
     public ApiResponse<UserResponseDTO> getUserById(@PathVariable UUID id) {
         if (userDAO.findById(id).isEmpty()) {
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
-        }
-        else {
+        } else {
             UserResponseDTO res = userMapper.fromEntity(userDAO.findById(id).orElseThrow());
             return new ApiResponse<>(res);
         }
@@ -58,20 +57,18 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public ApiResponse<UserResponseDTO> resetPassword(HttpServletRequest request, @RequestParam("email") String email) throws UserNotFoundException {
+    public ApiResponse<UserResponseDTO> resetPassword(HttpServletRequest request, @RequestParam("email") String email) {
         Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (optionalUser == null){
+        if (!optionalUser.isPresent()) {
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
         }
-        if(optionalUser.isPresent()){
-            User user = optionalUser.get();
-            String token = UUID.randomUUID().toString();
-            userService.createPasswordResetTokenForUser(user, token);
-            // TODO send email logic and return type
-            return new ApiResponse<>("", HttpStatus.OK);
-        }
-        //TODO proper handling of error
-        return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
+
+        User user = optionalUser.get();
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetTokenForUser(user, token);
+        // TODO send email logic and return type
+        return new ApiResponse<>("", HttpStatus.OK);
+
     }
 
 }
