@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long>{
     Optional<Reservation> getByStartDateTimeAndUser(LocalDateTime startDateTime, User user);
+    Optional<Reservation> getById(UUID id);
+    void deleteById(UUID id);
 }

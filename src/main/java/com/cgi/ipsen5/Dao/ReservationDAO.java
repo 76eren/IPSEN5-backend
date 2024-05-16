@@ -8,14 +8,21 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class ReservationDAO {
 
     private final ReservationRepository reservationRepository;
+    private final ReservationHistoryDAO reservationHistoryDAO;
+    private final ReservationDeletionDAO reservationDeletionDAO;
 
-    public ReservationDAO(ReservationRepository reservationRepository) {
+    public ReservationDAO(ReservationRepository reservationRepository
+            ,ReservationHistoryDAO reservationHistoryDAO,
+                          ReservationDeletionDAO reservationDeletionDAO) {
         this.reservationRepository = reservationRepository;
+        this.reservationHistoryDAO = reservationHistoryDAO;
+        this.reservationDeletionDAO = reservationDeletionDAO;
     }
 
     public boolean updateReservationStatus(LocalDateTime start, User userId){
@@ -42,5 +49,19 @@ public class ReservationDAO {
 
     public Reservation createReservation(Reservation reservation){
         return this.reservationRepository.save(reservation);
+    }
+
+    public boolean cancelReservation(UUID id) {
+        Optional<Reservation> optionalReservation = this.reservationRepository.getById(id);
+        if (optionalReservation.isEmpty()) {
+            return false;
+        }
+
+        Reservation reservation = optionalReservation.get();
+        reservation.setStatus(ReservationStatus.CANCELLED);
+        this.reservationRepository.save(reservation);
+        boolean success = this.reservationHistoryDAO.saveReservationHistory(reservation);
+        boolean deleted = this.reservationDeletionDAO.deleteReservation(id);
+        return success && deleted;
     }
 }
