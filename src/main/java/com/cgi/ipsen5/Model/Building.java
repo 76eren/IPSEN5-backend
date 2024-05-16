@@ -27,6 +27,10 @@ public class Building {
     @JsonProperty
     private UUID id;
 
+    @Column(name = "name", nullable = false)
+    @JsonProperty
+    private String name;
+
     @Column(name = "address", nullable = false)
     @JsonProperty
     private String address;
