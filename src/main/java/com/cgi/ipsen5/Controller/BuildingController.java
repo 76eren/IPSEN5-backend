@@ -1,0 +1,42 @@
+package com.cgi.ipsen5.Controller;
+
+
+import com.cgi.ipsen5.Dto.Reserve.Building.BuildingDTO;
+import com.cgi.ipsen5.Model.ApiResponse;
+import com.cgi.ipsen5.Model.Building;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cgi.ipsen5.Dao.BuildingDao;
+import com.cgi.ipsen5.Dao.FloorDao;
+import com.cgi.ipsen5.Dao.LocationDao;
+import com.cgi.ipsen5.Service.BuildingService;
+
+import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "/api/v1/building")
+@RequiredArgsConstructor
+public class BuildingController {
+    private final BuildingService buildingService;
+    private final BuildingDao buildingDao;
+    private final FloorDao floorDao;
+    private final LocationDao locationDao;
+
+
+    @GetMapping
+    public ApiResponse<ArrayList<BuildingDTO>> get() {
+        return new ApiResponse<>(this.buildingService.getBuildings(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ApiResponse<BuildingDTO> getBuildingById(@PathVariable UUID id) {
+        return new ApiResponse<>(this.buildingService.getBuildingById(id), HttpStatus.OK);
+    }
+}

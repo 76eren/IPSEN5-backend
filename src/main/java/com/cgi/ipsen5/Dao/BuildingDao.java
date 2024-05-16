@@ -23,7 +23,10 @@ public class BuildingDao {
         return this.buildingRepository.findAll();
     }
 
-    public Building getBuildingById(String buildingId) {
-        return this.buildingRepository.findById(UUID.fromString(buildingId)).orElse(null);
+    public Building getBuildingById(UUID buildingId) {
+        if (buildingId == null) {
+            throw new IllegalArgumentException("Building ID cannot be null");
+        }
+        return this.buildingRepository.findById(buildingId).orElseThrow(() -> new RuntimeException("Building not found"));
     }
 }
