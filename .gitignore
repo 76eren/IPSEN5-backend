@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+credentials.json
+
 application.properties
 
 ### STS ###
