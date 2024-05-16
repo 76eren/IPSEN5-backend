@@ -7,7 +7,9 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ResetlinkEmailService {
     @Value("${spring.mail.username}")
     private String senderEmailAddress;
@@ -36,10 +38,26 @@ public class ResetlinkEmailService {
         Email mailToSend = this.createResetMail(resetLink, recipient);
         Mailer mailer = MailerBuilder
                 .withSMTPServer(mailHost, portNumber, mailUsername, mailPassword)
-                .withTransportStrategy(TransportStrategy.SMTPS)
+                .withTransportStrategy(TransportStrategy.SMTP)
                 .buildMailer();
 
         mailer.sendMail(mailToSend);
     }
 
+    // SETTERS because JUnit tests cannot read the @Value attributes
+    public void setMailHost(String mailHost) {
+        this.mailHost = mailHost;
+    }
+    public void setSenderEmailAddress(String senderEmailAddress) {
+        this.senderEmailAddress = senderEmailAddress;
+    }
+    public void setMailPassword(String mailPassword) {
+        this.mailPassword = mailPassword;
+    }
+    public void setMailUsername(String mailUsername) {
+        this.mailUsername = mailUsername;
+    }
+    public void setPortNumber(int portNumber) {
+        this.portNumber = portNumber;
+    }
 }
