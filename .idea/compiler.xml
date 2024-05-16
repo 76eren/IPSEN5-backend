@@ -10,6 +10,9 @@
         <module name="IPSEN5" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="IPSEN5" target="19" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
