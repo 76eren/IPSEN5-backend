@@ -2,8 +2,7 @@ package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
@@ -14,6 +13,9 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "reservation")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(generator = "UUID")

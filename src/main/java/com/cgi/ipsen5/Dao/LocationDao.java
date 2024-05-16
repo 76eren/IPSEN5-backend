@@ -1,7 +1,6 @@
 package com.cgi.ipsen5.Dao;
 
 
-import com.cgi.ipsen5.Dto.Location.LocationCreateDTO;
 import com.cgi.ipsen5.Model.*;
 import com.cgi.ipsen5.Repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +14,8 @@ import java.util.UUID;
 public class LocationDao {
     private final LocationRepository locationRepository;
 
-    public Location create(LocationCreateDTO locationCreateDTO) {
-        Location location = this.findLocationById(UUID.fromString(locationCreateDTO.getLocationId()));
-        return this.save(location);
-    }
 
-    private Location findLocationById(UUID locationId) {
+    public Location findLocationById(UUID locationId) {
         return this.locationRepository.findById(locationId).orElse(null);
     }
 
