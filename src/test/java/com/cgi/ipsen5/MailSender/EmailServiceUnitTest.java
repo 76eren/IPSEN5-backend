@@ -19,8 +19,11 @@ public class EmailServiceUnitTest {
         JSONParser parser = new JSONParser();
 
         try {
+            // in order to run the test you need to have the file credentials.json in the resources folder.
+
             Object obj = parser.parse(new FileReader("src/main/resources/credentials.json"));
             JSONObject jsonObject = (JSONObject) obj;
+
             mailService.setMailHost(jsonObject.getAsString("host"));
             mailService.setSenderEmailAddress(jsonObject.getAsString("senderEmail"));
             mailService.setMailUsername(jsonObject.getAsString("mailUsername"));
@@ -32,8 +35,6 @@ public class EmailServiceUnitTest {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        // TODO put these values in a different file , then gitignore file
 
     }
 
