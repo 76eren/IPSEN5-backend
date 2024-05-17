@@ -5,9 +5,11 @@ import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
+import com.cgi.ipsen5.Model.PasswordResetToken;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Service.AuthenticationService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
+import com.cgi.ipsen5.Service.ResetlinkEmailService;
 import com.cgi.ipsen5.Service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final AuthenticationService authenticationService;
     private final UserService userService;
+    private final ResetlinkEmailService emailService;
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping
@@ -58,16 +61,15 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public ApiResponse<UserResponseDTO> resetPassword(HttpServletRequest request, @RequestParam("email") String email) {
+    public ApiResponse<UserResponseDTO> requestResetPassword(HttpServletRequest request, @RequestParam("email") String email) {
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (!optionalUser.isPresent()) {
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
         }
 
         User user = optionalUser.get();
-        String token = UUID.randomUUID().toString();
-        resetPasswordService.createPasswordResetTokenForUser(user, token);
-        // TODO send email logic and return type
+        PasswordResetToken passwordResetToken = resetPasswordService.createPasswordResetTokenForUser(user);
+        this.emailService.sendEmail(passwordResetToken.getToken(), user.getUsername());
         return new ApiResponse<>("", HttpStatus.OK);
 
     }
