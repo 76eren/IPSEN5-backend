@@ -11,9 +11,10 @@ import com.cgi.ipsen5.Service.AuthenticationService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
 import com.cgi.ipsen5.Service.ResetlinkEmailService;
 import com.cgi.ipsen5.Service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,17 +61,18 @@ public class UserController {
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
     }
 
-    @PostMapping("/resetPassword")
-    public ApiResponse<UserResponseDTO> requestResetPassword(HttpServletRequest request, @RequestParam("email") String email) {
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> requestResetPassword(@RequestParam("email") String email) {
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (!optionalUser.isPresent()) {
-            return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("User not found", HttpStatus.NOT_FOUND);
         }
 
         User user = optionalUser.get();
         PasswordResetToken passwordResetToken = resetPasswordService.createPasswordResetTokenForUser(user);
-        this.emailService.sendEmail(passwordResetToken.getToken(), user.getUsername());
-        return new ApiResponse<>("", HttpStatus.OK);
+
+        this.emailService.sendEmail(passwordResetToken.getId().toString(), user.getUsername());
+        return new ResponseEntity("Success", HttpStatus.OK);
 
     }
 

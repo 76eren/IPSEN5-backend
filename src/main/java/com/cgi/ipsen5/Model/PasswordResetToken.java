@@ -30,10 +30,6 @@ public class PasswordResetToken {
     @JsonProperty
     private UUID id;
 
-    @Column(name = "token")
-    @JsonProperty
-    private String token;
-
     @NonNull
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
