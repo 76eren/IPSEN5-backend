@@ -40,7 +40,7 @@ public class ResetlinkEmailService {
     }
 
 
-
+    //TODO look into security measurements
     private Email createResetMail(String resetLink, String recipient) {
         return EmailBuilder.startingBlank()
                 .from(senderEmailAddress)
