@@ -13,19 +13,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordTokenRepository tokenRepository;
+    private final UserRepository userRepository;
 
     public Optional<User> findUserByEmail(String email) {
         Optional<User> foundUser = userRepository.findByUsername(email);
         return foundUser;
     }
 
-    public void createPasswordResetTokenForUser(User user, String token) {
-        PasswordResetToken resetToken = new PasswordResetToken(token, user);
-        tokenRepository.save(resetToken);
-    }
+
 }

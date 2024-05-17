@@ -7,8 +7,8 @@ import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Service.AuthenticationService;
+import com.cgi.ipsen5.Service.ResetPasswordService;
 import com.cgi.ipsen5.Service.UserService;
-import com.cgi.ipsen5.Exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +26,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final AuthenticationService authenticationService;
     private final UserService userService;
+    private final ResetPasswordService resetPasswordService;
 
     @GetMapping
     @ResponseBody
@@ -65,7 +66,7 @@ public class UserController {
 
         User user = optionalUser.get();
         String token = UUID.randomUUID().toString();
-        userService.createPasswordResetTokenForUser(user, token);
+        resetPasswordService.createPasswordResetTokenForUser(user, token);
         // TODO send email logic and return type
         return new ApiResponse<>("", HttpStatus.OK);
 
