@@ -13,6 +13,7 @@ public class ResetPasswordService {
 
     public void createPasswordResetTokenForUser(User user, String token) {
         PasswordResetToken resetToken = new PasswordResetToken(token, user);
+        resetToken.setExpiryDate();
         tokenRepository.save(resetToken);
     }
 }

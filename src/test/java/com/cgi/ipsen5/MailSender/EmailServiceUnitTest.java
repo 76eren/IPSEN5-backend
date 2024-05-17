@@ -41,7 +41,7 @@ public class EmailServiceUnitTest {
 
     @Test
     void shouldSendEmailToNoReply() {
-        mailService.sendEmail("resetlink 2", "noreply.mock.cgi@gmail.com");
+        mailService.sendEmail("tokentoken123", "noreply.mock.cgi@gmail.com");
 
     }
 }
