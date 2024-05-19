@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReservationCreateDTO {
     private String locationId;
-    private String startDateTime;
-    private String endDateTime;
+    private String startDateTime; // Should be in the format like "2024-05-11T14:30:00"
+    private String endDateTime; // Should be in the format like "2024-05-11T14:30:00"
     private int numberOfPeople;
     private String status;
 }

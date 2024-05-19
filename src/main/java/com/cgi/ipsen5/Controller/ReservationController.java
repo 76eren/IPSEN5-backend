@@ -8,20 +8,26 @@ import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/api/v1/reservation/")
+@RequestMapping(value = "/api/v1/reservation")
 @RequiredArgsConstructor
 public class ReservationController {
     private final LocationDao locationDao;
     private final ReservationDao reservationDao;
     private final ReservationMapper reservationMapper;
 
-    @PostMapping("/{id}")
-    public ApiResponse<?> reserve(@RequestBody ReservationCreateDTO reservationCreateDTO, @PathVariable("id") UUID id) {
+    @PostMapping()
+    public ApiResponse<?> reserve(@RequestBody ReservationCreateDTO reservationCreateDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        UUID id = UUID.fromString(authentication.getName());
+
         Location location = locationDao.findLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
         Reservation reservation = reservationDao.save(
                 location,
