@@ -4,6 +4,7 @@ import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dto.Reserve.ReserveCreateDTO;
 import com.cgi.ipsen5.Mapper.LocationMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
+import com.cgi.ipsen5.Model.Floor;
 import com.cgi.ipsen5.Model.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,11 @@ public class LocationController {
     @GetMapping(value = "/{id}")
     public ApiResponse<Location> getById(@PathVariable UUID id) {
         return new ApiResponse<>(this.locationDao.getLocationById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id}/floor")
+    public ApiResponse<List<Floor>> getFloorByLocationId(@PathVariable UUID id) {
+        return new ApiResponse<>(this.locationDao.getFloorByLocationId(id), HttpStatus.OK);
     }
 
 }

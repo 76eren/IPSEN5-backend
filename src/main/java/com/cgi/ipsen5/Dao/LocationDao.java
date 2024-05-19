@@ -31,4 +31,8 @@ public class LocationDao {
     public Location getLocationById(UUID id) {
         return this.locationRepository.findById(id).orElse(null);
     }
+
+    public List<Floor> getFloorByLocationId(UUID id) {
+        return this.locationRepository.findFloorsByLocation_Id(id);
+    }
 }
