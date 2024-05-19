@@ -25,4 +25,8 @@ public class WingDao {
     public Wing findWingById(UUID wingId) {
         return this.wingRepository.findById(wingId).orElse(null);
     }
+
+    public ArrayList<Wing> findWingsByBuildingId(UUID buildingId) {
+        return this.wingRepository.findWingsByFloor_BuildingId(buildingId);
+    }
 }
