@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,7 +63,8 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> requestResetPassword(@RequestParam("email") String email) {
+    public ResponseEntity<Void> requestResetPassword(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (!optionalUser.isPresent()) {
             return new ResponseEntity("User not found", HttpStatus.NOT_FOUND);
