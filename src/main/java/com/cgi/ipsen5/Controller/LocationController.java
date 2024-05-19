@@ -1,8 +1,6 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
-import com.cgi.ipsen5.Dto.Reserve.ReserveCreateDTO;
-import com.cgi.ipsen5.Mapper.LocationMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Floor;
 import com.cgi.ipsen5.Model.Location;
