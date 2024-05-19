@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,4 +57,7 @@ public class ReservationDao {
         return this.reservationRepository.findById(id);
     }
 
+    public List<Reservation> findAll() {
+        return this.reservationRepository.findAll();
+    }
 }

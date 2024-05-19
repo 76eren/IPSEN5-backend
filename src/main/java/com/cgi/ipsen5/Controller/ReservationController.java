@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -53,6 +54,12 @@ public class ReservationController {
                 .map(value -> new ApiResponse<>(this.reservationMapper.fromEntity(value)))
                 .orElseGet(() -> new ApiResponse<>("Reservation not found", HttpStatus.NOT_FOUND));
 
+    }
+
+
+    @GetMapping()
+    public ApiResponse<List<Reservation>> getReservations() {
+        return new ApiResponse<>(this.reservationDao.findAll()); // We return the model and not the DTO so the response will contain the ID of the reservation
     }
 
 
