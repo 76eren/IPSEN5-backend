@@ -17,33 +17,4 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BuildingService {
     private final BuildingDao buildingDao;
-    private final BuildingMapper buildingMapper;
-
-    public ArrayList<BuildingDTO> getBuildings() {
-        List<Building> buildings = this.buildingDao.getAll();
-        ArrayList<BuildingDTO> buildingDTOs = new ArrayList<>();
-
-        if (buildings == null) {
-            return new ArrayList<>();
-        }
-
-        for (Building building : buildings) {
-            buildingDTOs.add(this.buildingMapper.fromEntity(building));
-        }
-
-        return buildingDTOs;
-    }
-
-    public BuildingDTO getBuildingById(UUID id) {
-        Building buildings = this.buildingDao.getBuildingById(id);
-        BuildingDTO buildingDTO = new BuildingDTO();
-
-        if (buildings == null) {
-            return null;
-        }
-
-        buildingDTO = this.buildingMapper.fromEntity(buildings);
-
-        return buildingDTO;
-    }
 }

@@ -1,5 +1,6 @@
 package com.cgi.ipsen5.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +23,7 @@ public class Location {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(nullable = false, unique = true)
-    @JsonProperty
+    @JsonIgnore
     private UUID id;
 
     @ManyToOne(cascade = CascadeType.MERGE)

@@ -18,25 +18,25 @@ import com.cgi.ipsen5.Service.BuildingService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/building")
 @RequiredArgsConstructor
 public class BuildingController {
-    private final BuildingService buildingService;
     private final BuildingDao buildingDao;
     private final FloorDao floorDao;
     private final LocationDao locationDao;
 
 
     @GetMapping
-    public ApiResponse<ArrayList<BuildingDTO>> get() {
-        return new ApiResponse<>(this.buildingService.getBuildings(), HttpStatus.OK);
+    public ApiResponse<List<Building>> get() {
+        return new ApiResponse<>(this.buildingDao.getAll(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ApiResponse<BuildingDTO> getBuildingById(@PathVariable UUID id) {
-        return new ApiResponse<>(this.buildingService.getBuildingById(id), HttpStatus.OK);
+    public ApiResponse<Building> getBuildingById(@PathVariable UUID id) {
+        return new ApiResponse<>(this.buildingDao.getBuildingById(id), HttpStatus.OK);
     }
 }
