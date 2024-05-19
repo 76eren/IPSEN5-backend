@@ -52,4 +52,8 @@ public class ReservationDao {
 
     }
 
+    public Optional<Reservation> findById(UUID id) {
+        return this.reservationRepository.findById(id);
+    }
+
 }
