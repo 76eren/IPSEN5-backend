@@ -4,6 +4,7 @@ import com.cgi.ipsen5.Dao.UserDao;
 import com.cgi.ipsen5.Dto.Auth.PasswordRequestDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
+import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.PasswordResetToken;
@@ -64,18 +65,17 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) {
+    public void requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) throws UsernameNotFoundException {
         String email = passwordRequestDTO.getEmail();
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (!optionalUser.isPresent()) {
-            return new ResponseEntity("User not found", HttpStatus.NOT_FOUND);
+            throw new UsernameNotFoundException("User doesn't exist");
         }
 
         User user = optionalUser.get();
         PasswordResetToken passwordResetToken = resetPasswordService.createPasswordResetTokenForUser(user);
 
         this.emailService.sendEmail(passwordResetToken.getId().toString(), user.getUsername());
-        return new ResponseEntity("Success", HttpStatus.OK);
 
     }
 
