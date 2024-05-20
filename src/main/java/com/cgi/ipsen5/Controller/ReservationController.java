@@ -59,7 +59,10 @@ public class ReservationController {
 
     @GetMapping()
     public ApiResponse<List<Reservation>> getReservations() {
-        return new ApiResponse<>(this.reservationDao.findAll()); // We return the model and not the DTO so the response will contain the ID of the reservation
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID id = UUID.fromString(authentication.getName());
+
+        return new ApiResponse<>(this.reservationDao.findAll(id)); // We return the model and not the DTO so the response will contain the ID of the reservation
     }
 
 
