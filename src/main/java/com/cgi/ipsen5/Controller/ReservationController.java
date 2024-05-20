@@ -26,7 +26,7 @@ public class ReservationController {
     private final ReservationDao reservationDao;
     private final ReservationMapper reservationMapper;
 
-    @PostMapping()
+    @PostMapping("/create")
     public ApiResponse<ReservationResponseDTO> createReservation(@RequestBody ReservationCreateDTO reservationCreateDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -57,7 +57,7 @@ public class ReservationController {
     }
 
 
-    @GetMapping()
+    @GetMapping("/all")
     public ApiResponse<List<Reservation>> getAllReservations() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID id = UUID.fromString(authentication.getName());
