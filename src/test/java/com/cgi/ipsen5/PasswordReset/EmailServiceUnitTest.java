@@ -1,4 +1,4 @@
-package com.cgi.ipsen5.MailSender;
+package com.cgi.ipsen5.PasswordReset;
 
 import com.cgi.ipsen5.Service.ResetlinkEmailService;
 import net.minidev.json.JSONObject;
