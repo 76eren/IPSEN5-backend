@@ -40,7 +40,6 @@ public class ReservationDao {
 
         Reservation reservation = Reservation
                 .builder()
-                .id(UUID.randomUUID())
                 .user(user.get())
                 .location(location)
                 .startDateTime(LocalDateTime.parse(startDateTime))
