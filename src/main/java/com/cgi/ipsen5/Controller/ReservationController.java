@@ -27,7 +27,7 @@ public class ReservationController {
     private final ReservationMapper reservationMapper;
 
     @PostMapping()
-    public ApiResponse<ReservationResponseDTO> reserve(@RequestBody ReservationCreateDTO reservationCreateDTO) {
+    public ApiResponse<ReservationResponseDTO> createReservation(@RequestBody ReservationCreateDTO reservationCreateDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UUID id = UUID.fromString(authentication.getName());
@@ -47,7 +47,7 @@ public class ReservationController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ReservationResponseDTO> getReservations(@PathVariable String id) {
+    public ApiResponse<ReservationResponseDTO> getReservationById(@PathVariable String id) {
         Optional<Reservation> reservation = this.reservationDao.findById(UUID.fromString(id));
 
         return reservation
@@ -58,7 +58,7 @@ public class ReservationController {
 
 
     @GetMapping()
-    public ApiResponse<List<Reservation>> getReservations() {
+    public ApiResponse<List<Reservation>> getAllReservations() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID id = UUID.fromString(authentication.getName());
 
