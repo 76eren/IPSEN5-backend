@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.UserDao;
+import com.cgi.ipsen5.Dto.Auth.PasswordRequestDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
@@ -63,8 +64,8 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<Void> requestResetPassword(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
+    public ResponseEntity<Void> requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) {
+        String email = passwordRequestDTO.getEmail();
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (!optionalUser.isPresent()) {
             return new ResponseEntity("User not found", HttpStatus.NOT_FOUND);
