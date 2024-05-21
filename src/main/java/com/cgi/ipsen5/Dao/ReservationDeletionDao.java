@@ -9,11 +9,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class ReservationDeletionDAO {
+public class ReservationDeletionDao {
 
     private final ReservationRepository reservationRepository;
 
-    public ReservationDeletionDAO(ReservationRepository reservationRepository) {
+    public ReservationDeletionDao(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
     }
 

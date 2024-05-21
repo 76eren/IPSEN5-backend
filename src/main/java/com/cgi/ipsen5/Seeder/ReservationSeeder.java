@@ -16,7 +16,7 @@ public class ReservationSeeder {
 
     public void seed() {
         User testUser = User.builder()
-                .username("testUser")
+                .username("test@example.com")
                 .password("testPassword")
                 .lastName("Test")
                 .phoneNumber("1234567890")
