@@ -1,21 +1,26 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.UserDao;
-import com.cgi.ipsen5.Dto.Auth.AuthRegisterDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
+import com.cgi.ipsen5.Dto.Auth.PasswordRequestDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
+import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
+import com.cgi.ipsen5.Model.PasswordResetToken;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Service.AuthenticationService;
+import com.cgi.ipsen5.Service.ResetPasswordService;
+import com.cgi.ipsen5.Service.ResetlinkEmailService;
+import com.cgi.ipsen5.Service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +30,7 @@ import java.util.UUID;
 public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
-    private final AuthenticationService authenticationService;
+    private final ResetPasswordService resetPasswordService;
 
     @GetMapping
     @ResponseBody
@@ -37,8 +42,7 @@ public class UserController {
     public ApiResponse<UserResponseDTO> getUserById(@PathVariable UUID id) {
         if (userDAO.findById(id).isEmpty()) {
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
-        }
-        else {
+        } else {
             UserResponseDTO res = userMapper.fromEntity(userDAO.findById(id).orElseThrow());
             return new ApiResponse<>(res);
         }
@@ -55,6 +59,11 @@ public class UserController {
         }
 
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
+    }
+
+    @PostMapping(path = "/reset-password")
+    public void requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) throws UsernameNotFoundException {
+        this.resetPasswordService.requestResetLink(passwordRequestDTO);
     }
 
 }
