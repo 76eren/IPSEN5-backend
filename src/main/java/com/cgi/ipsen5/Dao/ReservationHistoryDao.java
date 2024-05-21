@@ -6,10 +6,10 @@ import com.cgi.ipsen5.Repository.ReservationHistoryRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservationHistoryDAO {
+public class ReservationHistoryDao {
     private final ReservationHistoryRepository reservationHistoryRepository;
 
-    public ReservationHistoryDAO(ReservationHistoryRepository reservationHistoryRepository) {
+    public ReservationHistoryDao(ReservationHistoryRepository reservationHistoryRepository) {
         this.reservationHistoryRepository = reservationHistoryRepository;
     }
 

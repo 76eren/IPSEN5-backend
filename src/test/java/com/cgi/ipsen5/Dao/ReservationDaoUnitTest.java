@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ReservationDAOUnitTest {
+public class ReservationDaoUnitTest {
     @Mock
-    private ReservationDAO reservationDAO;
+    private ReservationDao reservationDAO;
     @Mock
-    private ReservationHistoryDAO reservationHistoryDAO;
+    private ReservationHistoryDao reservationHistoryDAO;
 
     private Reservation dummyReservation;
     private User testUser;
@@ -89,10 +89,9 @@ public class ReservationDAOUnitTest {
     }
     private User createDummyTestUser() {
         return User.builder()
-                .username("testUser")
+                .username("test@gmail.com")
                 .password("testPassword")
                 .lastName("Test")
-                .email("test@gmail.com")
                 .build();
     }
 }

@@ -11,15 +11,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class ReservationDAO {
+public class ReservationDao {
 
     private final ReservationRepository reservationRepository;
-    private final ReservationHistoryDAO reservationHistoryDAO;
-    private final ReservationDeletionDAO reservationDeletionDAO;
+    private final ReservationHistoryDao reservationHistoryDAO;
+    private final ReservationDeletionDao reservationDeletionDAO;
 
-    public ReservationDAO(ReservationRepository reservationRepository
-            ,ReservationHistoryDAO reservationHistoryDAO,
-                          ReservationDeletionDAO reservationDeletionDAO) {
+    public ReservationDao(ReservationRepository reservationRepository
+            , ReservationHistoryDao reservationHistoryDAO,
+                          ReservationDeletionDao reservationDeletionDAO) {
         this.reservationRepository = reservationRepository;
         this.reservationHistoryDAO = reservationHistoryDAO;
         this.reservationDeletionDAO = reservationDeletionDAO;
