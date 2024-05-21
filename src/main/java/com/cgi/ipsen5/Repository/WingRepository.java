@@ -8,6 +8,5 @@ import java.util.UUID;
 
 public interface WingRepository extends JpaRepository<Wing, UUID> {
 
-//    public ArrayList<Wing> findWingByFloorBuilding_Id(UUID buildingId);
     public ArrayList<Wing> findWingsByFloor_BuildingId(UUID buildingId);
 }
