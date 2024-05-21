@@ -1,4 +1,4 @@
-package com.cgi.ipsen5.Dto.Auth;
+package com.cgi.ipsen5.Dto.User.ResetPassword;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordRequestDTO {
+public class ChangePasswordDTO {
     private String email;
+    private String password;
 }

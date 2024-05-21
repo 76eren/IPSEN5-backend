@@ -1,27 +1,21 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.UserDao;
-import com.cgi.ipsen5.Dto.Auth.PasswordRequestDTO;
+import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
+import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
-import com.cgi.ipsen5.Model.PasswordResetToken;
 import com.cgi.ipsen5.Model.User;
-import com.cgi.ipsen5.Service.AuthenticationService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
-import com.cgi.ipsen5.Service.ResetlinkEmailService;
-import com.cgi.ipsen5.Service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -62,8 +56,15 @@ public class UserController {
     }
 
     @PostMapping(path = "/reset-password")
-    public void requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) throws UsernameNotFoundException {
-        this.resetPasswordService.requestResetLink(passwordRequestDTO);
+    public void requestResetPassword(@RequestBody ResetlinkRequestDTO resetlinkRequestDTO,
+                                     @PathVariable("id") UUID tokenId) throws UsernameNotFoundException {
+        this.resetPasswordService.requestResetLink(resetlinkRequestDTO);
+    }
+
+    @PutMapping(path = "/reset-password/{id}")
+    public void changePassword(@RequestBody ChangePasswordDTO changePasswordDTO,
+                               @PathVariable("id") UUID tokenId) throws UsernameNotFoundException {
+        this.resetPasswordService.changePasswordOfUser(changePasswordDTO, tokenId);
     }
 
 }
