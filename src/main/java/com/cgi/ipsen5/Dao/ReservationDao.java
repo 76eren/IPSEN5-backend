@@ -35,6 +35,7 @@ public class ReservationDao {
 
         Location location = locationDao.findLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
 
+        // TODO: Check if location exists
 
         Reservation reservation = Reservation
                 .builder()
@@ -55,14 +56,7 @@ public class ReservationDao {
     }
 
     public List<Reservation> findAll(UUID id) {
-        List<Reservation> reservations = this.reservationRepository.findAll();
-        List<Reservation> reservationsFromId = new ArrayList<>();
-        for (Reservation reservation : reservations) {
-            if (reservation.getUser().getId().equals(id)) {
-                reservationsFromId.add(reservation);
-            }
-        }
-
-        return reservationsFromId;
+        // TODO: check if user exists first
+        return this.reservationRepository.findReservationByUserId(id);
     }
 }
