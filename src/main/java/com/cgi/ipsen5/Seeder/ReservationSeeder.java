@@ -1,6 +1,6 @@
 package com.cgi.ipsen5.Seeder;
 
-import com.cgi.ipsen5.Dao.ReservationDAO;
+import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.Role;
 import com.cgi.ipsen5.Model.User;
@@ -12,14 +12,13 @@ import java.time.LocalDateTime;
 @Component
 public class ReservationSeeder {
     @Autowired
-    private ReservationDAO reservationDAO;
+    private ReservationDao reservationDAO;
 
     public void seed() {
         User testUser = User.builder()
-                .username("testUser")
+                .username("test@example.com")
                 .password("testPassword")
                 .lastName("Test")
-                .username("test@example.com")
                 .phoneNumber("1234567890")
                 .role(Role.USER)
                 .build();
@@ -28,6 +27,6 @@ public class ReservationSeeder {
                 .endDateTime(LocalDateTime.now().plusHours(1))
                 .user(testUser)
                 .build();
-        reservationDAO.createReservation(reservation);
+        reservationDAO.save(reservation);
     }
 }

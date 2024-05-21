@@ -2,8 +2,7 @@ package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,6 +11,9 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "location")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Location {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -23,7 +25,7 @@ public class Location {
     @JsonProperty
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "wing_id", referencedColumnName = "id")
     private Wing wing;
 
