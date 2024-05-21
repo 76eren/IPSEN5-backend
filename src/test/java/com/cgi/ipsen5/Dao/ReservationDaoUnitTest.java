@@ -19,7 +19,7 @@ public class ReservationDaoUnitTest {
     @Mock
     private ReservationDao reservationDAO;
     @Mock
-    private ReservationHistoryDao reservationHistoryDAO;
+    private ReservationHistoryDAO reservationHistoryDAO;
 
     private Reservation dummyReservation;
     private User testUser;
@@ -89,7 +89,7 @@ public class ReservationDaoUnitTest {
     }
     private User createDummyTestUser() {
         return User.builder()
-                .username("test@gmail.com")
+                .username("testUser")
                 .password("testPassword")
                 .lastName("Test")
                 .build();

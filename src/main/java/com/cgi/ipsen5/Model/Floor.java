@@ -22,7 +22,7 @@ public class Floor {
     @JsonProperty
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "building_id", referencedColumnName = "id")
     private Building building;
 

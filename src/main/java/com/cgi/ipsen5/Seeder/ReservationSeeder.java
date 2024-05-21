@@ -27,6 +27,6 @@ public class ReservationSeeder {
                 .endDateTime(LocalDateTime.now().plusHours(1))
                 .user(testUser)
                 .build();
-        reservationDAO.createReservation(reservation);
+        reservationDAO.save(reservation);
     }
 }
