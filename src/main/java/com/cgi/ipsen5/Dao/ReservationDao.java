@@ -20,8 +20,8 @@ public class ReservationDao {
     private final ReservationRepository reservationRepository;
     private final UserDao userDao;
     private final LocationDao locationDao;
-    private final ReservationHistoryDAO reservationHistoryDAO;
-    private final ReservationDeletionDAO reservationDeletionDAO;
+    private final ReservationHistoryDao reservationHistoryDAO;
+    private final ReservationDeletionDao reservationDeletionDAO;
 
     public Reservation save(Reservation reservation) {
         return this.reservationRepository.save(reservation);
