@@ -27,8 +27,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BuildingController {
     private final BuildingDao buildingDao;
-    private final FloorDao floorDao;
-    private final LocationDao locationDao;
     private final WingDao wingDao;
 
 
