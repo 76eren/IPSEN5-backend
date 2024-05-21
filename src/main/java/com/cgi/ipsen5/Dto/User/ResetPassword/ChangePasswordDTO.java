@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ChangePasswordDTO {
     private String email;
     private String password;
+    private String token;
 }

@@ -43,9 +43,10 @@ public class ResetPasswordService {
 
     }
 
-    public void changePasswordOfUser(ChangePasswordDTO changePasswordDTO, UUID tokenId) throws UsernameNotFoundException {
+    public void changePasswordOfUser(ChangePasswordDTO changePasswordDTO) throws UsernameNotFoundException {
         // check if token is valid
-        Optional<PasswordResetToken> optionalToken = tokenRepository.findById(tokenId);
+        String tokenIdAsString = changePasswordDTO.getToken();
+        Optional<PasswordResetToken> optionalToken = tokenRepository.findById(UUID.fromString(tokenIdAsString));
         PasswordResetToken token = optionalToken.get();
         if(!this.isPasswordResetTokenValid(token)){
             return;

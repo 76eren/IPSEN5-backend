@@ -56,15 +56,13 @@ public class UserController {
     }
 
     @PostMapping(path = "/reset-password")
-    public void requestResetPassword(@RequestBody ResetlinkRequestDTO resetlinkRequestDTO,
-                                     @PathVariable("id") UUID tokenId) throws UsernameNotFoundException {
+    public void requestResetPassword(@RequestBody ResetlinkRequestDTO resetlinkRequestDTO) throws UsernameNotFoundException {
         this.resetPasswordService.requestResetLink(resetlinkRequestDTO);
     }
 
-    @PutMapping(path = "/reset-password/{id}")
-    public void changePassword(@RequestBody ChangePasswordDTO changePasswordDTO,
-                               @PathVariable("id") UUID tokenId) throws UsernameNotFoundException {
-        this.resetPasswordService.changePasswordOfUser(changePasswordDTO, tokenId);
+    @PutMapping(path = "/reset-password")
+    public void changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) throws UsernameNotFoundException {
+        this.resetPasswordService.changePasswordOfUser(changePasswordDTO);
     }
 
 }

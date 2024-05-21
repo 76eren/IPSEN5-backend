@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public Optional<User> findUserByEmail(String email) {
         Optional<User> foundUser = userRepository.findByUsername(email);
