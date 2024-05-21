@@ -22,27 +22,14 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/reservation")
 @RequiredArgsConstructor
 public class ReservationController {
-    private final LocationDao locationDao;
     private final ReservationDao reservationDao;
     private final ReservationMapper reservationMapper;
 
     @PostMapping("/create")
     public ApiResponse<ReservationResponseDTO> createReservation(@RequestBody ReservationCreateDTO reservationCreateDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         UUID id = UUID.fromString(authentication.getName());
-
-        Location location = locationDao.findLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
-        Reservation reservation = reservationDao.save(
-                location,
-                id,
-                reservationCreateDTO.getStartDateTime(),
-                reservationCreateDTO.getEndDateTime(),
-                reservationCreateDTO.getNumberOfPeople(),
-                reservationCreateDTO.getStatus()
-        );
-
-
+        Reservation reservation = reservationDao.save(id, reservationCreateDTO);
         return new ApiResponse<>(this.reservationMapper.fromEntity(reservation));
     }
 
