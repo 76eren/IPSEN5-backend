@@ -7,6 +7,7 @@ import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Service.AuthenticationService;
 import jakarta.security.auth.message.AuthStatus;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,18 @@ public class AuthController {
                 .build();
 
         return new ApiResponse<>(authCheckResponseDTO, HttpStatus.OK);
+    }
+
+    // TODO: This doesn't actually invalidate the cookies, it just sends back empty cookies
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
     }
 
 
