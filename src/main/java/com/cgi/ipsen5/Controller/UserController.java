@@ -64,7 +64,7 @@ public class UserController {
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping(path = "/reset-password")
     public void requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) throws UsernameNotFoundException {
         String email = passwordRequestDTO.getEmail();
         Optional<User> optionalUser = userService.findUserByEmail(email);

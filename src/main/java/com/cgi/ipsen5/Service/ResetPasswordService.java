@@ -16,7 +16,9 @@ public class ResetPasswordService {
     private final PasswordTokenRepository tokenRepository;
 
     public PasswordResetToken createPasswordResetTokenForUser(User user) {
-        PasswordResetToken resetToken = new PasswordResetToken(user);
+        Optional<PasswordResetToken> existingToken = tokenRepository.findByUser(user);
+
+        PasswordResetToken resetToken = existingToken.orElseGet(() -> new PasswordResetToken(user));
         resetToken.setExpiryDate();
         tokenRepository.save(resetToken);
         return resetToken;

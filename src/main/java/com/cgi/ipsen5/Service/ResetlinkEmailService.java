@@ -31,7 +31,7 @@ public class ResetlinkEmailService {
         body.append("<p>Er is een verzoek ingediend om het wachtwoord te wijzigen voor de werkplek reserveringsapp.</p>");
         body.append("<p>Deze link is 24 uur geldig.</p>");
         body.append("<p>Klik op de volgende link om uw wachtwoord te wijzigen: </p>");
-        body.append("<a href=\"http://localhost:4200/reset?").append(resetLink).append("\">Wachtwoord wijzigen</a>");
+        body.append("<a href=\"http://localhost:4200/#/reset-password").append(resetLink).append("\">Wachtwoord wijzigen</a>");
 
         body.append("<p>Met vriendelijke groet,</p>");
         body.append("<p>Het team</p>");

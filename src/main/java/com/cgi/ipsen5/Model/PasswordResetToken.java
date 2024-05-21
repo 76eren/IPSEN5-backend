@@ -39,6 +39,7 @@ public class PasswordResetToken {
     @JsonProperty
     private LocalDateTime expiryDate;
 
+    public PasswordResetToken(){}
     public void setExpiryDate() {
         this.expiryDate = LocalDateTime.now().plusHours(24);
     }
