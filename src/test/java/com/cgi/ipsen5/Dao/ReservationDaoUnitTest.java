@@ -19,7 +19,7 @@ public class ReservationDaoUnitTest {
     @Mock
     private ReservationDao reservationDAO;
     @Mock
-    private ReservationHistoryDAO reservationHistoryDAO;
+    private ReservationHistoryDao reservationHistoryDAO;
 
     private Reservation dummyReservation;
     private User testUser;
