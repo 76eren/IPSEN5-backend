@@ -31,7 +31,7 @@ public class BuildingController {
 
 
     @GetMapping
-    public ApiResponse<List<Building>> get() {
+    public ApiResponse<List<Building>> getAllBuildings() {
         return new ApiResponse<>(this.buildingDao.getAll(), HttpStatus.OK);
     }
 

@@ -21,7 +21,7 @@ public class FloorController {
     private final FloorDao floorDao;
 
     @GetMapping
-    public ApiResponse<List<Floor>> get() {
+    public ApiResponse<List<Floor>> getAllFloors() {
         return new ApiResponse<>(this.floorDao.getAll(), HttpStatus.OK);
     }
 

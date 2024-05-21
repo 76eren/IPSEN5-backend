@@ -18,7 +18,7 @@ public class LocationController {
     private final LocationDao locationDao;
 
     @GetMapping
-    public ApiResponse<List<Location>> get() {
+    public ApiResponse<List<Location>> getAllLocations() {
         return new ApiResponse<>(this.locationDao.getAll(), HttpStatus.OK);
     }
 

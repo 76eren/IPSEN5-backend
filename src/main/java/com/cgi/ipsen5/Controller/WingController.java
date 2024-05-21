@@ -21,7 +21,7 @@ public class WingController {
     private final WingDao wingDao;
 
     @GetMapping
-    public ApiResponse<List<Wing>> get() {
+    public ApiResponse<List<Wing>> getAllWings() {
         return new ApiResponse<>(this.wingDao.findAll(), HttpStatus.OK);
     }
 
