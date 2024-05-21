@@ -23,9 +23,9 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
+    public ApiResponse<?> login(@RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
         authenticationService.login(loginDTO.getUsername(), loginDTO.getPassword(), response);
-        return ResponseEntity.ok().body("Login successful");
+        return new ApiResponse<>("Login succes", HttpStatus.OK);
     }
 
     // Voor testing doeleinden
