@@ -71,11 +71,11 @@ public class UserController {
         if (!optionalUser.isPresent()) {
             throw new UsernameNotFoundException("User doesn't exist");
         }
-
-        User user = optionalUser.get();
-        PasswordResetToken passwordResetToken = resetPasswordService.createPasswordResetTokenForUser(user);
-
-        this.emailService.sendEmail(passwordResetToken.getId().toString(), user.getUsername());
+        else {
+            User user = optionalUser.get();
+            PasswordResetToken passwordResetToken = resetPasswordService.createPasswordResetTokenForUser(user);
+            this.emailService.sendEmail(passwordResetToken.getId().toString(), user.getUsername());
+        }
 
     }
 
