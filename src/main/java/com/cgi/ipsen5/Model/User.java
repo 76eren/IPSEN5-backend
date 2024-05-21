@@ -30,9 +30,9 @@ public class User implements UserDetails {
     private UUID id;
 
     // For now this will represent the username of the user and will be used to log in
-    @Column(name = "first_name")
+    @Column(name = "email")
     @JsonProperty
-    private String username; //TODO: the first name will represent the username for now.
+    private String username;
 
     @Column(name = "password")
     @JsonProperty
@@ -42,9 +42,9 @@ public class User implements UserDetails {
     @JsonProperty
     private String lastName;
 
-    @Column(name = "email")
+    @Column(name = "firstName")
     @JsonProperty
-    private String email;
+    private String firstName;
 
     @Column(name = "phone_number")
     @JsonProperty

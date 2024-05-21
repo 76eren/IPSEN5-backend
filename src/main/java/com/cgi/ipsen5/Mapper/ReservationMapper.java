@@ -18,7 +18,7 @@ public class ReservationMapper {
                 .builder()
                 .user(this.userMapper.fromEntity(reservation.getUser()))
                 .location(this.locationMapper.fromEntity(reservation.getLocation()))
-                .status(reservation.getStatus())
+                .status(reservation.getStatus().toString())
                 .startDateTime(reservation.getStartDateTime().toString())
                 .endDateTime(reservation.getEndDateTime().toString())
                 .numberOfPeople(reservation.getNumberOfPeople())

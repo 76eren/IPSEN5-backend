@@ -6,16 +6,15 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 @Entity
 @Table(name = "reservation")
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -37,7 +36,9 @@ public class Reservation {
 
     @Column(name = "status")
     @JsonProperty
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private ReservationStatus status = ReservationStatus.NOT_CHECKED_IN;
 
     @Column(name = "start_date_time")
     @JsonProperty

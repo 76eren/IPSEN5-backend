@@ -43,7 +43,6 @@ public class UserSeeder {
                 .id(UUID.randomUUID())
                 .username(username)
                 .role(Role.USER)
-                .email(email)
                 .lastName(lastName)
                 .password(passwordEncoder.encode(password))
                 .phoneNumber(phoneNumber)

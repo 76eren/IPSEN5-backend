@@ -1,16 +1,10 @@
 package com.cgi.ipsen5.Seeder;
 
-
-import com.cgi.ipsen5.Model.Building;
-import com.cgi.ipsen5.Model.Floor;
-import com.cgi.ipsen5.Model.User;
-import com.cgi.ipsen5.Model.Wing;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import java.util.Random;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -20,21 +14,24 @@ public class DatabaseSeeder {
     private final FloorSeeder floorSeeder;
     private final WingSeeder wingSeeder;
     private final LocationSeeder locationSeeder;
+    private final ReservationSeeder reservationSeeder;
 
-    private boolean hasSeeded = false;
+    private boolean alreadySeeded = false;
 
     @EventListener
-    public void seed(ContextRefreshedEvent ignored) {
-        if (hasSeeded) {
+    public void seed(ContextRefreshedEvent event) {
+        if (alreadySeeded) {
             return;
         }
 
-        this.buildingSeeder.seed();
-        this.userSeeder.seed();
-        this.floorSeeder.seed();
-        this.wingSeeder.seed();
-        this.locationSeeder.seed();
+        buildingSeeder.seed();
+        userSeeder.seed();
+        floorSeeder.seed();
+        wingSeeder.seed();
+        locationSeeder.seed();
 
-        this.hasSeeded = true;
+        reservationSeeder.seed();
+
+        this.alreadySeeded = true;
     }
 }
