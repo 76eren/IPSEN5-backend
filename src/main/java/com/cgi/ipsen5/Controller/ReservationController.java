@@ -1,6 +1,6 @@
 package com.cgi.ipsen5.Controller;
 
-import com.cgi.ipsen5.Dao.ReservationDAO;
+import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.ReservationUpdateRequest;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +13,9 @@ import java.util.UUID;
 @RequestMapping(value = "/api/v1/reservation")
 public class ReservationController {
 
-    private final ReservationDAO reservationDAO;
+    private final ReservationDao reservationDAO;
 
-    public ReservationController(ReservationDAO reservationDAO) {
+    public ReservationController(ReservationDao reservationDAO) {
         this.reservationDAO = reservationDAO;
     }
 
