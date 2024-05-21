@@ -30,9 +30,6 @@ import java.util.UUID;
 public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
-    private final AuthenticationService authenticationService;
-    private final UserService userService;
-    private final ResetlinkEmailService emailService;
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping
@@ -66,17 +63,7 @@ public class UserController {
 
     @PostMapping(path = "/reset-password")
     public void requestResetPassword(@RequestBody PasswordRequestDTO passwordRequestDTO) throws UsernameNotFoundException {
-        String email = passwordRequestDTO.getEmail();
-        Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (!optionalUser.isPresent()) {
-            throw new UsernameNotFoundException("User doesn't exist");
-        }
-        else {
-            User user = optionalUser.get();
-            PasswordResetToken passwordResetToken = resetPasswordService.createPasswordResetTokenForUser(user);
-            this.emailService.sendEmail(passwordResetToken.getId().toString(), user.getUsername());
-        }
-
+        this.resetPasswordService.requestResetLink(passwordRequestDTO);
     }
 
 }
