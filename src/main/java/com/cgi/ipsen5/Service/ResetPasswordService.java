@@ -31,6 +31,10 @@ public class ResetPasswordService {
 
     public void requestResetLink(ResetlinkRequestDTO resetlinkRequestDTO) throws UsernameNotFoundException {
         String email = resetlinkRequestDTO.getEmail();
+
+        if (email == null || email.trim().isEmpty()) {
+            throw new UsernameNotFoundException("User doesn't exist");
+        }
         Optional<User> optionalUser = userService.findUserByEmail(email);
         if (!optionalUser.isPresent()) {
             throw new UsernameNotFoundException("User doesn't exist");
