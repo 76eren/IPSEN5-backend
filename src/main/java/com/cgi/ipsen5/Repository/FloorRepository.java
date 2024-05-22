@@ -7,6 +7,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface FloorRepository extends JpaRepository<Floor, UUID> {
-
-    Optional<Floor> findFloorsBy(UUID id);
 }
