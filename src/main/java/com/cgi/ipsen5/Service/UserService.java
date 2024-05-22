@@ -1,11 +1,12 @@
 package com.cgi.ipsen5.Service;
 
-import com.cgi.ipsen5.Model.PasswordResetToken;
+
 import com.cgi.ipsen5.Model.User;
-import com.cgi.ipsen5.Repository.PasswordTokenRepository;
+
 import com.cgi.ipsen5.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +15,16 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Optional<User> findUserByEmail(String email) {
         Optional<User> foundUser = userRepository.findByUsername(email);
         return foundUser;
+    }
+
+    public void resetPassword(User user, String newPassword){
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
 
