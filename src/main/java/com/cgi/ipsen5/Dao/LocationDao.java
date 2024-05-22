@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LocationDao {
     private final LocationRepository locationRepository;
-    
+
     public List<Location> getAll() {
         return this.locationRepository.findAll();
     }
