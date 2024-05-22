@@ -27,10 +27,5 @@ public class LocationController {
         return new ApiResponse<>(this.locationDao.getLocationById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}/floor")
-    public ApiResponse<List<Floor>> getFloorByLocationId(@PathVariable UUID id) {
-        return new ApiResponse<>(this.locationDao.getFloorByLocationId(id), HttpStatus.OK);
-    }
-
 }
 
