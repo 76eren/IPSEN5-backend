@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -14,22 +16,19 @@ import java.util.UUID;
 public class LocationDao {
     private final LocationRepository locationRepository;
 
-
     public Location findLocationById(UUID locationId) {
         return this.locationRepository.findById(locationId).orElse(null);
     }
 
-    private LocalDateTime stringToLocalDate(String date) {
-        // convert a string (for example '2024-05-11T14:30:00') to a LocalDateTime object
-        return LocalDateTime.parse(date);
+    public void save(Location location) {
+        this.locationRepository.save(location);
     }
 
-    private String localDateToString(LocalDateTime date) {
-        return date.toString();
+    public List<Location> getAll() {
+        return this.locationRepository.findAll();
     }
 
-
-    public Location save(Location location) {
-        return this.locationRepository.save(location);
+    public Location getLocationById(UUID id) {
+        return this.locationRepository.findById(id).orElse(null);
     }
 }
