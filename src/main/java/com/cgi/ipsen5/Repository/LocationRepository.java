@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface LocationRepository extends JpaRepository<Location, UUID> {
 
-    List<Floor> findFloorsByLocation_Id(UUID id);
+    List<Floor> findAllByWing_FloorId(UUID id);
 }

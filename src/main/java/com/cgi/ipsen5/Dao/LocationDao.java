@@ -25,6 +25,10 @@ public class LocationDao {
     }
 
     public List<Floor> getFloorByLocationId(UUID id) {
-        return this.locationRepository.findFloorsByLocation_Id(id);
+        return this.locationRepository.findAllByWing_FloorId(id);
+    }
+
+    public Location save(Location location) {
+        return this.locationRepository.save(location);
     }
 }
