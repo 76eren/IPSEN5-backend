@@ -6,10 +6,13 @@ import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+@ExtendWith(MockitoExtension.class)
 public class EmailServiceUnitTest {
     ResetlinkEmailService mailService;
 
