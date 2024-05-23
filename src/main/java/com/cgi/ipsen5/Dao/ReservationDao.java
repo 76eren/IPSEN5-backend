@@ -23,6 +23,7 @@ public class ReservationDao {
     private final ReservationHistoryDao reservationHistoryDAO;
     private final ReservationDeletionDao reservationDeletionDAO;
 
+
     public Reservation save(Reservation reservation) {
         return this.reservationRepository.save(reservation);
     }
@@ -48,6 +49,26 @@ public class ReservationDao {
                 .build();
 
         return this.reservationRepository.save(newReservation);
+    }
+
+    public Reservation saveWorkplaceReservation(Reservation reservation){
+        return this.reservationRepository.save(reservation);
+    }
+
+    public Reservation saveRoomReservation(Reservation reservation){
+        return this.reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> findReservationsBetween(
+            Location location,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime) {
+        return this.reservationRepository
+                .findByLocationAndStartDateTimeLessThanAndEndDateTimeGreaterThan(
+                        location,
+                        endDateTime,
+                        startDateTime
+                );
     }
 
     public boolean updateReservationStatus(LocalDateTime start, User userId) {

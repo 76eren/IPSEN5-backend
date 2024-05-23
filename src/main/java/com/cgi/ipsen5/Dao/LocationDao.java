@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -31,5 +32,9 @@ public class LocationDao {
 
     public Location save(Location location) {
         return this.locationRepository.save(location);
+    }
+
+    public List<Location> findAllByWingId(UUID wingId) {
+        return this.locationRepository.findAllByWingId(wingId);
     }
 }
