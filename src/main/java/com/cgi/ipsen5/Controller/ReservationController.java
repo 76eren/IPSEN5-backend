@@ -4,6 +4,7 @@ import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Dto.Reservation.ReservationCreateDTO;
 import com.cgi.ipsen5.Dto.Reservation.ReservationResponseDTO;
 import com.cgi.ipsen5.Dto.Reservation.WorkplaceReservationDTO;
+import com.cgi.ipsen5.Exception.ReservationErrorExecption;
 import com.cgi.ipsen5.Mapper.ReservationMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Reservation;
@@ -85,5 +86,10 @@ public class ReservationController {
             return new ApiResponse<>("Could not cancel reservation.", HttpStatus.NOT_FOUND);
         }
         return new ApiResponse<>("Reservation cancelled successfully.", HttpStatus.ACCEPTED);
+    }
+
+    @ExceptionHandler
+    public ApiResponse<String> handleException(ReservationErrorExecption e) {
+        return new ApiResponse<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 }

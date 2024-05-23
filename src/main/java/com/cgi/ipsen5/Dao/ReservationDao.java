@@ -23,11 +23,12 @@ public class ReservationDao {
     private final ReservationHistoryDao reservationHistoryDAO;
     private final ReservationDeletionDao reservationDeletionDAO;
 
-
+    //TODO: Later verwijderen als het reserveren van lokalen ook lukt
     public Reservation save(Reservation reservation) {
         return this.reservationRepository.save(reservation);
     }
 
+    //TODO: Later verwijderen als het reservere van lokalen ook lukt
     public Reservation save(UUID userId, ReservationCreateDTO reservationCreateDTO) {
         Optional<User> user = this.userDao.findById(userId);
 

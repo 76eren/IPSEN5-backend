@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -22,6 +23,7 @@ public class LocationService {
     }
 
     public List<Location> findAvailableLocationsByWingId(UUID wingId, LocalDateTime start, LocalDateTime end) {
+        //TODO: Ik heb nu geen manier om de beschikbaarheid van een locatie te checken, dit moet nog misschien verbterd worden
         List<Location> allLocations = this.locationDao.findAllByWingId(wingId);
         List<Location> availableLocations = new ArrayList<>();
 
@@ -33,5 +35,11 @@ public class LocationService {
         }
 
         return availableLocations;
+    }
+
+    public Location getRandomAvailableLocationIndex(List<Location> availableLocations) {
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(availableLocations.size());
+        return availableLocations.get(randomIndex);
     }
 }
