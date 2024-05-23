@@ -19,10 +19,11 @@ public class ReservationService {
     private final ReservationDao reservationDao;
     private final LocationService locationService;
     private final UserService userService;
+    private final WingService wingService;
 
     public Reservation saveWorkplaceReservation(WorkplaceReservationDTO reservationCreateDTO) {
+        this.wingService.wingExistsById(UUID.fromString(reservationCreateDTO.getWingId()));
         User user = this.userService.getUserFromAuthContext();
-
         List<Location> availableLocationsByWingId  = this.locationService.findAvailableLocationsByWingId(
                 UUID.fromString(reservationCreateDTO.getWingId()),
                 LocalDateTime.parse(reservationCreateDTO.getStartDateTime()),

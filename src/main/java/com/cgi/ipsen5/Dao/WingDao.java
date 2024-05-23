@@ -27,4 +27,8 @@ public class WingDao {
     public Wing findWingById(UUID wingId) {
         return this.wingRepository.findById(wingId).orElse(null);
     }
+
+    public boolean existsById(UUID wingId) {
+        return this.wingRepository.existsById(wingId);
+    }
 }
