@@ -54,5 +54,6 @@ public class Reservation {
 
     @Column(name = "created_at")
     @JsonProperty
-    private LocalDateTime createdAt;
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

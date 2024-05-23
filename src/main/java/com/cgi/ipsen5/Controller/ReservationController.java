@@ -12,6 +12,7 @@ import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.ReservationUpdateRequest;
 import com.cgi.ipsen5.Service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -31,7 +32,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping("/reserve-workplace")
-    public ApiResponse<String> reserveWorkplace(@RequestBody WorkplaceReservationDTO reservationCreateDTO) {
+    public ApiResponse<String> reserveWorkplace(@Valid @RequestBody WorkplaceReservationDTO reservationCreateDTO) {
         Reservation reservation = this.reservationService.saveWorkplaceReservation(reservationCreateDTO);
         if (reservation == null) {
             return new ApiResponse<>("Could not reserve workplace", HttpStatus.NOT_FOUND);
