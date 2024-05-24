@@ -17,11 +17,11 @@ public class FloorDao {
         floorRepository.save(floor);
     }
 
-    public ArrayList<Floor> findAll() {
+    public ArrayList<Floor> getAll() {
         return (ArrayList<Floor>) floorRepository.findAll();
     }
 
-    public Floor findById(UUID id) {
+    public Floor getById(UUID id) {
         return floorRepository.findById(id).orElseThrow(() -> new RuntimeException("Floor not found"));
     }
 }

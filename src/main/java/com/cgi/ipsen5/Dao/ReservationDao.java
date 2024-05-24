@@ -34,7 +34,7 @@ public class ReservationDao {
             throw new IllegalArgumentException("User not found");
         }
 
-        Location location = locationDao.findLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
+        Location location = locationDao.getLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
         // TODO: Check if location exists
 
         Reservation newReservation = Reservation
