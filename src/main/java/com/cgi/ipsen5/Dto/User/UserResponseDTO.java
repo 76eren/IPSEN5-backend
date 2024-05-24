@@ -14,6 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserResponseDTO {
     private UUID id;
-    private String username;
+    private String email; // This will represent the actual email of the user
+    private String firstname;
+    private String lastname;
     private Role role;
+    private String phoneNumber;
 }
