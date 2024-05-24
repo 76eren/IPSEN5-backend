@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface LocationRepository extends JpaRepository<Location, UUID> {
-
+    List<Location> findAllByWingId(UUID wingId);
     List<Floor> findAllByWing_FloorId(UUID id);
 }

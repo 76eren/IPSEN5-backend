@@ -3,10 +3,16 @@ package com.cgi.ipsen5.Controller;
 import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Dto.Reservation.ReservationCreateDTO;
 import com.cgi.ipsen5.Dto.Reservation.ReservationResponseDTO;
+import com.cgi.ipsen5.Dto.Reservation.WorkplaceReservationDTO;
+import com.cgi.ipsen5.Exception.ReservationErrorExecption;
+import com.cgi.ipsen5.Exception.UserNotFoundException;
+import com.cgi.ipsen5.Exception.WingNotFoundException;
 import com.cgi.ipsen5.Mapper.ReservationMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.ReservationUpdateRequest;
+import com.cgi.ipsen5.Service.ReservationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -18,11 +24,26 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/api/v1/reservation")
+@RequestMapping(value = "/api/v1/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
     private final ReservationDao reservationDao;
     private final ReservationMapper reservationMapper;
+    private final ReservationService reservationService;
+
+    @PostMapping("/reserve-workplace")
+    public ApiResponse<String> reserveWorkplace(@Valid @RequestBody WorkplaceReservationDTO reservationCreateDTO) {
+        Reservation reservation = this.reservationService.saveWorkplaceReservation(reservationCreateDTO);
+        if (reservation == null) {
+            return new ApiResponse<>("Could not reserve workplace", HttpStatus.NOT_FOUND);
+        }
+        return new ApiResponse<>("Reservation created successfully", HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/reserve-room")
+    public ApiResponse<String> reserveRoom(){
+        return new ApiResponse<>("");
+    }
 
     @PostMapping("/create")
     public ApiResponse<ReservationResponseDTO> createReservation(@RequestBody ReservationCreateDTO reservationCreateDTO) {
@@ -68,5 +89,10 @@ public class ReservationController {
             return new ApiResponse<>("Could not cancel reservation.", HttpStatus.NOT_FOUND);
         }
         return new ApiResponse<>("Reservation cancelled successfully.", HttpStatus.ACCEPTED);
+    }
+
+    @ExceptionHandler({ReservationErrorExecption.class, WingNotFoundException.class, UserNotFoundException.class})
+    public ApiResponse<String> handleException(Exception e) {
+        return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
