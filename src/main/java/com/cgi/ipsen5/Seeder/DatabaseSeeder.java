@@ -29,7 +29,6 @@ public class DatabaseSeeder {
         floorSeeder.seed();
         wingSeeder.seed();
         locationSeeder.seed();
-
         reservationSeeder.seed();
 
         this.alreadySeeded = true;

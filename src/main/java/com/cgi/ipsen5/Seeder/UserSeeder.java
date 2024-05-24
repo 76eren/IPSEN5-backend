@@ -33,7 +33,7 @@ public class UserSeeder {
         users.add(createUser("Taylor", "t.swift@cgi.com", "Swift", "Winter10", "0612345678"));
         users.add(createUser("Martin", "m.vliet@cgi.com", "van Vliet", "snail54", "0612345687"));
         users.add(createUser("Tom", "t.nook@cgi.com", "Nook", "bell514", "0612345687"));
-
+        users.add(createUser("s1136644@student.hsleiden.nl", "s1136644@student.hsleiden.nl", "Smits", "password", "0620255944"));
         return users;
     }
 
