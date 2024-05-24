@@ -31,4 +31,8 @@ public class WingDao {
     public boolean existsById(UUID wingId) {
         return this.wingRepository.existsById(wingId);
     }
+  
+    public ArrayList<Wing> findWingsByBuildingId(UUID buildingId) {
+        return this.wingRepository.findWingsByFloor_BuildingId(buildingId);
+    }
 }

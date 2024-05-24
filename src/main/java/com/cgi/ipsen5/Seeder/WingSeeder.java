@@ -24,7 +24,7 @@ public class WingSeeder {
 
     public ArrayList<Wing> getData() {
         ArrayList<Wing> wings = new ArrayList<>();
-        ArrayList<Floor> floors = this.floorDao.findAll();
+        ArrayList<Floor> floors = this.floorDao.getAll();
 
         for (Floor floor : floors) {
             wings.add(createWing(floor, "A"));
@@ -38,7 +38,7 @@ public class WingSeeder {
     }
 
     public Wing createWing(Floor floor, String name) {
-        Floor managedFloor = floorDao.findById(floor.getId());
+        Floor managedFloor = floorDao.getById(floor.getId());
 
         return Wing
                 .builder()

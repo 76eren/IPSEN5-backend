@@ -1,5 +1,6 @@
 package com.cgi.ipsen5.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,12 @@ public class Building {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(nullable = false, unique = true)
-    @JsonProperty
+    @JsonIgnore
     private UUID id;
+
+    @Column(name = "name", nullable = false)
+    @JsonProperty
+    private String name;
 
     @Column(name = "address", nullable = false)
     @JsonProperty
