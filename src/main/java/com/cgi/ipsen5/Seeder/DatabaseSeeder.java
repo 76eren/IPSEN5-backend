@@ -15,6 +15,7 @@ public class DatabaseSeeder {
     private final WingSeeder wingSeeder;
     private final LocationSeeder locationSeeder;
     private final ReservationSeeder reservationSeeder;
+    private final ReservationHistorySeeder reservationHistorySeeder;
 
     private boolean alreadySeeded = false;
 
@@ -31,6 +32,7 @@ public class DatabaseSeeder {
         locationSeeder.seed();
 
         reservationSeeder.seed();
+        reservationHistorySeeder.seed();
 
         this.alreadySeeded = true;
     }
