@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -24,5 +26,13 @@ public class WingDao {
 
     public Wing findWingById(UUID wingId) {
         return this.wingRepository.findById(wingId).orElse(null);
+    }
+
+    public boolean existsById(UUID wingId) {
+        return this.wingRepository.existsById(wingId);
+    }
+  
+    public ArrayList<Wing> findWingsByBuildingId(UUID buildingId) {
+        return this.wingRepository.findWingsByFloor_BuildingId(buildingId);
     }
 }

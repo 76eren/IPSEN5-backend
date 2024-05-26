@@ -23,10 +23,12 @@ public class ReservationDao {
     private final ReservationHistoryDao reservationHistoryDAO;
     private final ReservationDeletionDao reservationDeletionDAO;
 
+    //TODO: Later verwijderen als het reserveren van lokalen ook lukt
     public Reservation save(Reservation reservation) {
         return this.reservationRepository.save(reservation);
     }
 
+    //TODO: Later verwijderen als het reservere van lokalen ook lukt
     public Reservation save(UUID userId, ReservationCreateDTO reservationCreateDTO) {
         Optional<User> user = this.userDao.findById(userId);
 
@@ -34,7 +36,7 @@ public class ReservationDao {
             throw new IllegalArgumentException("User not found");
         }
 
-        Location location = locationDao.findLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
+        Location location = locationDao.getLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
         // TODO: Check if location exists
 
         Reservation newReservation = Reservation
@@ -48,6 +50,26 @@ public class ReservationDao {
                 .build();
 
         return this.reservationRepository.save(newReservation);
+    }
+
+    public Reservation saveWorkplaceReservation(Reservation reservation){
+        return this.reservationRepository.save(reservation);
+    }
+
+    public Reservation saveRoomReservation(Reservation reservation){
+        return this.reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> findReservationsBetween(
+            Location location,
+            LocalDateTime startDateTime,
+            LocalDateTime endDateTime) {
+        return this.reservationRepository
+                .findByLocationAndStartDateTimeLessThanAndEndDateTimeGreaterThan(
+                        location,
+                        endDateTime,
+                        startDateTime
+                );
     }
 
     public boolean updateReservationStatus(LocalDateTime start, User userId) {

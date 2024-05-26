@@ -33,17 +33,30 @@ public class UserSeeder {
         users.add(createUser("Taylor", "t.swift@cgi.com", "Swift", "Winter10", "0612345678"));
         users.add(createUser("Martin", "m.vliet@cgi.com", "van Vliet", "snail54", "0612345687"));
         users.add(createUser("Tom", "t.nook@cgi.com", "Nook", "bell514", "0612345687"));
-
+        users.add(createAdmin("admin", "admin@cgi.com", "admin", "admin", "0612345678"));
         return users;
     }
 
-    public User createUser(String username, String email, String lastName, String password, String phoneNumber) {
+    public User createUser(String firstname, String email, String lastName, String password, String phoneNumber) {
         return User
                 .builder()
-                .id(UUID.randomUUID())
-                .username(username)
+                .username(email)
                 .role(Role.USER)
                 .lastName(lastName)
+                .firstName(firstname)
+                .password(passwordEncoder.encode(password))
+                .phoneNumber(phoneNumber)
+                .build();
+    }
+
+
+    public User createAdmin(String firstname, String email, String lastName, String password, String phoneNumber) {
+        return User
+                .builder()
+                .username(email)
+                .role(Role.ADMIN)
+                .lastName(lastName)
+                .firstName(firstname)
                 .password(passwordEncoder.encode(password))
                 .phoneNumber(phoneNumber)
                 .build();
