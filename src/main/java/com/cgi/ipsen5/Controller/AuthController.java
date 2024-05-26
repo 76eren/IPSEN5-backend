@@ -79,7 +79,10 @@ public class AuthController {
     @GetMapping("/isAdmin")
     public ApiResponse<AdminCheckResponseDTO> isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
+        boolean isAdmin = authentication
+                .getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ADMIN"));
         return new ApiResponse<>(new AdminCheckResponseDTO(isAdmin), HttpStatus.OK);
     }
 
