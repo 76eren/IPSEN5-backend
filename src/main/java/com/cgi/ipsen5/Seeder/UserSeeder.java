@@ -40,7 +40,6 @@ public class UserSeeder {
     public User createUser(String firstname, String email, String lastName, String password, String phoneNumber) {
         return User
                 .builder()
-                .id(UUID.randomUUID())
                 .username(email)
                 .role(Role.USER)
                 .lastName(lastName)
@@ -54,7 +53,6 @@ public class UserSeeder {
     public User createAdmin(String firstname, String email, String lastName, String password, String phoneNumber) {
         return User
                 .builder()
-                .id(UUID.randomUUID())
                 .username(email)
                 .role(Role.ADMIN)
                 .lastName(lastName)
