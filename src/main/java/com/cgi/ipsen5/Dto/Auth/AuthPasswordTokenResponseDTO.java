@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthPasswordTokenDTO {
+public class AuthPasswordTokenResponseDTO {
     boolean isTokenValid;
 }

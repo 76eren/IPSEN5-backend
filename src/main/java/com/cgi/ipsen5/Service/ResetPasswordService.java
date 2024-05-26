@@ -2,6 +2,7 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
+import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Model.PasswordResetToken;
 import com.cgi.ipsen5.Model.User;
@@ -36,7 +37,7 @@ public class ResetPasswordService {
             throw new UsernameNotFoundException("User doesn't exist");
         }
         Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             throw new UsernameNotFoundException("User doesn't exist");
         }
         else {
@@ -53,12 +54,12 @@ public class ResetPasswordService {
         Optional<PasswordResetToken> optionalToken = tokenRepository.findById(UUID.fromString(tokenIdAsString));
         PasswordResetToken token = optionalToken.get();
         if(!this.isPasswordResetTokenValid(token.getId())){
-            return;
+            return; //todo exception
         }
         // extract userdata from dto
         String email = changePasswordDTO.getEmail();
         Optional<User> optionalUser = userService.findUserByEmail(email);
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isEmpty()) {
             throw new UsernameNotFoundException("User doesn't exist");
         }
         else {
@@ -68,15 +69,27 @@ public class ResetPasswordService {
         }
     }
 
-    public boolean isPasswordResetTokenValid(UUID tokenId) {
-        Optional<PasswordResetToken> passTokenOptional = tokenRepository.findById(tokenId);
+    public boolean isPasswordResetTokenValidForUser(UUID tokenId, String userEmail) {
+        User user = userService.findUserByEmail(userEmail)
+                .orElseThrow(() ->  new UserNotFoundException("User not found"));
 
+        Optional<PasswordResetToken> passTokenOptional = tokenRepository.findById(tokenId);
+        if (passTokenOptional.isEmpty() || isTokenExpired(passTokenOptional.get())) {
+            return false;
+        }
+
+        PasswordResetToken passToken = passTokenOptional.get();
+        return passToken.getUser().getId().equals(user.getId());
+    }
+
+    private boolean isPasswordResetTokenValid(UUID tokenId) {
+        Optional<PasswordResetToken> passTokenOptional = tokenRepository.findById(tokenId);
         if (passTokenOptional.isEmpty()) {
             return false;
         }
         PasswordResetToken passToken = passTokenOptional.get();
         if (isTokenExpired(passToken)) {
-            // TODO delete token
+            this.tokenRepository.deleteById(tokenId);
             return false;
         }
         return true;
