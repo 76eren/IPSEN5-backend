@@ -1,12 +1,10 @@
 package com.cgi.ipsen5.Controller;
 
-import com.cgi.ipsen5.Dto.Auth.AdminCheckResponseDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthCheckResponseDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthRequestDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
+import com.cgi.ipsen5.Dto.Auth.*;
 import com.cgi.ipsen5.Dto.User.UserCreateDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Service.AuthenticationService;
+import com.cgi.ipsen5.Service.ResetPasswordService;
 import jakarta.security.auth.message.AuthStatus;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,12 +16,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthenticationService authenticationService;
+    private final ResetPasswordService resetPasswordService;
 
     @PostMapping(value = "/login")
     public ApiResponse<?> login(@RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
@@ -83,5 +83,10 @@ public class AuthController {
         return new ApiResponse<>(new AdminCheckResponseDTO(isAdmin), HttpStatus.OK);
     }
 
+    @GetMapping("/{token}/isResetTokenValid")
+    public ApiResponse<AuthPasswordTokenDTO> isPasswordTokenValid(@PathVariable UUID token){
+        boolean isTokenValid = this.resetPasswordService.isPasswordResetTokenValid(token);
+        return new ApiResponse<>(new AuthPasswordTokenDTO(isTokenValid), HttpStatus.OK);
+    }
 
 }

@@ -52,7 +52,7 @@ public class ResetPasswordService {
         String tokenIdAsString = changePasswordDTO.getToken();
         Optional<PasswordResetToken> optionalToken = tokenRepository.findById(UUID.fromString(tokenIdAsString));
         PasswordResetToken token = optionalToken.get();
-        if(!this.isPasswordResetTokenValid(token)){
+        if(!this.isPasswordResetTokenValid(token.getId())){
             return;
         }
         // extract userdata from dto
@@ -68,14 +68,15 @@ public class ResetPasswordService {
         }
     }
 
-    private boolean isPasswordResetTokenValid(PasswordResetToken token) {
-        Optional<PasswordResetToken> passTokenOptional = tokenRepository.findById(token.getId());
+    public boolean isPasswordResetTokenValid(UUID tokenId) {
+        Optional<PasswordResetToken> passTokenOptional = tokenRepository.findById(tokenId);
 
         if (passTokenOptional.isEmpty()) {
             return false;
         }
         PasswordResetToken passToken = passTokenOptional.get();
         if (isTokenExpired(passToken)) {
+            // TODO delete token
             return false;
         }
         return true;
