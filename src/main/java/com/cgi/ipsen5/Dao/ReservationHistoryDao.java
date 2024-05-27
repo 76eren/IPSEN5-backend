@@ -1,5 +1,6 @@
 package com.cgi.ipsen5.Dao;
 
+import com.cgi.ipsen5.Dto.Report.NoShowResponseDTO;
 import com.cgi.ipsen5.Dto.Report.RoomOccupancyResponseDTO;
 import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.ReservationHistory;
@@ -32,5 +33,9 @@ public class ReservationHistoryDao {
 
     public List<RoomOccupancyResponseDTO> getRoomOccupancyByBuildingAndYear(String buildingName, int year) {
         return this.reservationHistoryRepository.findRoomOccupancyByBuildingAndYear(buildingName, year);
+    }
+
+    public List<NoShowResponseDTO> getNoShowsByBuildingAndYear(String buildingName, int year) {
+        return this.reservationHistoryRepository.findNoShowsByBuildingAndYear(buildingName, year);
     }
 }

@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.ReservationHistoryDao;
+import com.cgi.ipsen5.Dto.Report.NoShowResponseDTO;
 import com.cgi.ipsen5.Dto.Report.RoomOccupancyResponseDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,15 @@ public class ReportController {
         List<RoomOccupancyResponseDTO> occupancyData = this.reservationHistoryDao.
                 getRoomOccupancyByBuildingAndYear(buildingName, year);
         return new ApiResponse<>(occupancyData, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/noshow")
+    public ApiResponse<List<NoShowResponseDTO>> getNoShows(
+            @RequestParam String buildingName,
+            @RequestParam int year
+    ){
+        List<NoShowResponseDTO> noShowData = this.reservationHistoryDao.
+                getNoShowsByBuildingAndYear(buildingName, year);
+        return new ApiResponse<>(noShowData,HttpStatus.ACCEPTED);
     }
 }
