@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ReservationHistoryRepository extends JpaRepository<ReservationHistory, Long> {
     @Query(value = "SELECT l.name AS room, COUNT(*) AS numberOfUsages, rh.start_date_time AS date " +
@@ -16,11 +17,11 @@ public interface ReservationHistoryRepository extends JpaRepository<ReservationH
             "JOIN wing w ON l.wing_id = w.id " +
             "JOIN floor f ON w.floor_id = f.id " +
             "JOIN building b ON f.building_id = b.id " +
-            "WHERE b.name = :buildingName AND EXTRACT(YEAR FROM rh.start_date_time) = :year " +
+            "WHERE b.id = :building AND EXTRACT(YEAR FROM rh.start_date_time) = :year " +
             "GROUP BY l.id, rh.start_date_time, l.name",
             nativeQuery = true)
     List<RoomOccupancyResponseDTO> findRoomOccupancyByBuildingAndYear(
-            @Param("buildingName") String buildingName,
+            @Param("building") UUID building,
             @Param("year") int year);
 
     @Query(value = "SELECT CONCAT(e.first_name, ' ', e.last_name) AS employeeName, COUNT(*) AS numberOfReservations, " +
@@ -31,9 +32,9 @@ public interface ReservationHistoryRepository extends JpaRepository<ReservationH
             "JOIN wing w ON l.wing_id = w.id " +
             "JOIN floor f ON w.floor_id = f.id " +
             "JOIN building b ON f.building_id = b.id " +
-            "WHERE b.name = :buildingName AND EXTRACT(YEAR FROM rh.start_date_time) = :year " +
+            "WHERE b.id = :building AND EXTRACT(YEAR FROM rh.start_date_time) = :year " +
             "GROUP BY employeeName", nativeQuery = true)
     List<NoShowResponseDTO> findNoShowsByBuildingAndYear(
-            @Param("buildingName") String buildingName,
+            @Param("building") UUID building,
             @Param("year") int year);
 }
