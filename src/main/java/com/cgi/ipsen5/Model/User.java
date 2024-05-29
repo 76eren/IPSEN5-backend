@@ -54,6 +54,15 @@ public class User implements UserDetails {
     @JsonProperty
     private Role role;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "favorite_id")
+    )
+    private List<User> favoriteCollegues;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

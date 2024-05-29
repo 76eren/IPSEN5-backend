@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,13 @@ public class UserController {
             UserResponseDTO res = userMapper.fromEntity(userDAO.findById(id).orElseThrow());
             return new ApiResponse<>(res);
         }
+    }
+
+    @GetMapping(path = "/{id}/get-favorite-collegues")
+    public ApiResponse<List<UserResponseDTO>> getFavoriteColleguesByUserId(@PathVariable UUID id){
+        List<UserResponseDTO> favorites = new ArrayList<UserResponseDTO>();
+        // todo be able to find the favs of a user
+        return new ApiResponse<>(favorites);
     }
 
     @PutMapping(path = {"/{id}/edit"})
