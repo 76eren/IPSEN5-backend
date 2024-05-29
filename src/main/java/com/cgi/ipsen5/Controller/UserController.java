@@ -3,7 +3,7 @@ package com.cgi.ipsen5.Controller;
 import com.cgi.ipsen5.Dao.UserDao;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
-import com.cgi.ipsen5.Dto.User.UserAddFavoriteColleguesDTO;
+import com.cgi.ipsen5.Dto.User.UserAddFavoriteColleaguesDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
@@ -11,7 +11,7 @@ import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.User;
-import com.cgi.ipsen5.Service.FavoriteCollegueService;
+import com.cgi.ipsen5.Service.FavoriteColleagueService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -30,7 +29,7 @@ public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
     private final ResetPasswordService resetPasswordService;
-    private final FavoriteCollegueService favoriteCollegueService;
+    private final FavoriteColleagueService favoriteColleagueService;
 
     @GetMapping
     @ResponseBody
@@ -49,16 +48,16 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/get-favorite-collegues")
-    public ApiResponse<List<UserResponseDTO>> getFavoriteColleguesByUserId(@PathVariable UUID id){
+    public ApiResponse<List<UserResponseDTO>> getFavoriteColleaguesByUserId(@PathVariable UUID id){
         List<UserResponseDTO> favorites = new ArrayList<UserResponseDTO>();
         // todo be able to find the favs of a user
         return new ApiResponse<>(favorites);
     }
 
     @PostMapping(path = "/{id}/add-favorite-collegue")
-    public void addFavoriteCollegue(@PathVariable UUID id,
-                                    @RequestBody UserAddFavoriteColleguesDTO favoriteColleguesDTO){
-        this.favoriteCollegueService.addFavoriteCollegue(id, favoriteColleguesDTO.getIdOfFavorite());
+    public void addFavoriteColleague(@PathVariable UUID id,
+                                     @RequestBody UserAddFavoriteColleaguesDTO favoriteColleguesDTO){
+        this.favoriteColleagueService.addFavoriteCollegue(id, favoriteColleguesDTO.getIdOfFavorite());
     }
 
     @PutMapping(path = {"/{id}/edit"})

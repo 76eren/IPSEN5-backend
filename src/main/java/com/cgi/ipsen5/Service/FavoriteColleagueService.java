@@ -11,14 +11,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class FavoriteCollegueService {
+public class FavoriteColleagueService {
     private final UserDao userDao;
-    public void addFavoriteCollegue(UUID employeeId, UUID favoritedCollegueId){
+    public void addFavoriteCollegue(UUID employeeId, UUID favoritedColleagueId){
         Optional<User> optionalUser = this.userDao.findById(employeeId);
         if (optionalUser.isEmpty()) {
             throw new UserNotFoundException("User not found");
         }
         User employee = optionalUser.get();
-        userDao.addFavorite(employee, favoritedCollegueId);
+        userDao.addFavorite(employee, favoritedColleagueId);
     }
 }
