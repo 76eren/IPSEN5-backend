@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import com.cgi.ipsen5.Model.User;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,9 +37,11 @@ public class UserDao implements UserDetailsService {
     public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
     }
+
     public User save(User user) {
         return userRepository.save(user);
     }
+
     public void delete(User user) {
         userRepository.delete(user);
     }
@@ -46,6 +49,7 @@ public class UserDao implements UserDetailsService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
     public Optional<Set<User>> findAllByUsername(String username) {
         return userRepository.findAllByUsername(username);
     }
@@ -57,7 +61,7 @@ public class UserDao implements UserDetailsService {
 
     public User updateUser(UUID id, UserEditDTO userEditDTO) {
         Optional<User> foundUser = findById(id);
-        if(foundUser.isPresent()) {
+        if (foundUser.isPresent()) {
             User user = foundUser.get();
 
             if (userEditDTO.getUsername() != null) {
@@ -72,5 +76,23 @@ public class UserDao implements UserDetailsService {
         }
 
         return null;
+    }
+
+    public void addFavorite(User employee, UUID favoriteCollegueId) {
+        List<User> currentFavorites = employee.getFavoriteCollegues();
+
+        boolean alreadyFavorited = currentFavorites.stream()
+                .anyMatch(user -> user.getId().equals(favoriteCollegueId));
+
+        if (!alreadyFavorited) {
+            Optional<User> favoriteColleague = findById(favoriteCollegueId);
+            if (favoriteColleague.isPresent()) {
+                currentFavorites.add(favoriteColleague.get());
+                employee.setFavoriteCollegues(currentFavorites);
+                save(employee);
+            } else {
+                throw new UsernameNotFoundException("Favorite colleague not found with id: " + favoriteCollegueId);
+            }
+        }
     }
 }

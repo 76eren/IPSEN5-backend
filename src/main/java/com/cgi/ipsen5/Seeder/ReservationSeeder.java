@@ -19,6 +19,7 @@ public class ReservationSeeder {
                 .username("test@example.com")
                 .firstName("Test")
                 .password("testPassword")
+                .firstName("")
                 .lastName("Test")
                 .phoneNumber("1234567890")
                 .role(Role.USER)
