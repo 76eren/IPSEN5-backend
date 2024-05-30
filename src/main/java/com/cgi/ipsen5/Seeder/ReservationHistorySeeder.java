@@ -24,39 +24,49 @@ public class ReservationHistorySeeder {
     @Autowired
     private UserDao userDao;
 
+    private ArrayList<ReservationHistory> reservationHistories;
+    private List<Location> locations;
+    private List<User> users;
+
+
     public void seed() {
-        for(ReservationHistory reservationHistory : getData()){
-            this.reservationHistoryRepository.save(reservationHistory);
-        }
+        this.reservationHistories = new ArrayList<>();
+        this.locations = this.locationDao.getAll();
+        this.users = this.userDao.findAllUsers();
 
+        this.createRoomOccupancyData();
+        this.createNoShowData();
     }
 
-    public List<ReservationHistory> getData() {
-        ArrayList<ReservationHistory> reservationHistories = new ArrayList<>();
-        List<Location> locations = this.locationDao.getAll();
-        User user = this.userDao.findAllUsers().get(0);
-        Location singleLocation = locations.get(0);
-        reservationHistories.add(this.createReservationHistory(singleLocation, user, 2));
-        reservationHistories.add(this.createReservationHistory(singleLocation, user, 2));
-        reservationHistories.add(this.createReservationHistory(singleLocation, user, 2));
-        reservationHistories.add(this.createReservationHistory(singleLocation, user, 1));
-        reservationHistories.add(this.createReservationHistory(singleLocation, user, 1));
-        reservationHistories.add(this.createReservationHistory(singleLocation, user, 0));
-
-        for(Location location : locations){
-            int randomNumber = (int) (Math.random() * 3);
-            reservationHistories.add(this.createReservationHistory(location, user, randomNumber));
+    public void createRoomOccupancyData() {
+        for(Location location : locations) {
+            for(User user : users) {
+                int randomNumber = (int) (Math.random() * 3);
+                reservationHistories.add(this.createReservationHistory(location, user, randomNumber, ReservationStatus.CHECKED_IN));
+            }
         }
 
-        return reservationHistories;
+        this.reservationHistoryRepository.saveAll(reservationHistories);
     }
 
-    public ReservationHistory createReservationHistory(Location location, User user, int randomNumber) {
+    public void createNoShowData() {
+        for(User user : users) {
+            int randomNumber = (int) (Math.random() * 5);
+            for(int i = 0; i < randomNumber; i++){
+                reservationHistories.add(this.createReservationHistory(locations.get(0), user, 0, ReservationStatus.NOT_CHECKED_IN));
+            }
+        }
+
+        this.reservationHistoryRepository.saveAll(reservationHistories);
+    }
+
+
+    public ReservationHistory createReservationHistory(Location location, User user, int randomNumber, ReservationStatus status) {
         return ReservationHistory
                 .builder()
                 .user(user)
                 .location(location)
-                .status(ReservationStatus.CHECKED_IN)
+                .status(status)
                 .startDateTime(LocalDateTime.now().minusYears(randomNumber))
                 .endDateTime(LocalDateTime.now().minusYears(randomNumber).plusHours(2))
                 .numberOfPeople(5)
