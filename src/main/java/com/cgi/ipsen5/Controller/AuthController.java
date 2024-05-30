@@ -1,9 +1,10 @@
 package com.cgi.ipsen5.Controller;
 
+import com.cgi.ipsen5.Dto.Auth.AdminCheckResponseDTO;
 import com.cgi.ipsen5.Dto.Auth.AuthCheckResponseDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthRegisterDTO;
 import com.cgi.ipsen5.Dto.Auth.AuthRequestDTO;
 import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
+import com.cgi.ipsen5.Dto.User.UserCreateDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Service.AuthenticationService;
 import jakarta.security.auth.message.AuthStatus;
@@ -32,8 +33,14 @@ public class AuthController {
 
     // Voor testing doeleinden
     @PostMapping(value = "/register")
-    public ApiResponse<AuthResponseDTO> register(@RequestBody AuthRegisterDTO loginDTO) {
-        Optional<String> tokenResponse = authenticationService.register(loginDTO.getEmail(), loginDTO.getPassword(), loginDTO.getFirstName(), loginDTO.getLastName(), loginDTO.getPhoneNumber());
+    public ApiResponse<AuthResponseDTO> register(@RequestBody UserCreateDTO userCreateDTO) {
+        Optional<String> tokenResponse = authenticationService.register(
+                userCreateDTO.getEmail(),
+                userCreateDTO.getPassword(),
+                userCreateDTO.getFirstName(),
+                userCreateDTO.getLastName(),
+                userCreateDTO.getPhoneNumber()
+        );
 
         if (tokenResponse.isEmpty()) {
             return new ApiResponse<>("User already exists", HttpStatus.BAD_REQUEST);
@@ -67,6 +74,13 @@ public class AuthController {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 
+    }
+
+    @GetMapping("/isAdmin")
+    public ApiResponse<AdminCheckResponseDTO> isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN"));
+        return new ApiResponse<>(new AdminCheckResponseDTO(isAdmin), HttpStatus.OK);
     }
 
 

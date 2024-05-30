@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCreateDTO {
-    private String username;
     private String password;
-    private String role;
+    private String email; // This will eventually represent the username field of the User model
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
 }

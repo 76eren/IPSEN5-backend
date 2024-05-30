@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRegisterDTO {
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String phoneNumber;
+public class AdminCheckResponseDTO {
+    private boolean isAdmin;
 }
