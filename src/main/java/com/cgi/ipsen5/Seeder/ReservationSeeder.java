@@ -24,7 +24,6 @@ public class ReservationSeeder {
     private final UserDao userDao;
     private final LocationDao locationDao;
 
-
     @Transactional
     public void seed() {
         User user = this.userDao.findAllUsers().getFirst();
