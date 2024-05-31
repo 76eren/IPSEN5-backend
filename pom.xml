@@ -84,6 +84,11 @@
 			<artifactId>simple-java-mail</artifactId>
 			<version>8.10.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.1.Final</version>
+		</dependency>
     </dependencies>
 
 	<build>

@@ -31,4 +31,8 @@ public class LocationDao {
     public Location save(Location location) {
         return this.locationRepository.save(location);
     }
+
+    public List<Location> findAllByWingId(UUID wingId) {
+        return this.locationRepository.findAllByWingId(wingId);
+    }
 }

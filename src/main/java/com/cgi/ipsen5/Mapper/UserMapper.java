@@ -13,8 +13,11 @@ public class UserMapper {
         return UserResponseDTO
                 .builder()
                 .id(user.getId())
-                .username(user.getUsername())
+                .email(user.getUsername())
+                .firstname(user.getFirstName())
                 .role(user.getRole())
+                .lastname(user.getLastName())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 }
