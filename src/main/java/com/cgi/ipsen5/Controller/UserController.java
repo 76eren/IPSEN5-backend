@@ -3,7 +3,7 @@ package com.cgi.ipsen5.Controller;
 import com.cgi.ipsen5.Dao.UserDao;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
-import com.cgi.ipsen5.Dto.User.UserAddFavoriteColleaguesDTO;
+import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
@@ -48,16 +48,15 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/get-favorite-colleagues")
-    public ApiResponse<List<User>> getFavoriteColleaguesByUserId(@PathVariable UUID id){
-        List<User> favorites = new ArrayList<User>();
-        // todo check if needs to be DTO instead of List<User>, or List<UUID>
+    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesByUserId(@PathVariable UUID id){
+        List<UserFavoriteColleaguesDTO> favorites;
         favorites = this.favoriteColleagueService.getFavoriteColleaguesFromEmployee(id);
         return new ApiResponse<>(favorites);
     }
 
     @PostMapping(path = "/{id}/add-favorite-colleague")
     public void addFavoriteColleague(@PathVariable UUID id,
-                                     @RequestBody UserAddFavoriteColleaguesDTO favoriteColleaguesDTO){
+                                     @RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO){
         this.favoriteColleagueService.addFavoriteColleague(id, favoriteColleaguesDTO.getIdOfFavorite());
     }
 
