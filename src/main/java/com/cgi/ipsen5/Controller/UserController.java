@@ -47,17 +47,18 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/{id}/get-favorite-collegues")
-    public ApiResponse<List<UserResponseDTO>> getFavoriteColleaguesByUserId(@PathVariable UUID id){
-        List<UserResponseDTO> favorites = new ArrayList<UserResponseDTO>();
-        // todo be able to find the favs of a user
+    @GetMapping(path = "/{id}/get-favorite-colleagues")
+    public ApiResponse<List<User>> getFavoriteColleaguesByUserId(@PathVariable UUID id){
+        List<User> favorites = new ArrayList<User>();
+        // todo check if needs to be DTO instead of List<User>, or List<UUID>
+        favorites = this.favoriteColleagueService.getFavoriteColleaguesFromEmployee(id);
         return new ApiResponse<>(favorites);
     }
 
-    @PostMapping(path = "/{id}/add-favorite-collegue")
+    @PostMapping(path = "/{id}/add-favorite-colleague")
     public void addFavoriteColleague(@PathVariable UUID id,
-                                     @RequestBody UserAddFavoriteColleaguesDTO favoriteColleguesDTO){
-        this.favoriteColleagueService.addFavoriteCollegue(id, favoriteColleguesDTO.getIdOfFavorite());
+                                     @RequestBody UserAddFavoriteColleaguesDTO favoriteColleaguesDTO){
+        this.favoriteColleagueService.addFavoriteColleague(id, favoriteColleaguesDTO.getIdOfFavorite());
     }
 
     @PutMapping(path = {"/{id}/edit"})

@@ -10,10 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import com.cgi.ipsen5.Model.User;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 @Component
@@ -93,6 +90,19 @@ public class UserDao implements UserDetailsService {
             } else {
                 throw new UsernameNotFoundException("Favorite colleague not found with id: " + favoriteCollegueId);
             }
+        }
+    }
+
+    public List<User> getFavoritesOfEmployee(UUID employeeId){
+        Optional<User> foundUser = this.findById(employeeId);
+        List<User> favorites = new ArrayList<>();
+        if (foundUser.isPresent()) {
+            User user = foundUser.get();
+            favorites = user.getFavoriteCollegues();
+            return favorites;
+        }
+        else {
+            return favorites;
         }
     }
 }

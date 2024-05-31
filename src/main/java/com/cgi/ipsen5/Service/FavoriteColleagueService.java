@@ -6,6 +6,7 @@ import com.cgi.ipsen5.Model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,12 +14,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FavoriteColleagueService {
     private final UserDao userDao;
-    public void addFavoriteCollegue(UUID employeeId, UUID favoritedColleagueId){
+    public void addFavoriteColleague(UUID employeeId, UUID favoritedColleagueId){
         Optional<User> optionalUser = this.userDao.findById(employeeId);
         if (optionalUser.isEmpty()) {
             throw new UserNotFoundException("User not found");
         }
         User employee = optionalUser.get();
         userDao.addFavorite(employee, favoritedColleagueId);
+    }
+
+    public List<User> getFavoriteColleaguesFromEmployee(UUID employeeId){
+        return userDao.getFavoritesOfEmployee(employeeId);
     }
 }

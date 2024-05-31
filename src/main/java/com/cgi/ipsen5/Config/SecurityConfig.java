@@ -62,7 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/user/register").permitAll()
                         .requestMatchers("/api/v1/user/reset-password").permitAll()
-                        .requestMatchers("/api/v1/user").hasAuthority("ADMIN")
+//                        .requestMatchers("/api/v1/user").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/user/{id}/edit").access(userSecurity)
                         .requestMatchers("/api/v1/user/test").hasAuthority("USER")
                         .requestMatchers("/api/v1/reservation/check-in").hasAuthority("USER")
