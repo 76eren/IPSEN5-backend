@@ -8,6 +8,7 @@ import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.Role;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -17,11 +18,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class ReservationSeeder {
-    @Autowired
-    private ReservationDao reservationDAO;
-    @Autowired
-    private UserDao userDao;
+    private final ReservationDao reservationDAO;
+    private final UserDao userDao;
+    private final LocationDao locationDao;
 
     @Transactional
     public void seed() {
@@ -35,12 +36,15 @@ public class ReservationSeeder {
     }
 
     public void createReservation(User user, LocalDateTime startDateTime, LocalDateTime endDateTime, int numberOfPeople) {
+        Location location = locationDao.getAll().getFirst();
+
         Reservation reservation = Reservation.builder()
                 .startDateTime(startDateTime)
                 .endDateTime(endDateTime)
                 .user(user)
                 .createdAt(LocalDateTime.now())
                 .numberOfPeople(numberOfPeople)
+                .location(location)
                 .build();
 
         reservationDAO.save(reservation);
