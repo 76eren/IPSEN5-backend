@@ -29,18 +29,14 @@ public class LocationSeeder {
         ArrayList<Wing> wings = wingDao.findAll();
 
         for (Wing i : wings) {
-            locations.add(createLocation("A1", i, LocalDateTime.now()));
-            locations.add(createLocation("A2", i, LocalDateTime.now()));
-            locations.add(createLocation("A3", i, LocalDateTime.now()));
-            locations.add(createLocation("A4", i, LocalDateTime.now()));
-            locations.add(createLocation("A5", i, LocalDateTime.now()));
-            locations.add(createLocation("A6", i, LocalDateTime.now()));
-            locations.add(createLocation("A7", i, LocalDateTime.now()));
-            locations.add(createLocation("A8", i, LocalDateTime.now()));
-            locations.add(createLocation("B1", i, LocalDateTime.now()));
-            locations.add(createLocation("B2", i, LocalDateTime.now()));
-            locations.add(createLocation("B3", i, LocalDateTime.now()));
-            locations.add(createLocation("B4", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"1", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"2", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"3", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"4", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"5", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"6", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"7", i, LocalDateTime.now()));
+            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"8", i, LocalDateTime.now()));
         }
 
 
