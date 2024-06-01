@@ -1,11 +1,13 @@
 package com.cgi.ipsen5.Dao;
 
+import com.cgi.ipsen5.Exception.FloorNotFoundException;
 import com.cgi.ipsen5.Model.Floor;
 import com.cgi.ipsen5.Repository.FloorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -23,5 +25,10 @@ public class FloorDao {
 
     public Floor getById(UUID id) {
         return floorRepository.findById(id).orElseThrow(() -> new RuntimeException("Floor not found"));
+    }
+
+    public List<Floor> getAllByBuildingId(UUID buildingId) {
+        return floorRepository.findAllByBuildingId(buildingId)
+                .orElseThrow(() -> new FloorNotFoundException("Floor not found"));
     }
 }
