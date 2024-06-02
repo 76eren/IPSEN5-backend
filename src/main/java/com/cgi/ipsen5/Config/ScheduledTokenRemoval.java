@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ScheduledTokenRemoval {
     private final ExpiredResetTokenService expiredResetTokenService;
 
-    @Scheduled(cron = "0 0 3 1/1 * ? *", zone = "Europe/Amsterdam")
+    @Scheduled(cron = "@daily", zone = "Europe/Amsterdam")
     public void removeExpiredPasswordTokens(){
         this.expiredResetTokenService.removeExpiredTokens();
     }
