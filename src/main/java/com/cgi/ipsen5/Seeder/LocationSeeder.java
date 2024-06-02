@@ -28,18 +28,17 @@ public class LocationSeeder {
         ArrayList<Location> locations = new ArrayList<>();
         ArrayList<Wing> wings = wingDao.findAll();
 
-        for (Wing i : wings) {
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"1", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"2", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"3", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"4", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"5", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"6", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"7", i, LocalDateTime.now()));
-            locations.add(createLocation(i.getFloor().getNumber()+ "."+ i.getName()+"8", i, LocalDateTime.now()));
+        for (Wing wing : wings) {
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"1", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"2", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"3", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"4", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"5", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"6", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"7", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"8", wing, LocalDateTime.now()));
         }
-
-
+        
         return locations;
     }
 
