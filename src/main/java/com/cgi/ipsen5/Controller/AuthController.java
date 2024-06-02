@@ -7,8 +7,10 @@ import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
 import com.cgi.ipsen5.Dto.User.UserCreateDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Service.AuthenticationService;
+import com.cgi.ipsen5.Service.JwtService;
 import jakarta.security.auth.message.AuthStatus;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,13 +19,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
 
     @PostMapping(value = "/login")
     public ApiResponse<?> login(@RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
@@ -51,10 +56,21 @@ public class AuthController {
     }
 
     @GetMapping(value = "/authenticated")
-    public ApiResponse<AuthCheckResponseDTO> checkAuthenticated(HttpServletResponse response) {
+    public ApiResponse<AuthCheckResponseDTO> checkAuthenticated(HttpServletRequest request, HttpServletResponse response) {
+        String jwt = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
-                && !authentication.getName().equals("anonymousUser");
+                && !authentication.getName().equals("anonymousUser") && jwtService.isTokenValid(jwt, (UUID) authentication.getPrincipal());
 
         AuthCheckResponseDTO authCheckResponseDTO = AuthCheckResponseDTO
                 .builder()
@@ -77,6 +93,10 @@ public class AuthController {
     // TODO: This doesn't actually invalidate the cookies, it just sends back empty cookies
     @PostMapping("/logout")
     public void logout(HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = jwtService.generateToken(Map.of("id", authentication.getPrincipal()), (UUID) authentication.getPrincipal());
+        jwtService.invalidateToken(token);
+
         Cookie cookie = new Cookie("token", null);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
