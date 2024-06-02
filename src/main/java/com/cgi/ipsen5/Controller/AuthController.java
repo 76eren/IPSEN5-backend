@@ -51,7 +51,7 @@ public class AuthController {
     }
 
     @GetMapping(value = "/authenticated")
-    public ApiResponse<AuthCheckResponseDTO> checkAuthenticated() {
+    public ApiResponse<AuthCheckResponseDTO> checkAuthenticated(HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
                 && !authentication.getName().equals("anonymousUser");
@@ -60,6 +60,16 @@ public class AuthController {
                 .builder()
                 .isAuthenticated(isAuthenticated)
                 .build();
+
+        if (!isAuthenticated) {
+            // Clears the cookies in case the browser still has them stored whilst they're invalid
+            Cookie cookie = new Cookie("token", null);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setSecure(false);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
 
         return new ApiResponse<>(authCheckResponseDTO, HttpStatus.OK);
     }
