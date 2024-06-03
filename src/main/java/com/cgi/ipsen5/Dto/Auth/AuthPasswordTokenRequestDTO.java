@@ -12,6 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthPasswordTokenRequestDTO {
-    UUID tokenId;
+    private UUID tokenId;
     String userEmail;
 }

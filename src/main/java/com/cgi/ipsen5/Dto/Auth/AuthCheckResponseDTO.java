@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthCheckResponseDTO {
-    boolean isAuthenticated;
+    private boolean isAuthenticated;
 }
