@@ -83,26 +83,25 @@ public class UserDao implements UserDetailsService {
 
         if (!alreadyFavorited) {
             Optional<User> favoriteColleague = findById(favoriteCollegueId);
-            if (favoriteColleague.isPresent()) {
-                currentFavorites.add(favoriteColleague.get());
-                employee.setFavoriteCollegues(currentFavorites);
-                save(employee);
-            } else {
+            if (!favoriteColleague.isPresent()) {
                 throw new UsernameNotFoundException("Favorite colleague not found with id: " + favoriteCollegueId);
             }
+            currentFavorites.add(favoriteColleague.get());
+            employee.setFavoriteCollegues(currentFavorites);
+            save(employee);
+
         }
     }
 
-    public List<User> getFavoritesOfEmployee(UUID employeeId){
+    public List<User> getFavoritesOfEmployee(UUID employeeId) {
         Optional<User> foundUser = this.findById(employeeId);
         List<User> favorites = new ArrayList<>();
-        if (foundUser.isPresent()) {
-            User user = foundUser.get();
-            favorites = user.getFavoriteCollegues();
+        if (!foundUser.isPresent()) {
             return favorites;
+
         }
-        else {
-            return favorites;
-        }
+        User user = foundUser.get();
+        favorites = user.getFavoriteCollegues();
+        return favorites;
     }
 }

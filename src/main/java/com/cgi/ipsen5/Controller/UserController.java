@@ -48,15 +48,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}/get-favorite-colleagues")
-    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesByUserId(@PathVariable UUID id){
-        List<UserFavoriteColleaguesDTO> favorites;
-        favorites = this.favoriteColleagueService.getFavoriteColleaguesFromEmployee(id);
-        return new ApiResponse<>(favorites);
+    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesByUserId(@PathVariable UUID id) {
+        return new ApiResponse<>(this.favoriteColleagueService.getFavoriteColleaguesFromEmployee(id), HttpStatus.OK);
     }
 
     @PostMapping(path = "/{id}/add-favorite-colleague")
     public void addFavoriteColleague(@PathVariable UUID id,
-                                     @RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO){
+                                     @RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
         this.favoriteColleagueService.addFavoriteColleague(id, favoriteColleaguesDTO.getIdOfFavorite());
     }
 
