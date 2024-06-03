@@ -49,14 +49,14 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/get-favorite-colleagues")
-    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesByUserId() {
+    @GetMapping(path = "/favorite-colleagues")
+    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
         return new ApiResponse<>(this.favoriteColleagueService
                 .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getName()))
                 , HttpStatus.OK);
     }
 
-    @PostMapping(path = "/add-favorite-colleague")
+    @PostMapping(path = "/favorite-colleagues")
     public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
         this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getName()),
                 favoriteColleaguesDTO.getIdOfFavorite());
