@@ -6,6 +6,7 @@ import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
 import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
+import com.cgi.ipsen5.Dto.User.UserStandardLocationDto;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
@@ -83,6 +84,12 @@ public class UserController {
         return new ApiResponse<>(this.standardLocationService
                 .getStandardLocation(UUID.fromString(authentication.getName())),
                 HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/standard-location")
+    public void postStandardLocation(@RequestBody UserStandardLocationDto standardLocationDto){
+        this.standardLocationService.setStandardLocation(UUID.fromString(authentication.getName()),
+                standardLocationDto.getWingId());
     }
 
     @PostMapping(path = "/reset-password")

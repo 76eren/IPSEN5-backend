@@ -110,9 +110,19 @@ public class UserDao implements UserDetailsService {
         Optional<User> foundUser = this.findById(userId);
         if (!foundUser.isPresent()) {
             throw new UsernameNotFoundException("No user was found with id" + userId);
-
         }
         User user = foundUser.get();
         return user.getStandardLocation();
+    }
+
+    public void setStandardLocation(UUID userId, Wing standardLocation) {
+        Optional<User> foundUser = this.findById(userId);
+        if (!foundUser.isPresent()) {
+            throw new UsernameNotFoundException("No user was found with id" + userId);
+        }
+        User user = foundUser.get();
+
+        user.setStandardLocation(standardLocation);
+        save(user);
     }
 }

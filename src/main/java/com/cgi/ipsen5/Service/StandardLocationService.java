@@ -17,4 +17,9 @@ public class StandardLocationService {
     public Wing getStandardLocation(UUID userId) {
         return this.userDao.getStandardLocation(userId);
     }
+
+    public void setStandardLocation(UUID userId, UUID wingId) {
+        Wing standardLocation = this.wingDao.findWingById(wingId);
+        this.userDao.setStandardLocation(userId, standardLocation);
+    }
 }
