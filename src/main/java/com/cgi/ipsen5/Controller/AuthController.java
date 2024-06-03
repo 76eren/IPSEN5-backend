@@ -90,20 +90,9 @@ public class AuthController {
         return new ApiResponse<>(authCheckResponseDTO, HttpStatus.OK);
     }
 
-    // TODO: This doesn't actually invalidate the cookies, it just sends back empty cookies
     @PostMapping("/logout")
     public void logout(HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String token = jwtService.generateToken(Map.of("id", authentication.getPrincipal()), (UUID) authentication.getPrincipal());
-        jwtService.invalidateToken(token);
-
-        Cookie cookie = new Cookie("token", null);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setSecure(false);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
+        response.addCookie(this.authenticationService.logout());
     }
 
     @GetMapping("/isAdmin")

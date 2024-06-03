@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +63,6 @@ public class AuthenticationService {
     }
 
 
-
     public boolean isValidToken(String token) {
         try {
             jwtService.validateToken(token);
@@ -69,5 +70,19 @@ public class AuthenticationService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+
+    public Cookie logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = this.jwtService.generateToken(Map.of("id", authentication.getPrincipal()), (UUID) authentication.getPrincipal());
+        jwtService.invalidateToken(token);
+
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setMaxAge(0);
+        return cookie;
     }
 }
