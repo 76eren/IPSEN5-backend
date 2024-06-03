@@ -16,9 +16,10 @@ import com.cgi.ipsen5.Service.ResetPasswordService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final ResetPasswordService resetPasswordService;
     private final FavoriteColleagueService favoriteColleagueService;
+    private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @GetMapping
     @ResponseBody
@@ -47,15 +49,17 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/{id}/get-favorite-colleagues")
-    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesByUserId(@PathVariable UUID id) {
-        return new ApiResponse<>(this.favoriteColleagueService.getFavoriteColleaguesFromEmployee(id), HttpStatus.OK);
+    @GetMapping(path = "/get-favorite-colleagues")
+    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesByUserId() {
+        return new ApiResponse<>(this.favoriteColleagueService
+                .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getName()))
+                , HttpStatus.OK);
     }
 
-    @PostMapping(path = "/{id}/add-favorite-colleague")
-    public void addFavoriteColleague(@PathVariable UUID id,
-                                     @RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
-        this.favoriteColleagueService.addFavoriteColleague(id, favoriteColleaguesDTO.getIdOfFavorite());
+    @PostMapping(path = "/add-favorite-colleague")
+    public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
+        this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getName()),
+                favoriteColleaguesDTO.getIdOfFavorite());
     }
 
     @PutMapping(path = {"/{id}/edit"})
