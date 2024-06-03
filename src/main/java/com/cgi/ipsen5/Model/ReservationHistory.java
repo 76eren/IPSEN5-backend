@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Builder
