@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -28,5 +29,9 @@ public class BuildingDao {
             throw new IllegalArgumentException("Building ID cannot be null");
         }
         return this.buildingRepository.findById(buildingId).orElseThrow(() -> new RuntimeException("Building not found"));
+    }
+
+    public Optional<Building> getBuildingByName(String buildingName) {
+        return this.buildingRepository.findBuildingByName(buildingName);
     }
 }

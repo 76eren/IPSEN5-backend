@@ -28,22 +28,17 @@ public class LocationSeeder {
         ArrayList<Location> locations = new ArrayList<>();
         ArrayList<Wing> wings = wingDao.findAll();
 
-        for (Wing i : wings) {
-            locations.add(createLocation("A1", i, LocalDateTime.now()));
-            locations.add(createLocation("A2", i, LocalDateTime.now()));
-            locations.add(createLocation("A3", i, LocalDateTime.now()));
-            locations.add(createLocation("A4", i, LocalDateTime.now()));
-            locations.add(createLocation("A5", i, LocalDateTime.now()));
-            locations.add(createLocation("A6", i, LocalDateTime.now()));
-            locations.add(createLocation("A7", i, LocalDateTime.now()));
-            locations.add(createLocation("A8", i, LocalDateTime.now()));
-            locations.add(createLocation("B1", i, LocalDateTime.now()));
-            locations.add(createLocation("B2", i, LocalDateTime.now()));
-            locations.add(createLocation("B3", i, LocalDateTime.now()));
-            locations.add(createLocation("B4", i, LocalDateTime.now()));
+        for (Wing wing : wings) {
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"1", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"2", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"3", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"4", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"5", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"6", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"7", wing, LocalDateTime.now()));
+            locations.add(createLocation(wing.getFloor().getNumber()+ "."+ wing.getName()+"8", wing, LocalDateTime.now()));
         }
-
-
+        
         return locations;
     }
 
