@@ -11,9 +11,11 @@ import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.User;
+import com.cgi.ipsen5.Model.Wing;
 import com.cgi.ipsen5.Service.FavoriteColleagueService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
 
+import com.cgi.ipsen5.Service.StandardLocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -31,6 +33,7 @@ public class UserController {
     private final UserMapper userMapper;
     private final ResetPasswordService resetPasswordService;
     private final FavoriteColleagueService favoriteColleagueService;
+    private final StandardLocationService standardLocationService;
     private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @GetMapping
@@ -49,19 +52,6 @@ public class UserController {
         }
     }
 
-    @GetMapping(path = "/favorite-colleagues")
-    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
-        return new ApiResponse<>(this.favoriteColleagueService
-                .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getName()))
-                , HttpStatus.OK);
-    }
-
-    @PostMapping(path = "/favorite-colleagues")
-    public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
-        this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getName()),
-                favoriteColleaguesDTO.getIdOfFavorite());
-    }
-
     @PutMapping(path = {"/{id}/edit"})
     public ApiResponse<UserResponseDTO> editUser(
             @PathVariable("id") UUID id,
@@ -73,6 +63,26 @@ public class UserController {
         }
 
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
+    }
+
+    @GetMapping(path = "/favorite-colleagues")
+    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
+        return new ApiResponse<>(this.favoriteColleagueService
+                .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getName())),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/favorite-colleagues")
+    public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
+        this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getName()),
+                favoriteColleaguesDTO.getIdOfFavorite());
+    }
+
+    @GetMapping(path = "/standard-location")
+    public ApiResponse<Wing> getStandardLocation() {
+        return new ApiResponse<>(this.standardLocationService
+                .getStandardLocation(UUID.fromString(authentication.getName())),
+                HttpStatus.OK);
     }
 
     @PostMapping(path = "/reset-password")

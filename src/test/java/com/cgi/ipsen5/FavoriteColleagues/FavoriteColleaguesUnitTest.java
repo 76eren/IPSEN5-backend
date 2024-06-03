@@ -68,7 +68,7 @@ public class FavoriteColleaguesUnitTest {
         favoriteColleagues.add(colleague1);
         favoriteColleagues.add(colleague2);
 
-        when(userDao.getFavoritesOfEmployee(employeeId)).thenReturn(favoriteColleagues);
+        when(userDao.getFavoritesOfUser(employeeId)).thenReturn(favoriteColleagues);
 
         List<UserFavoriteColleaguesDTO> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
 
@@ -90,7 +90,7 @@ public class FavoriteColleaguesUnitTest {
 
     @Test
     public void testGetFavoriteColleaguesFromEmployeeUserNotFound() {
-        when(userDao.getFavoritesOfEmployee(employeeId)).thenReturn(new ArrayList<>());
+        when(userDao.getFavoritesOfUser(employeeId)).thenReturn(new ArrayList<>());
 
         List<UserFavoriteColleaguesDTO> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
 

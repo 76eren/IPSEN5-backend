@@ -3,6 +3,7 @@ package com.cgi.ipsen5.Dao;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
+import com.cgi.ipsen5.Model.Wing;
 import com.cgi.ipsen5.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -93,7 +94,7 @@ public class UserDao implements UserDetailsService {
         }
     }
 
-    public List<User> getFavoritesOfEmployee(UUID employeeId) {
+    public List<User> getFavoritesOfUser(UUID employeeId) {
         Optional<User> foundUser = this.findById(employeeId);
         List<User> favorites = new ArrayList<>();
         if (!foundUser.isPresent()) {
@@ -103,5 +104,15 @@ public class UserDao implements UserDetailsService {
         User user = foundUser.get();
         favorites = user.getFavoriteCollegues();
         return favorites;
+    }
+
+    public Wing getStandardLocation(UUID userId) {
+        Optional<User> foundUser = this.findById(userId);
+        if (!foundUser.isPresent()) {
+            throw new UsernameNotFoundException("No user was found with id" + userId);
+
+        }
+        User user = foundUser.get();
+        return user.getStandardLocation();
     }
 }

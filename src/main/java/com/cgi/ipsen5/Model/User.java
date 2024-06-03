@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -61,6 +62,11 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "favorite_id")
     )
     private List<User> favoriteCollegues;
+
+    @Column(name = "standard_location")
+    @Nullable
+    @ManyToOne
+    private Wing standardLocation;
 
 
 
