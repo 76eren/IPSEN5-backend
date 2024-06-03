@@ -35,7 +35,6 @@ public class UserController {
     private final ResetPasswordService resetPasswordService;
     private final FavoriteColleagueService favoriteColleagueService;
     private final StandardLocationService standardLocationService;
-    private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     @GetMapping
     @ResponseBody
@@ -68,6 +67,7 @@ public class UserController {
 
     @GetMapping(path = "/favorite-colleagues")
     public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ApiResponse<>(this.favoriteColleagueService
                 .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getName())),
                 HttpStatus.OK);
@@ -75,12 +75,14 @@ public class UserController {
 
     @PostMapping(path = "/favorite-colleagues")
     public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getName()),
                 favoriteColleaguesDTO.getIdOfFavorite());
     }
 
     @GetMapping(path = "/standard-location")
     public ApiResponse<Wing> getStandardLocation() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ApiResponse<>(this.standardLocationService
                 .getStandardLocation(UUID.fromString(authentication.getName())),
                 HttpStatus.OK);
@@ -88,6 +90,7 @@ public class UserController {
 
     @PutMapping(path = "/standard-location")
     public void postStandardLocation(@RequestBody UserStandardLocationDto standardLocationDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         this.standardLocationService.setStandardLocation(UUID.fromString(authentication.getName()),
                 standardLocationDto.getWingId());
     }
