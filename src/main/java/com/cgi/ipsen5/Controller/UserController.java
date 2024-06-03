@@ -69,14 +69,14 @@ public class UserController {
     public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ApiResponse<>(this.favoriteColleagueService
-                .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getName())),
+                .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getPrincipal().toString())),
                 HttpStatus.OK);
     }
 
     @PostMapping(path = "/favorite-colleagues")
     public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getName()),
+        this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getPrincipal().toString()),
                 favoriteColleaguesDTO.getIdOfFavorite());
     }
 
@@ -84,14 +84,14 @@ public class UserController {
     public ApiResponse<Wing> getStandardLocation() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ApiResponse<>(this.standardLocationService
-                .getStandardLocation(UUID.fromString(authentication.getName())),
+                .getStandardLocation(UUID.fromString(authentication.getPrincipal().toString())),
                 HttpStatus.OK);
     }
 
     @PutMapping(path = "/standard-location")
     public void postStandardLocation(@RequestBody UserStandardLocationDto standardLocationDto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        this.standardLocationService.setStandardLocation(UUID.fromString(authentication.getName()),
+        this.standardLocationService.setStandardLocation(UUID.fromString(authentication.getPrincipal().toString()),
                 standardLocationDto.getWingId());
     }
 
