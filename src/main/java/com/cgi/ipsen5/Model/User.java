@@ -63,7 +63,7 @@ public class User implements UserDetails {
     )
     private List<User> favoriteCollegues;
 
-    @Column(name = "standard_location")
+    @JoinColumn(name = "standard_location")
     @Nullable
     @ManyToOne
     private Wing standardLocation;
