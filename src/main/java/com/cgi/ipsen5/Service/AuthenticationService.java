@@ -63,16 +63,6 @@ public class AuthenticationService {
     }
 
 
-    public boolean isValidToken(String token) {
-        try {
-            jwtService.validateToken(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-
     public Cookie logout() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String token = this.jwtService.generateToken(Map.of("id", authentication.getPrincipal()), (UUID) authentication.getPrincipal());
