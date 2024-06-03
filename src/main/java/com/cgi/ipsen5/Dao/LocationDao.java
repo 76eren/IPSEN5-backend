@@ -35,4 +35,8 @@ public class LocationDao {
     public List<Location> findAllByWingId(UUID wingId) {
         return this.locationRepository.findAllByWingId(wingId);
     }
+
+    public List<Location> findAllByBuildingId(UUID buildingId) {
+        return this.locationRepository.findAllByWing_Floor_BuildingId(buildingId);
+    }
 }

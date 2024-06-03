@@ -2,6 +2,7 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dao.ReservationDao;
+import com.cgi.ipsen5.Model.Building;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ import java.util.UUID;
 public class LocationService {
     private final LocationDao locationDao;
     private final ReservationDao reservationDao;
+    private final BuildingService buildingService;
 
-    public LocationService(LocationDao locationDao, ReservationDao reservationDao) {
+    public LocationService(LocationDao locationDao, ReservationDao reservationDao, BuildingService buildingService) {
         this.locationDao = locationDao;
         this.reservationDao = reservationDao;
+        this.buildingService = buildingService;
     }
 
     public List<Location> findAvailableLocationsByWingId(UUID wingId, LocalDateTime start, LocalDateTime end) {
@@ -41,5 +44,10 @@ public class LocationService {
         Random rand = new Random();
         int randomIndex = rand.nextInt(availableLocations.size());
         return availableLocations.get(randomIndex);
+    }
+
+    public List<Location> getLocationsByBuildingId(String buildingName) {
+        Building building = this.buildingService.getBuildingByName(buildingName);
+        return this.locationDao.findAllByBuildingId(building.getId());
     }
 }

@@ -1,9 +1,10 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
+import com.cgi.ipsen5.Exception.BuildingNotFoundException;
 import com.cgi.ipsen5.Model.ApiResponse;
-import com.cgi.ipsen5.Model.Floor;
 import com.cgi.ipsen5.Model.Location;
+import com.cgi.ipsen5.Service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LocationController {
     private final LocationDao locationDao;
+    private final LocationService locationService;
 
     @GetMapping
     public ApiResponse<List<Location>> getAllLocations() {
@@ -27,5 +29,14 @@ public class LocationController {
         return new ApiResponse<>(this.locationDao.getLocationById(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/admin")
+    public ApiResponse<List<Location>> getLocationsByBuildingId(@RequestParam String buildingName) {
+        return new ApiResponse<>(this.locationService.getLocationsByBuildingId(buildingName), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({BuildingNotFoundException.class})
+    public ApiResponse<String> handleException(Exception e) {
+        return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
 

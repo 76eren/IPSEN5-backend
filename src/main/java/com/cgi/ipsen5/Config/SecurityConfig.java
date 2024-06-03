@@ -68,6 +68,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/reservation/check-in").hasAuthority("USER")
                         .requestMatchers("/api/v1/reservation/{id}/cancel").hasAuthority("USER")
                         .requestMatchers("/api/v1/reports/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/location/admin").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/auth/authenticated").permitAll()
                         .anyRequest().authenticated()
                 )
