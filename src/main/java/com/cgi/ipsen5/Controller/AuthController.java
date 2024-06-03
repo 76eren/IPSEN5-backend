@@ -57,33 +57,13 @@ public class AuthController {
 
     @GetMapping(value = "/authenticated")
     public ApiResponse<AuthCheckResponseDTO> checkAuthenticated(HttpServletRequest request, HttpServletResponse response) {
-        String jwt = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) {
-                    jwt = cookie.getValue();
-                    break;
-                }
-            }
-        }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
-                && !authentication.getName().equals("anonymousUser") && jwtService.isTokenValid(jwt, (UUID) authentication.getPrincipal());
 
-        AuthCheckResponseDTO authCheckResponseDTO = AuthCheckResponseDTO
-                .builder()
-                .isAuthenticated(isAuthenticated)
-                .build();
+        AuthCheckResponseDTO authCheckResponseDTO = this.authenticationService.checkAuthenticated(request);
 
-        if (!isAuthenticated) {
+        if (authCheckResponseDTO.isAuthenticated()) {
             // Clears the cookies in case the browser still has them stored whilst they're invalid
-            Cookie cookie = new Cookie("token", null);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            cookie.setSecure(false);
-            cookie.setMaxAge(0);
+            Cookie cookie = this.authenticationService.getEmptyCookie("token");
             response.addCookie(cookie);
         }
 
