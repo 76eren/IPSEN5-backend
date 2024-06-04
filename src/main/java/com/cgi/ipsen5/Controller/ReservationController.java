@@ -3,6 +3,7 @@ package com.cgi.ipsen5.Controller;
 import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Dto.Reservation.ReservationCreateDTO;
 import com.cgi.ipsen5.Dto.Reservation.ReservationResponseDTO;
+import com.cgi.ipsen5.Dto.Reservation.RoomReservationDTO;
 import com.cgi.ipsen5.Dto.Reservation.WorkplaceReservationDTO;
 import com.cgi.ipsen5.Exception.ReservationErrorExecption;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
@@ -41,7 +42,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reserve-room")
-    public ApiResponse<String> reserveRoom(){
+    public ApiResponse<String> reserveRoom(@Valid @RequestBody RoomReservationDTO reservationCreateDTO) {
         return new ApiResponse<>("");
     }
 
