@@ -28,9 +28,9 @@ public class FloorController {
         return new ApiResponse<>(this.floorDao.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/building/{buildingId}")
-    public ApiResponse<List<Floor>> getFloorByBuildingId(@PathVariable UUID buildingId) {
-        return new ApiResponse<>(this.floorDao.getAllByBuildingId(buildingId), HttpStatus.OK);
+    @GetMapping(value = "/building/{id}")
+    public ApiResponse<List<Floor>> getFloorByBuildingId(@PathVariable UUID id) {
+        return new ApiResponse<>(this.floorDao.getAllByBuildingId(id), HttpStatus.OK);
     }
 
     @ExceptionHandler(FloorNotFoundException.class)

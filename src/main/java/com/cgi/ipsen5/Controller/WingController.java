@@ -28,9 +28,9 @@ public class WingController {
         return new ApiResponse<>(this.wingDao.findWingById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/floor/{floorId}")
-    public ApiResponse<List<Wing>> getWingByFloorNumber(@PathVariable UUID floorId) {
-        return new ApiResponse<>(this.wingDao.findAllByFloorNumber(floorId), HttpStatus.OK);
+    @GetMapping(value = "/floor/{id}")
+    public ApiResponse<List<Wing>> getWingByFloorNumber(@PathVariable UUID id) {
+        return new ApiResponse<>(this.wingDao.findAllByFloorNumber(id), HttpStatus.OK);
     }
 
     @ExceptionHandler(WingNotFoundException.class)
