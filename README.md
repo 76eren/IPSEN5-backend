@@ -5,8 +5,8 @@ Dit project is een backend applicatie voor een werkplek reserveringsapp, ontwikk
 Volg deze stappen uit om de applicatie te installeren en te draaien:
 1. Clone de repository:
 ```bash
-  git clone https://github.com/jouw-gebruikersnaam/werkplek-reserveringsapp.git
-  cd werkplek-reserveringsapp
+  git clone https://github.com/76eren/IPSEN5-backend
+  cd IPSEN5-backend
 ```
 2. Installeer de dependencies
   ```bash
