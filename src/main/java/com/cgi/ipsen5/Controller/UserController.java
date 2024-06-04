@@ -80,7 +80,7 @@ public class UserController {
     public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getPrincipal().toString()),
-                favoriteColleaguesDTO.getIdOfFavorite());
+                favoriteColleaguesDTO.getId());
     }
 
     @GetMapping(path = "/standard-location")
