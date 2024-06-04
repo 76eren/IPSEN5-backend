@@ -3,6 +3,7 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.UserDao;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
+import com.cgi.ipsen5.Model.PasswordResetToken;
 import com.cgi.ipsen5.Model.User;
 
 import com.cgi.ipsen5.Repository.UserRepository;
@@ -42,5 +43,4 @@ public class UserService {
         }
         return user.get();
     }
-
 }

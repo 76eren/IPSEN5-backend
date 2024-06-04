@@ -1,10 +1,13 @@
 package com.cgi.ipsen5.Service;
 
+import com.cgi.ipsen5.Model.InvalidToken;
+import com.cgi.ipsen5.Repository.InvalidTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +18,13 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
     @Value("${jwt.secret-key}")
     private String secretKey;
+
+    private final InvalidTokenRepository invalidTokenRepository;
+
 
     public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -48,6 +55,10 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UUID userID) {
+        if (invalidTokenRepository.existsById(token)) {
+            return false;
+        }
+
         final String userId = extractUserId(token);
         return userId.equals(userID.toString()) && !isTokenExpired(token);
     }
@@ -69,4 +80,11 @@ public class JwtService {
     public void validateToken(String token) {
         Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token);
     }
+
+    public void invalidateToken(String token) {
+        InvalidToken invalidToken = new InvalidToken();
+        invalidToken.setToken(token);
+        invalidTokenRepository.save(invalidToken);
+    }
+
 }

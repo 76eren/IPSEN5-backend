@@ -35,7 +35,35 @@ public class UserSeeder {
         users.add(createUser("Tom", "t.nook@cgi.com", "Nook", "bell514", "0612345687"));
         users.add(createUser("s1136644@student.hsleiden.nl", "s1136644@student.hsleiden.nl", "Smits", "password", "0620255944"));
         users.add(createAdmin("admin", "admin@cgi.com", "admin", "admin", "0612345678"));
-      
+        users.add(createUser("Maya", "m.bee@cgi.com", "Bee", "Maya", "0612345678"));
+        users.add(createUser("Jill", "j.valentine@cgi.com", "Valentine", "apple", "0612345678"));
+        users.add(createUser("Jin", "j.sakai@cgi.com", "Sakai", "sleep", "0612345678"));
+        users.add(createUser("Elle", "e.white@cgi.com", "White", "password", "0612345678"));
+        users.add(createUser("Liam", "l.Hemsworth@cgi.com", "Hemsworth", "password", "0612345678"));
+        users.add(createUser("Simon", "s.says@cgi.com", "Says", "password", "0612345678"));
+        users.add(createUser("Alice", "alice@cgi.com", "Johnson", "password1", "0612345678"));
+        users.add(createUser("Bob", "bob@cgi.com", "Smith", "password2", "0612345678"));
+        users.add(createUser("Charlie", "charlie@cgi.com", "Brown", "password3", "0612345678"));
+        users.add(createUser("David", "david@cgi.com", "Davis", "password4", "0612345678"));
+        users.add(createUser("Eve", "eve@cgi.com", "Evans", "password5", "0612345678"));
+        users.add(createUser("Frank", "frank@cgi.com", "Franklin", "password6", "0612345678"));
+        users.add(createUser("Grace", "grace@cgi.com", "Griffin", "password7", "0612345678"));
+        users.add(createUser("Helen", "helen@cgi.com", "Hudson", "password8", "0612345678"));
+        users.add(createUser("Ivan", "ivan@cgi.com", "Iverson", "password9", "0612345678"));
+        users.add(createUser("Jack", "jack@cgi.com", "Jackson", "password10", "0612345678"));
+        users.add(createUser("Karen", "karen@cgi.com", "King", "password11", "0612345678"));
+        users.add(createUser("Leo", "leo@cgi.com", "Lion", "password12", "0612345678"));
+        users.add(createUser("Mia", "mia@cgi.com", "Miller", "password13", "0612345678"));
+        users.add(createUser("Nick", "nick@cgi.com", "Nelson", "password14", "0612345678"));
+        users.add(createUser("Olivia", "olivia@cgi.com", "Olsen", "password15", "0612345678"));
+        users.add(createUser("Paul", "paul@cgi.com", "Peterson", "password16", "0612345678"));
+        users.add(createUser("Quincy", "quincy@cgi.com", "Quinn", "password17", "0612345678"));
+        users.add(createUser("Rachel", "rachel@cgi.com", "Roberts", "password18", "0612345678"));
+        users.add(createUser("Sam", "sam@cgi.com", "Samson", "password19", "0612345678"));
+        users.add(createUser("Tina", "tina@cgi.com", "Thompson", "password20", "0612345678"));
+
+
+
         return users;
     }
 

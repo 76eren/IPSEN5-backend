@@ -1,29 +1,33 @@
 package com.cgi.ipsen5.Controller;
 
-import com.cgi.ipsen5.Dto.Auth.AdminCheckResponseDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthCheckResponseDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthRequestDTO;
-import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
+import com.cgi.ipsen5.Dto.Auth.*;
 import com.cgi.ipsen5.Dto.User.UserCreateDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Service.AuthenticationService;
+import com.cgi.ipsen5.Service.JwtService;
 import jakarta.security.auth.message.AuthStatus;
+import com.cgi.ipsen5.Service.ResetPasswordService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthenticationService authenticationService;
+    private final JwtService jwtService;
+    private final ResetPasswordService resetPasswordService;
+
 
     @PostMapping(value = "/login")
     public ApiResponse<?> login(@RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
@@ -51,29 +55,21 @@ public class AuthController {
     }
 
     @GetMapping(value = "/authenticated")
-    public ApiResponse<AuthCheckResponseDTO> checkAuthenticated() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
-                && !authentication.getName().equals("anonymousUser");
+    public ApiResponse<AuthCheckResponseDTO> checkAuthenticated(HttpServletRequest request, HttpServletResponse response) {
+        AuthCheckResponseDTO authCheckResponseDTO = this.authenticationService.checkAuthenticated(request);
 
-        AuthCheckResponseDTO authCheckResponseDTO = AuthCheckResponseDTO
-                .builder()
-                .isAuthenticated(isAuthenticated)
-                .build();
+        if (!authCheckResponseDTO.isAuthenticated()) {
+            // Clears the cookies in case the browser still has them stored whilst they're invalid
+            Cookie cookie = this.authenticationService.getEmptyCookie("token");
+            response.addCookie(cookie);
+        }
 
         return new ApiResponse<>(authCheckResponseDTO, HttpStatus.OK);
     }
 
-    // TODO: This doesn't actually invalidate the cookies, it just sends back empty cookies
     @PostMapping("/logout")
     public void logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie("token", null);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setSecure(false);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
+        response.addCookie(this.authenticationService.logout());
     }
 
     @GetMapping("/isAdmin")
@@ -83,5 +79,12 @@ public class AuthController {
         return new ApiResponse<>(new AdminCheckResponseDTO(isAdmin), HttpStatus.OK);
     }
 
+    @GetMapping("/isResetTokenValid")
+    public ApiResponse<AuthPasswordTokenResponseDTO> isPasswordTokenValid(
+            @RequestBody AuthPasswordTokenRequestDTO tokenRequestDTO){
+        boolean isTokenValid = this.resetPasswordService
+                .isPasswordResetTokenValidForUser(tokenRequestDTO.getTokenId(), tokenRequestDTO.getUserEmail());
+        return new ApiResponse<>(new AuthPasswordTokenResponseDTO(isTokenValid), HttpStatus.OK);
+    }
 
 }
