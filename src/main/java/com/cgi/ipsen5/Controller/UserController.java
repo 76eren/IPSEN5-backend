@@ -1,12 +1,9 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.UserDao;
+import com.cgi.ipsen5.Dto.User.*;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
-import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
-import com.cgi.ipsen5.Dto.User.UserEditDTO;
-import com.cgi.ipsen5.Dto.User.UserResponseDTO;
-import com.cgi.ipsen5.Dto.User.UserStandardLocationDto;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
@@ -75,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/favorite-colleagues")
-    public ApiResponse<List<User>> getFavoriteColleaguesFromActiveUser() {
+    public ApiResponse<List<UserFavoriteColleagesResponseDTO>> getFavoriteColleaguesFromActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal().toString().isEmpty()){
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
