@@ -13,4 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserStandardLocationDto {
     private UUID wingId;
+    private UUID buildingId;
+    private UUID floorId;
 }
