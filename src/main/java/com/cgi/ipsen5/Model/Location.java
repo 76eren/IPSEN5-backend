@@ -23,7 +23,6 @@ public class Location {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(nullable = false, unique = true)
-    @JsonIgnore
     private UUID id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -36,7 +35,7 @@ public class Location {
 
     @Column(name = "type")
     @JsonProperty
-    private String type;
+    private LocationType type;
 
     @Column(name = "capacity")
     @JsonProperty

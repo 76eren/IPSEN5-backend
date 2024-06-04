@@ -4,10 +4,7 @@ import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateEditDTO;
 import com.cgi.ipsen5.Exception.LocationNotFoundException;
-import com.cgi.ipsen5.Model.Building;
-import com.cgi.ipsen5.Model.Location;
-import com.cgi.ipsen5.Model.Reservation;
-import com.cgi.ipsen5.Model.Wing;
+import com.cgi.ipsen5.Model.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -60,14 +57,14 @@ public class LocationService {
         Wing wing = this.wingService.getWingById(locationCreateDTO.getWing().getId());
         boolean isMultireservable = false;
 
-        if(locationCreateDTO.getType().equalsIgnoreCase("workplace")){
+        if(locationCreateDTO.getType() == LocationType.FLEXPLEK){
             isMultireservable = true;
         }
 
         Location location = Location.builder()
                 .wing(wing)
                 .name(locationCreateDTO.getName())
-                .type(locationCreateDTO.getType().toUpperCase())
+                .type(locationCreateDTO.getType())
                 .capacity(locationCreateDTO.getCapacity())
                 .multireservable(isMultireservable)
                 .createdAt(LocalDateTime.now())
@@ -81,12 +78,12 @@ public class LocationService {
         Wing wing = this.wingService.getWingById(locationEditDTO.getWing().getId());
         boolean isMultireservable = false;
 
-        if(locationEditDTO.getType().equalsIgnoreCase("workplace")){
+        if(locationEditDTO.getType() == LocationType.FLEXPLEK){
             isMultireservable = true;
         }
 
         location.setName(locationEditDTO.getName());
-        location.setType(locationEditDTO.getType().toUpperCase());
+        location.setType(locationEditDTO.getType());
         location.setMultireservable(isMultireservable);
         location.setWing(wing);
         location.setCapacity(locationEditDTO.getCapacity());
