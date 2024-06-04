@@ -2,19 +2,24 @@ package com.cgi.ipsen5.Service;
 
 
 import com.cgi.ipsen5.Dao.UserDao;
+import com.cgi.ipsen5.Dto.Auth.AuthCheckResponseDTO;
+import com.cgi.ipsen5.Dto.Auth.AuthResponseDTO;
 import com.cgi.ipsen5.Model.Role;
 import com.cgi.ipsen5.Model.User;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -61,13 +66,47 @@ public class AuthenticationService {
     }
 
 
+    public Cookie logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String token = this.jwtService.generateToken(Map.of("id", authentication.getPrincipal()), (UUID) authentication.getPrincipal());
+        jwtService.invalidateToken(token);
 
-    public boolean isValidToken(String token) {
-        try {
-            jwtService.validateToken(token);
-            return true;
-        } catch (Exception e) {
-            return false;
+        Cookie cookie = new Cookie("token", null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setMaxAge(0);
+        return cookie;
+    }
+
+    public AuthCheckResponseDTO checkAuthenticated(HttpServletRequest request) {
+        String jwt = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
         }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuthenticated = authentication != null && authentication.isAuthenticated()
+                && !authentication.getName().equals("anonymousUser") && jwtService.isTokenValid(jwt, (UUID) authentication.getPrincipal());
+
+        return AuthCheckResponseDTO
+                .builder()
+                .isAuthenticated(isAuthenticated)
+                .build();
+    }
+
+    public Cookie getEmptyCookie(String name) {
+        Cookie cookie = new Cookie(name, null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setMaxAge(0);
+        return cookie;
     }
 }

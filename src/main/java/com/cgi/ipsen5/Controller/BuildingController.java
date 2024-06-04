@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.ipsen5.Dao.BuildingDao;
-import com.cgi.ipsen5.Dao.FloorDao;
-import com.cgi.ipsen5.Dao.LocationDao;
-import com.cgi.ipsen5.Service.BuildingService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

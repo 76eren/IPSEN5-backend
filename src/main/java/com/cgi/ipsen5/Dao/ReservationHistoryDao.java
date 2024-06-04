@@ -1,9 +1,13 @@
 package com.cgi.ipsen5.Dao;
 
+import com.cgi.ipsen5.Dto.Report.NoShowResponseDTO;
+import com.cgi.ipsen5.Dto.Report.RoomOccupancyResponseDTO;
 import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.ReservationHistory;
 import com.cgi.ipsen5.Repository.ReservationHistoryRepository;
 import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class ReservationHistoryDao {
@@ -26,5 +30,13 @@ public class ReservationHistoryDao {
                 .build();
         this.reservationHistoryRepository.save(reservationHistory);
         return true;
+    }
+
+    public List<RoomOccupancyResponseDTO> getRoomOccupancyByBuildingAndYear(UUID building, int year) {
+        return this.reservationHistoryRepository.findRoomOccupancyByBuildingAndYear(building, year);
+    }
+
+    public List<NoShowResponseDTO> getNoShowsByBuildingAndYear(UUID building, int year) {
+        return this.reservationHistoryRepository.findNoShowsByBuildingAndYear(building, year);
     }
 }

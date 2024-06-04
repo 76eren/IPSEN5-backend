@@ -1,14 +1,11 @@
 package com.cgi.ipsen5.Dao;
 
-import com.cgi.ipsen5.Model.Floor;
 import com.cgi.ipsen5.Model.Wing;
 import com.cgi.ipsen5.Repository.WingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Component
