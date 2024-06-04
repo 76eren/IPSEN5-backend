@@ -34,7 +34,7 @@ public class ReservationService {
         if (availableLocationsByWingId.isEmpty()) {
             throw new ReservationErrorExecption("No available locations");
         }
-        this.validateReservation(reservationCreateDTO);
+        this.validateWorkplaceReservation(reservationCreateDTO);
 
         Location randomLocation = this.locationService.getRandomAvailableLocationIndex(availableLocationsByWingId);
 
@@ -48,15 +48,35 @@ public class ReservationService {
         return this.reservationDao.saveWorkplaceReservation(reservation);
     }
 
-//    public Reservation saveRoomReservation(RoomReservationDTO roomReservation){
-//
-//    }
+    public Reservation saveRoomReservation(RoomReservationDTO roomReservation){
+        this.locationService.existsById(UUID.fromString(roomReservation.getLocationId()));
+        this.locationService.isLocationRoom(UUID.fromString(roomReservation.getLocationId()));
+        this.locationService.isRoomAvailable(
+                UUID.fromString(roomReservation.getLocationId()),
+                LocalDateTime.parse(roomReservation.getStartDateTime()),
+                LocalDateTime.parse(roomReservation.getEndDateTime()));
+        User user = this.userService.getUserFromAuthContext();
+        this.validateRoomReservation(roomReservation);
+        Reservation reservation = Reservation.builder()
+                .user(user)
+                .location(this.locationService.getLocationById(UUID.fromString(roomReservation.getLocationId())))
+                .startDateTime(LocalDateTime.parse(roomReservation.getStartDateTime()))
+                .endDateTime(LocalDateTime.parse(roomReservation.getEndDateTime()))
+                .numberOfPeople(roomReservation.getNumberOfAttendees())
+                .build();
+        return this.reservationDao.saveRoomReservation(reservation);
+    }
 
-    private void validateReservation(WorkplaceReservationDTO reservationCreateDTO) {
+    private void validateWorkplaceReservation(WorkplaceReservationDTO reservationCreateDTO) {
         if (reservationCreateDTO.getStartDateTime().equals(reservationCreateDTO.getEndDateTime())
                 || LocalDateTime.parse(reservationCreateDTO.getStartDateTime()).isAfter(LocalDateTime.parse(reservationCreateDTO.getEndDateTime()))) {
             throw new ReservationErrorExecption("Invalid date time");
         }
     }
-
+    private void validateRoomReservation(RoomReservationDTO reservationCreateDTO) {
+        if (reservationCreateDTO.getStartDateTime().equals(reservationCreateDTO.getEndDateTime())
+                || LocalDateTime.parse(reservationCreateDTO.getStartDateTime()).isAfter(LocalDateTime.parse(reservationCreateDTO.getEndDateTime()))) {
+            throw new ReservationErrorExecption("Invalid date time");
+        }
+    }
 }

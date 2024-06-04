@@ -5,6 +5,7 @@ import com.cgi.ipsen5.Dto.Reservation.ReservationCreateDTO;
 import com.cgi.ipsen5.Dto.Reservation.ReservationResponseDTO;
 import com.cgi.ipsen5.Dto.Reservation.RoomReservationDTO;
 import com.cgi.ipsen5.Dto.Reservation.WorkplaceReservationDTO;
+import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Exception.ReservationErrorExecption;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Exception.WingNotFoundException;
@@ -43,15 +44,11 @@ public class ReservationController {
 
     @PostMapping("/reserve-room")
     public ApiResponse<String> reserveRoom(@Valid @RequestBody RoomReservationDTO reservationCreateDTO) {
-        return new ApiResponse<>("");
-    }
-
-    @PostMapping("/create")
-    public ApiResponse<ReservationResponseDTO> createReservation(@RequestBody ReservationCreateDTO reservationCreateDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID id = UUID.fromString(authentication.getName());
-        Reservation reservation = reservationDao.save(id, reservationCreateDTO);
-        return new ApiResponse<>(this.reservationMapper.fromEntity(reservation));
+        Reservation reservation = this.reservationService.saveRoomReservation(reservationCreateDTO);
+        if (reservation == null) {
+            return new ApiResponse<>("Could not reserve workplace", HttpStatus.NOT_FOUND);
+        }
+        return new ApiResponse<>("Reservation created successfully", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -92,7 +89,8 @@ public class ReservationController {
         return new ApiResponse<>("Reservation cancelled successfully.", HttpStatus.ACCEPTED);
     }
 
-    @ExceptionHandler({ReservationErrorExecption.class, WingNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({ReservationErrorExecption.class, WingNotFoundException.class, UserNotFoundException.class,
+    LocationNotFoundException.class})
     public ApiResponse<String> handleException(Exception e) {
         return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
