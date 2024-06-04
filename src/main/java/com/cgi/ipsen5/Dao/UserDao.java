@@ -104,6 +104,7 @@ public class UserDao implements UserDetailsService {
         User favoriteToBeDeleted = foundUser.get();
         currentFavorites.remove(favoriteToBeDeleted);
         employee.setFavoriteCollegues(currentFavorites);
+        save(employee);
     }
 
     public List<UserFavoriteColleagesResponseDTO> getFavoritesOfUser(UUID employeeId) {
