@@ -12,5 +12,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserFavoriteColleaguesDTO {
-    private UUID idOfFavorite;
+    private UUID id;
 }

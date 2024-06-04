@@ -25,11 +25,16 @@ public class FavoriteColleagueService {
         userDao.addFavorite(employee, favoritedColleagueId);
     }
 
-    public List<UserFavoriteColleaguesDTO> getFavoriteColleaguesFromEmployee(UUID employeeId){
-        List<User> allFavorites = userDao.getFavoritesOfUser(employeeId);
+    public List<User> getFavoriteColleaguesFromEmployee(UUID employeeId){
+        return userDao.getFavoritesOfUser(employeeId);
+    }
 
-        return allFavorites.stream()
-                .map(user -> new UserFavoriteColleaguesDTO(user.getId()))
-                .collect(Collectors.toList());
+    public void removeColleagueFromFavorites(UUID employeeId, UUID favoritedColleagueId){
+        Optional<User> optionalUser = this.userDao.findById(employeeId);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User employee = optionalUser.get();
+        userDao.removeFavorite(employee, favoritedColleagueId);
     }
 }

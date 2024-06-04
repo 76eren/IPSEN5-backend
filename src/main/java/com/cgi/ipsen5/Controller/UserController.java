@@ -66,8 +66,11 @@ public class UserController {
     }
 
     @GetMapping(path = "/favorite-colleagues")
-    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
+    public ApiResponse<List<User>> getFavoriteColleaguesFromActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getPrincipal().toString().isEmpty()){
+            return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
+        }
         return new ApiResponse<>(this.favoriteColleagueService
                 .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getPrincipal().toString())),
                 HttpStatus.OK);
@@ -77,7 +80,14 @@ public class UserController {
     public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getPrincipal().toString()),
-                favoriteColleaguesDTO.getIdOfFavorite());
+                favoriteColleaguesDTO.getId());
+    }
+
+    @PutMapping(path = "/favorite-colleagues")
+    public void removeColleagueFromFavorites(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.favoriteColleagueService.removeColleagueFromFavorites(UUID.fromString(authentication.getPrincipal().toString()),
+                favoriteColleaguesDTO.getId());
     }
 
     @GetMapping(path = "/standard-location")

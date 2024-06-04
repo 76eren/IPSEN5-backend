@@ -94,6 +94,17 @@ public class UserDao implements UserDetailsService {
         }
     }
 
+    public void removeFavorite(User employee, UUID favoriteCollegueId){
+        List<User> currentFavorites = employee.getFavoriteCollegues();
+        Optional<User> foundUser = this.findById(favoriteCollegueId);
+        if (!foundUser.isPresent()) {
+            return;
+        }
+        User favoriteToBeDeleted = foundUser.get();
+        currentFavorites.remove(favoriteToBeDeleted);
+        employee.setFavoriteCollegues(currentFavorites);
+    }
+
     public List<User> getFavoritesOfUser(UUID employeeId) {
         Optional<User> foundUser = this.findById(employeeId);
         List<User> favorites = new ArrayList<>();
