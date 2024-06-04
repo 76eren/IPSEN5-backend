@@ -25,11 +25,7 @@ public class FavoriteColleagueService {
         userDao.addFavorite(employee, favoritedColleagueId);
     }
 
-    public List<UserFavoriteColleaguesDTO> getFavoriteColleaguesFromEmployee(UUID employeeId){
-        List<User> allFavorites = userDao.getFavoritesOfUser(employeeId);
-
-        return allFavorites.stream()
-                .map(user -> new UserFavoriteColleaguesDTO(user.getId()))
-                .collect(Collectors.toList());
+    public List<User> getFavoriteColleaguesFromEmployee(UUID employeeId){
+        return userDao.getFavoritesOfUser(employeeId);
     }
 }

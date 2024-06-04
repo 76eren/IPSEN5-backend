@@ -70,11 +70,11 @@ public class FavoriteColleaguesUnitTest {
 
         when(userDao.getFavoritesOfUser(employeeId)).thenReturn(favoriteColleagues);
 
-        List<UserFavoriteColleaguesDTO> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
+        List<User> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
 
         assertEquals(2, result.size());
-        assertTrue(result.stream().anyMatch(dto -> dto.getIdOfFavorite().equals(colleagueId1)));
-        assertTrue(result.stream().anyMatch(dto -> dto.getIdOfFavorite().equals(colleagueId2)));
+        assertTrue(result.stream().anyMatch(dto -> dto.getId().equals(colleagueId1)));
+        assertTrue(result.stream().anyMatch(dto -> dto.getId().equals(colleagueId2)));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class FavoriteColleaguesUnitTest {
     public void testGetFavoriteColleaguesFromEmployeeUserNotFound() {
         when(userDao.getFavoritesOfUser(employeeId)).thenReturn(new ArrayList<>());
 
-        List<UserFavoriteColleaguesDTO> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
+        List<User> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
 
         assertTrue(result.isEmpty());
     }

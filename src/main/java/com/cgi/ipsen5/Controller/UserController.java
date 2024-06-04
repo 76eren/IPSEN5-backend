@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/favorite-colleagues")
-    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
+    public ApiResponse<List<User>> getFavoriteColleaguesFromActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ApiResponse<>(this.favoriteColleagueService
                 .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getPrincipal().toString())),
