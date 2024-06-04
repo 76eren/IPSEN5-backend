@@ -83,6 +83,13 @@ public class UserController {
                 favoriteColleaguesDTO.getId());
     }
 
+    @DeleteMapping(path = "/favorite-colleagues")
+    public void removeColleagueFromFavorites(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.favoriteColleagueService.removeColleagueFromFavorites(UUID.fromString(authentication.getPrincipal().toString()),
+                favoriteColleaguesDTO.getId());
+    }
+
     @GetMapping(path = "/standard-location")
     public ApiResponse<Wing> getStandardLocation() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

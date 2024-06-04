@@ -28,4 +28,13 @@ public class FavoriteColleagueService {
     public List<User> getFavoriteColleaguesFromEmployee(UUID employeeId){
         return userDao.getFavoritesOfUser(employeeId);
     }
+
+    public void removeColleagueFromFavorites(UUID employeeId, UUID favoritedColleagueId){
+        Optional<User> optionalUser = this.userDao.findById(employeeId);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException("User not found");
+        }
+        User employee = optionalUser.get();
+        userDao.removeFavorite(employee, favoritedColleagueId);
+    }
 }
