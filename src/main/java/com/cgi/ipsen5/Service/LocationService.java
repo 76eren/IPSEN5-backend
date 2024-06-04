@@ -2,7 +2,8 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dao.ReservationDao;
-import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateDTO;
+import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateEditDTO;
+import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.Building;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
@@ -55,7 +56,7 @@ public class LocationService {
         return this.locationDao.findAllByBuildingId(building.getId());
     }
 
-    public Location createNewLocation(LocationCreateDTO locationCreateDTO) {
+    public Location createNewLocation(LocationCreateEditDTO locationCreateDTO) {
         Wing wing = this.wingService.getWingById(locationCreateDTO.getWing().getId());
         boolean isMultireservable = false;
 
@@ -73,5 +74,33 @@ public class LocationService {
                 .build();
 
         return this.locationDao.save(location);
+    }
+
+    public Location editLocation(UUID locationId, LocationCreateEditDTO locationEditDTO) {
+        Location location = this.getLocationById(locationId);
+        Wing wing = this.wingService.getWingById(locationEditDTO.getWing().getId());
+        boolean isMultireservable = false;
+
+        if(locationEditDTO.getType().equalsIgnoreCase("workplace")){
+            isMultireservable = true;
+        }
+
+        location.setName(locationEditDTO.getName());
+        location.setType(locationEditDTO.getType().toUpperCase());
+        location.setMultireservable(isMultireservable);
+        location.setWing(wing);
+        location.setCapacity(locationEditDTO.getCapacity());
+
+        return this.locationDao.save(location);
+    }
+
+    public Location getLocationById(UUID locationId) {
+        Location location = this.locationDao.getLocationById(locationId);
+
+        if(location == null) {
+            throw new LocationNotFoundException("Location not found");
+        }
+
+        return location;
     }
 }

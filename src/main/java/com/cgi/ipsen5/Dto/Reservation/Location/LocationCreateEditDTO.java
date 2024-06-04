@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LocationCreateDTO {
+public class LocationCreateEditDTO {
     private Wing wing;
     private String name;
     private String type;
