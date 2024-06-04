@@ -3,16 +3,15 @@ package com.cgi.ipsen5.Dao;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
+import com.cgi.ipsen5.Model.Wing;
 import com.cgi.ipsen5.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import com.cgi.ipsen5.Model.User;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 
 
 @Component
@@ -36,9 +35,11 @@ public class UserDao implements UserDetailsService {
     public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
     }
+
     public User save(User user) {
         return userRepository.save(user);
     }
+
     public void delete(User user) {
         userRepository.delete(user);
     }
@@ -46,6 +47,7 @@ public class UserDao implements UserDetailsService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
     public Optional<Set<User>> findAllByUsername(String username) {
         return userRepository.findAllByUsername(username);
     }
@@ -57,7 +59,7 @@ public class UserDao implements UserDetailsService {
 
     public User updateUser(UUID id, UserEditDTO userEditDTO) {
         Optional<User> foundUser = findById(id);
-        if(foundUser.isPresent()) {
+        if (foundUser.isPresent()) {
             User user = foundUser.get();
 
             if (userEditDTO.getUsername() != null) {
@@ -72,5 +74,55 @@ public class UserDao implements UserDetailsService {
         }
 
         return null;
+    }
+
+    public void addFavorite(User employee, UUID favoriteCollegueId) {
+        List<User> currentFavorites = employee.getFavoriteCollegues();
+
+        boolean alreadyFavorited = currentFavorites.stream()
+                .anyMatch(user -> user.getId().equals(favoriteCollegueId));
+
+        if (!alreadyFavorited) {
+            Optional<User> favoriteColleague = findById(favoriteCollegueId);
+            if (!favoriteColleague.isPresent()) {
+                throw new UsernameNotFoundException("Favorite colleague not found with id: " + favoriteCollegueId);
+            }
+            currentFavorites.add(favoriteColleague.get());
+            employee.setFavoriteCollegues(currentFavorites);
+            save(employee);
+
+        }
+    }
+
+    public List<User> getFavoritesOfUser(UUID employeeId) {
+        Optional<User> foundUser = this.findById(employeeId);
+        List<User> favorites = new ArrayList<>();
+        if (!foundUser.isPresent()) {
+            return favorites;
+
+        }
+        User user = foundUser.get();
+        favorites = user.getFavoriteCollegues();
+        return favorites;
+    }
+
+    public Wing getStandardLocation(UUID userId) {
+        Optional<User> foundUser = this.findById(userId);
+        if (!foundUser.isPresent()) {
+            throw new UsernameNotFoundException("No user was found with id" + userId);
+        }
+        User user = foundUser.get();
+        return user.getStandardLocation();
+    }
+
+    public void setStandardLocation(UUID userId, Wing standardLocation) {
+        Optional<User> foundUser = this.findById(userId);
+        if (!foundUser.isPresent()) {
+            throw new UsernameNotFoundException("No user was found with id" + userId);
+        }
+        User user = foundUser.get();
+
+        user.setStandardLocation(standardLocation);
+        save(user);
     }
 }

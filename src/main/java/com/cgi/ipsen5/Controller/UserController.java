@@ -3,17 +3,24 @@ package com.cgi.ipsen5.Controller;
 import com.cgi.ipsen5.Dao.UserDao;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
+import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
+import com.cgi.ipsen5.Dto.User.UserStandardLocationDto;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.User;
+import com.cgi.ipsen5.Model.Wing;
+import com.cgi.ipsen5.Service.FavoriteColleagueService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
 
+import com.cgi.ipsen5.Service.StandardLocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +33,8 @@ public class UserController {
     private final UserDao userDAO;
     private final UserMapper userMapper;
     private final ResetPasswordService resetPasswordService;
+    private final FavoriteColleagueService favoriteColleagueService;
+    private final StandardLocationService standardLocationService;
 
     @GetMapping
     @ResponseBody
@@ -54,6 +63,36 @@ public class UserController {
         }
 
         return new ApiResponse<>(userMapper.fromEntity(updatedUser));
+    }
+
+    @GetMapping(path = "/favorite-colleagues")
+    public ApiResponse<List<UserFavoriteColleaguesDTO>> getFavoriteColleaguesFromActiveUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new ApiResponse<>(this.favoriteColleagueService
+                .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getPrincipal().toString())),
+                HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/favorite-colleagues")
+    public void addFavoriteColleague(@RequestBody UserFavoriteColleaguesDTO favoriteColleaguesDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.favoriteColleagueService.addFavoriteColleague(UUID.fromString(authentication.getPrincipal().toString()),
+                favoriteColleaguesDTO.getIdOfFavorite());
+    }
+
+    @GetMapping(path = "/standard-location")
+    public ApiResponse<Wing> getStandardLocation() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new ApiResponse<>(this.standardLocationService
+                .getStandardLocation(UUID.fromString(authentication.getPrincipal().toString())),
+                HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/standard-location")
+    public void postStandardLocation(@RequestBody UserStandardLocationDto standardLocationDto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        this.standardLocationService.setStandardLocation(UUID.fromString(authentication.getPrincipal().toString()),
+                standardLocationDto.getWingId());
     }
 
     @PostMapping(path = "/reset-password")
