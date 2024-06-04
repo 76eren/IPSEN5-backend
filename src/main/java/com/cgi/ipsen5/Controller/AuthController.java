@@ -60,7 +60,7 @@ public class AuthController {
 
         AuthCheckResponseDTO authCheckResponseDTO = this.authenticationService.checkAuthenticated(request);
 
-        if (authCheckResponseDTO.isAuthenticated()) {
+        if (!authCheckResponseDTO.isAuthenticated()) {
             // Clears the cookies in case the browser still has them stored whilst they're invalid
             Cookie cookie = this.authenticationService.getEmptyCookie("token");
             response.addCookie(cookie);

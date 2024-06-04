@@ -68,6 +68,9 @@ public class UserController {
     @GetMapping(path = "/favorite-colleagues")
     public ApiResponse<List<User>> getFavoriteColleaguesFromActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getPrincipal().toString().isEmpty()){
+            return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
+        }
         return new ApiResponse<>(this.favoriteColleagueService
                 .getFavoriteColleaguesFromEmployee(UUID.fromString(authentication.getPrincipal().toString())),
                 HttpStatus.OK);
