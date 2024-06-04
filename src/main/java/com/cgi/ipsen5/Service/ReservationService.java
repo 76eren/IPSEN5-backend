@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.ReservationDao;
+import com.cgi.ipsen5.Dto.Reservation.RoomReservationDTO;
 import com.cgi.ipsen5.Dto.Reservation.WorkplaceReservationDTO;
 import com.cgi.ipsen5.Exception.ReservationErrorExecption;
 import com.cgi.ipsen5.Model.Location;
@@ -46,6 +47,10 @@ public class ReservationService {
                 .build();
         return this.reservationDao.saveWorkplaceReservation(reservation);
     }
+
+//    public Reservation saveRoomReservation(RoomReservationDTO roomReservation){
+//
+//    }
 
     private void validateReservation(WorkplaceReservationDTO reservationCreateDTO) {
         if (reservationCreateDTO.getStartDateTime().equals(reservationCreateDTO.getEndDateTime())

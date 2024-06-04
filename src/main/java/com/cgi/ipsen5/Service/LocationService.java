@@ -2,6 +2,7 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dao.ReservationDao;
+import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,12 @@ public class LocationService {
         }
 
         return availableLocations;
+    }
+
+    public void existsById(UUID locationId) {
+        if (!this.locationDao.existsById(locationId)) {
+            throw new LocationNotFoundException("Location not found");
+        }
     }
 
     public Location getRandomAvailableLocationIndex(List<Location> availableLocations) {

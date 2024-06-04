@@ -26,6 +26,10 @@ public class LocationDao {
         return this.locationRepository.findAllByWing_FloorId(id);
     }
 
+    public boolean existsById(UUID id) {
+        return this.locationRepository.existsById(id);
+    }
+
     public Location save(Location location) {
         return this.locationRepository.save(location);
     }

@@ -36,7 +36,7 @@ public class Location {
 
     @Column(name = "type")
     @JsonProperty
-    private String type;
+    private LocationType type;
 
     @Column(name = "capacity")
     @JsonProperty

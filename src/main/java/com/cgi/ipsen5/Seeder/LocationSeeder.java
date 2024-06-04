@@ -3,6 +3,7 @@ package com.cgi.ipsen5.Seeder;
 import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dao.WingDao;
 import com.cgi.ipsen5.Model.Location;
+import com.cgi.ipsen5.Model.LocationType;
 import com.cgi.ipsen5.Model.Wing;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -52,7 +53,7 @@ public class LocationSeeder {
                 .wing(managedWing)
                 .createdAt(createdAt)
                 .capacity(30)
-                .type("WORKPLACE")
+                .type(LocationType.WORKPLACE)
                 .multireservable(true)
                 .build();
     }
