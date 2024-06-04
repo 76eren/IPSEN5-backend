@@ -1,7 +1,9 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
+import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateDTO;
 import com.cgi.ipsen5.Exception.BuildingNotFoundException;
+import com.cgi.ipsen5.Exception.WingNotFoundException;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Service.LocationService;
@@ -34,7 +36,12 @@ public class LocationController {
         return new ApiResponse<>(this.locationService.getLocationsByBuildingId(buildingName), HttpStatus.OK);
     }
 
-    @ExceptionHandler({BuildingNotFoundException.class})
+    @PostMapping(value = "/create")
+    public ApiResponse<Location> createNewLocation(@RequestBody LocationCreateDTO locationCreateDTO) {
+        return new ApiResponse<>(this.locationService.createNewLocation(locationCreateDTO), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({BuildingNotFoundException.class, WingNotFoundException.class})
     public ApiResponse<String> handleException(Exception e) {
         return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }

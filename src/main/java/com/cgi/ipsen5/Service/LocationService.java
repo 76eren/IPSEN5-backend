@@ -2,9 +2,11 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.LocationDao;
 import com.cgi.ipsen5.Dao.ReservationDao;
+import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateDTO;
 import com.cgi.ipsen5.Model.Building;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
+import com.cgi.ipsen5.Model.Wing;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,11 +20,13 @@ public class LocationService {
     private final LocationDao locationDao;
     private final ReservationDao reservationDao;
     private final BuildingService buildingService;
+    private final WingService wingService;
 
-    public LocationService(LocationDao locationDao, ReservationDao reservationDao, BuildingService buildingService) {
+    public LocationService(LocationDao locationDao, ReservationDao reservationDao, BuildingService buildingService, WingService wingService) {
         this.locationDao = locationDao;
         this.reservationDao = reservationDao;
         this.buildingService = buildingService;
+        this.wingService = wingService;
     }
 
     public List<Location> findAvailableLocationsByWingId(UUID wingId, LocalDateTime start, LocalDateTime end) {
@@ -49,5 +53,25 @@ public class LocationService {
     public List<Location> getLocationsByBuildingId(String buildingName) {
         Building building = this.buildingService.getBuildingByName(buildingName);
         return this.locationDao.findAllByBuildingId(building.getId());
+    }
+
+    public Location createNewLocation(LocationCreateDTO locationCreateDTO) {
+        Wing wing = this.wingService.getWingById(locationCreateDTO.getWing().getId());
+        boolean isMultireservable = false;
+
+        if(locationCreateDTO.getType().equalsIgnoreCase("workplace")){
+            isMultireservable = true;
+        }
+
+        Location location = Location.builder()
+                .wing(wing)
+                .name(locationCreateDTO.getName())
+                .type(locationCreateDTO.getType().toUpperCase())
+                .capacity(locationCreateDTO.getCapacity())
+                .multireservable(isMultireservable)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return this.locationDao.save(location);
     }
 }
