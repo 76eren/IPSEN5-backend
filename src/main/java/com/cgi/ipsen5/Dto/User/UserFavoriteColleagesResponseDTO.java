@@ -5,14 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserStandardLocationDto {
-    private UUID wingId;
-    private UUID buildingId;
-    private UUID floorId;
+public class UserFavoriteColleagesResponseDTO {
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String standardLocation;
 }

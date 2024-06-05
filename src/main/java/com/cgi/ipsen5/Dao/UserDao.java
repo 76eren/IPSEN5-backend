@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Dao;
 
 import com.cgi.ipsen5.Dto.User.UserEditDTO;
+import com.cgi.ipsen5.Dto.User.UserFavoriteColleagesResponseDTO;
 import com.cgi.ipsen5.Dto.User.UserResponseDTO;
 import com.cgi.ipsen5.Mapper.UserMapper;
 import com.cgi.ipsen5.Model.Wing;
@@ -103,17 +104,20 @@ public class UserDao implements UserDetailsService {
         User favoriteToBeDeleted = foundUser.get();
         currentFavorites.remove(favoriteToBeDeleted);
         employee.setFavoriteCollegues(currentFavorites);
+        save(employee);
     }
 
-    public List<User> getFavoritesOfUser(UUID employeeId) {
+    public List<UserFavoriteColleagesResponseDTO> getFavoritesOfUser(UUID employeeId) {
         Optional<User> foundUser = this.findById(employeeId);
-        List<User> favorites = new ArrayList<>();
-        if (!foundUser.isPresent()) {
+        List<UserFavoriteColleagesResponseDTO> favorites = new ArrayList<>();
+        if (foundUser.isEmpty()) {
             return favorites;
-
         }
         User user = foundUser.get();
-        favorites = user.getFavoriteCollegues();
+        List<User> favoriteUsers = user.getFavoriteCollegues();
+        for (User favoriteUser : favoriteUsers) {
+            favorites.add(mapUserToUserFavoriteColleagesResponseDTO(favoriteUser));
+        }
         return favorites;
     }
 
@@ -135,5 +139,18 @@ public class UserDao implements UserDetailsService {
 
         user.setStandardLocation(standardLocation);
         save(user);
+    }
+
+    public UserFavoriteColleagesResponseDTO mapUserToUserFavoriteColleagesResponseDTO(User user) {
+        UserFavoriteColleagesResponseDTO dto = new UserFavoriteColleagesResponseDTO();
+        dto.setId(user.getId().toString());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        if (user.getStandardLocation() != null) {
+            dto.setStandardLocation(user.getStandardLocation().toString());
+        } else {
+            dto.setStandardLocation("");
+        }
+        return dto;
     }
 }
