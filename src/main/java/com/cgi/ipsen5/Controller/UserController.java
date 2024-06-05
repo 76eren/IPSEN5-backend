@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.UserDao;
+import com.cgi.ipsen5.Dto.User.*;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
 import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
@@ -52,6 +53,15 @@ public class UserController {
         }
     }
 
+    @GetMapping(path = {"/me"})
+    public ApiResponse<UserResponseDTO> getMe() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getPrincipal().toString().isEmpty()){
+            return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        return new ApiResponse<>(userMapper.fromEntity(userDAO.findById(UUID.fromString(authentication.getPrincipal().toString())).orElseThrow()));
+    }
+
     @PutMapping(path = {"/{id}/edit"})
     public ApiResponse<UserResponseDTO> editUser(
             @PathVariable("id") UUID id,
@@ -66,7 +76,7 @@ public class UserController {
     }
 
     @GetMapping(path = "/favorite-colleagues")
-    public ApiResponse<List<User>> getFavoriteColleaguesFromActiveUser() {
+    public ApiResponse<List<UserFavoriteColleagesResponseDTO>> getFavoriteColleaguesFromActiveUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal().toString().isEmpty()){
             return new ApiResponse<>("User not found", HttpStatus.NOT_FOUND);

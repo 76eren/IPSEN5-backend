@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -18,12 +19,16 @@ public class LocationDao {
         return this.locationRepository.findAll();
     }
 
-    public Location getLocationById(UUID id) {
-        return this.locationRepository.findById(id).orElse(null);
+    public Optional<Location> getLocationById(UUID id) {
+        return this.locationRepository.findById(id);
     }
 
     public List<Floor> getFloorByLocationId(UUID id) {
         return this.locationRepository.findAllByWing_FloorId(id);
+    }
+
+    public boolean existsById(UUID id) {
+        return this.locationRepository.existsById(id);
     }
 
     public Location save(Location location) {
@@ -36,5 +41,13 @@ public class LocationDao {
 
     public List<Location> findAllByBuildingId(UUID buildingId) {
         return this.locationRepository.findAllByWing_Floor_BuildingId(buildingId);
+    }
+
+    public List<Location> findAllByCapacity(int capacity) {
+        return this.locationRepository.findAllByCapacityGreaterThanEqualAndType(capacity, LocationType.ROOM);
+    }
+
+    public List<Location> findAllByWingFloorBuildingId(UUID buildingId) {
+        return this.locationRepository.findAllByWingFloorBuildingIdAndType(buildingId, LocationType.ROOM);
     }
 }

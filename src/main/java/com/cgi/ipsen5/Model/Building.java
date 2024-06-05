@@ -25,6 +25,7 @@ public class Building {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(nullable = false, unique = true)
+    @JsonProperty
     private UUID id;
 
     @Column(name = "name", nullable = false)

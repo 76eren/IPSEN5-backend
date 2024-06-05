@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dao.UserDao;
+import com.cgi.ipsen5.Dto.User.UserFavoriteColleagesResponseDTO;
 import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Model.User;
@@ -25,7 +26,8 @@ public class FavoriteColleagueService {
         userDao.addFavorite(employee, favoritedColleagueId);
     }
 
-    public List<User> getFavoriteColleaguesFromEmployee(UUID employeeId){
+
+    public List<UserFavoriteColleagesResponseDTO> getFavoriteColleaguesFromEmployee(UUID employeeId){
         return userDao.getFavoritesOfUser(employeeId);
     }
 
