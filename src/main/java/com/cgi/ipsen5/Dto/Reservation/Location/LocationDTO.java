@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Dto.Reservation.Location;
 
 import com.cgi.ipsen5.Dto.Reservation.Wing.WingDTO;
+import com.cgi.ipsen5.Model.LocationType;
 import com.cgi.ipsen5.Model.Wing;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class LocationDTO {
     private Wing wing;
     private String name;
-    private String type;
+    private LocationType type;
     private String createdAt;
     private int capacity;
     private boolean multireservable;

@@ -28,30 +28,6 @@ public class ReservationDao {
         return this.reservationRepository.save(reservation);
     }
 
-    //TODO: Later verwijderen als het reservere van lokalen ook lukt
-    public Reservation save(UUID userId, ReservationCreateDTO reservationCreateDTO) {
-        Optional<User> user = this.userDao.findById(userId);
-
-        if (user.isEmpty()) {
-            throw new IllegalArgumentException("User not found");
-        }
-
-        Location location = locationDao.getLocationById(UUID.fromString(reservationCreateDTO.getLocationId()));
-        // TODO: Check if location exists
-
-        Reservation newReservation = Reservation
-                .builder()
-                .user(user.get())
-                .location(location)
-                .startDateTime(LocalDateTime.parse(reservationCreateDTO.getStartDateTime()))
-                .endDateTime(LocalDateTime.parse(reservationCreateDTO.getEndDateTime()))
-                .numberOfPeople(reservationCreateDTO.getNumberOfPeople())
-                .createdAt(location.getCreatedAt())
-                .build();
-
-        return this.reservationRepository.save(newReservation);
-    }
-
     public Reservation saveWorkplaceReservation(Reservation reservation){
         return this.reservationRepository.save(reservation);
     }
