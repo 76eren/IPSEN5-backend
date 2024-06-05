@@ -1,6 +1,7 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
+import com.cgi.ipsen5.Dto.Location.AvailableRoomsDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Service.LocationService;
@@ -29,18 +30,13 @@ public class LocationController {
         return new ApiResponse<>(this.locationService.getLocationById(id), HttpStatus.OK);
     }
 
-    //TODO: find solution for req params
     @GetMapping(value = "/available-rooms")
-    public ApiResponse<List<Location>> getAvailableRooms(
-            @RequestParam UUID buildingId,
-            @RequestParam Integer numberOfPeople,
-            @RequestParam String startDateTime,
-            @RequestParam String endDateTime) {
+    public ApiResponse<List<Location>> getAvailableRooms(@RequestBody AvailableRoomsDTO availableRoomsDTO) {
         return new ApiResponse<>(this.locationService
-                .findAvailableRooms( buildingId,
-                        numberOfPeople,
-                        LocalDateTime.parse(startDateTime),
-                        LocalDateTime.parse(endDateTime)),
+                .findAvailableRooms( availableRoomsDTO.getBuildingId(),
+                        availableRoomsDTO.getNumberOfPeople(),
+                        LocalDateTime.parse(availableRoomsDTO.getStartDateTime()),
+                        LocalDateTime.parse(availableRoomsDTO.getEndDateTime())),
                 HttpStatus.OK);
     }
 
