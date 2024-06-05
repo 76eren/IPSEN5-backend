@@ -1,5 +1,7 @@
 package com.cgi.ipsen5.Dao;
 
+import com.cgi.ipsen5.Exception.WingNotFoundException;
+import com.cgi.ipsen5.Model.Floor;
 import com.cgi.ipsen5.Model.Wing;
 import com.cgi.ipsen5.Repository.WingRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,10 @@ public class WingDao {
   
     public ArrayList<Wing> findWingsByBuildingId(UUID buildingId) {
         return this.wingRepository.findWingsByFloor_BuildingId(buildingId);
+    }
+
+    public List<Wing> findAllByFloorNumber(UUID floorId) {
+        return this.wingRepository.findAllByFloorId(floorId)
+                .orElseThrow(() -> new WingNotFoundException("Wing not found"));
     }
 }

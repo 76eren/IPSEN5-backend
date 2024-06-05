@@ -20,7 +20,7 @@ public class Floor {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(nullable = false, unique = true)
-    @JsonIgnore
+    @JsonProperty
     private UUID id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
