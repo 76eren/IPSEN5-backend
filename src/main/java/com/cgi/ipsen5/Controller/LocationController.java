@@ -62,6 +62,12 @@ public class LocationController {
         return new ApiResponse<>(this.locationService.editLocation(id, locationEditDTO), HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{id}/delete")
+    public ApiResponse<String> deleteLocation(@PathVariable UUID id) {
+        this.locationService.remove(id);
+        return new ApiResponse<>("Deleted location successfully", HttpStatus.OK);
+    }
+
     @ExceptionHandler({BuildingNotFoundException.class, WingNotFoundException.class, LocationNotFoundException.class})
     public ApiResponse<String> handleException(Exception e) {
         return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -137,4 +137,9 @@ public class LocationService {
 
         return this.locationDao.save(location);
     }
+
+    public void remove(UUID id) {
+        Location location = this.getLocationById(id);
+        this.locationDao.remove(location.getId());
+    }
 }
