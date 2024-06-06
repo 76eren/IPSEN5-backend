@@ -39,6 +39,10 @@ public class LocationDao {
         return this.locationRepository.findAllByWingId(wingId);
     }
 
+    public List<Location> findAllByBuildingId(UUID buildingId) {
+        return this.locationRepository.findAllByWing_Floor_BuildingId(buildingId);
+    }
+
     public List<Location> findAllByCapacity(int capacity) {
         return this.locationRepository.findAllByCapacityGreaterThanEqualAndType(capacity, LocationType.ROOM);
     }

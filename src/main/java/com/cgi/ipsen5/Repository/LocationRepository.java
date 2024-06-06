@@ -11,6 +11,7 @@ import java.util.UUID;
 public interface LocationRepository extends JpaRepository<Location, UUID> {
     List<Location> findAllByWingId(UUID wingId);
     List<Floor> findAllByWing_FloorId(UUID id);
+    List<Location> findAllByWing_Floor_BuildingId(UUID buildingId);
     List<Location> findAllByCapacityGreaterThanEqualAndType(int capacity, LocationType type);
     List<Location> findAllByWingFloorBuildingIdAndType(UUID buildingId, LocationType type);
 }

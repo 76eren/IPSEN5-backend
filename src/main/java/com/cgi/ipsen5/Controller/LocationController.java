@@ -1,6 +1,10 @@
 package com.cgi.ipsen5.Controller;
 
 import com.cgi.ipsen5.Dao.LocationDao;
+import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateEditDTO;
+import com.cgi.ipsen5.Exception.BuildingNotFoundException;
+import com.cgi.ipsen5.Exception.LocationNotFoundException;
+import com.cgi.ipsen5.Exception.WingNotFoundException;
 import com.cgi.ipsen5.Dto.Location.AvailableRoomsDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
@@ -40,5 +44,27 @@ public class LocationController {
                 HttpStatus.OK);
     }
 
+    @GetMapping(value = "/admin")
+    public ApiResponse<List<Location>> getLocationsByBuildingId(@RequestParam String buildingName) {
+        return new ApiResponse<>(this.locationService.getLocationsByBuildingId(buildingName), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/create")
+    public ApiResponse<Location> createNewLocation(@RequestBody LocationCreateEditDTO locationCreateDTO) {
+        return new ApiResponse<>(this.locationService.createNewLocation(locationCreateDTO), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{id}/edit")
+    public ApiResponse<Location> editLocation(
+            @PathVariable UUID id,
+            @RequestBody LocationCreateEditDTO locationEditDTO
+    ) {
+        return new ApiResponse<>(this.locationService.editLocation(id, locationEditDTO), HttpStatus.OK);
+    }
+
+    @ExceptionHandler({BuildingNotFoundException.class, WingNotFoundException.class, LocationNotFoundException.class})
+    public ApiResponse<String> handleException(Exception e) {
+        return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
 

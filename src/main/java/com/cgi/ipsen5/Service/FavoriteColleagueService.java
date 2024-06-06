@@ -26,6 +26,7 @@ public class FavoriteColleagueService {
         userDao.addFavorite(employee, favoritedColleagueId);
     }
 
+
     public List<UserFavoriteColleagesResponseDTO> getFavoriteColleaguesFromEmployee(UUID employeeId){
         return userDao.getFavoritesOfUser(employeeId);
     }
