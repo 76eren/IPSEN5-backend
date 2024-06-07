@@ -9,6 +9,7 @@ import com.cgi.ipsen5.Dto.Location.AvailableRoomsDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Service.LocationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -50,13 +51,14 @@ public class LocationController {
     }
 
     @PostMapping(value = "/create")
-    public ApiResponse<Location> createNewLocation(@RequestBody LocationCreateEditDTO locationCreateDTO) {
+    public ApiResponse<Location> createNewLocation(@Valid @RequestBody LocationCreateEditDTO locationCreateDTO) {
         return new ApiResponse<>(this.locationService.createNewLocation(locationCreateDTO), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}/edit")
     public ApiResponse<Location> editLocation(
             @PathVariable UUID id,
+            @Valid
             @RequestBody LocationCreateEditDTO locationEditDTO
     ) {
         return new ApiResponse<>(this.locationService.editLocation(id, locationEditDTO), HttpStatus.OK);
