@@ -35,12 +35,9 @@ public class LocationController {
     }
 
     @GetMapping(value = "/available-rooms")
-    public ApiResponse<List<Location>> getAvailableRooms(@RequestBody AvailableRoomsDTO availableRoomsDTO) {
+    public ApiResponse<List<Location>> getAvailableRooms(@RequestParam UUID buildingId, @RequestParam Integer numberOfPeople, @RequestParam String startDateTime, @RequestParam String endDateTime) {
         return new ApiResponse<>(this.locationService
-                .findAvailableRooms( availableRoomsDTO.getBuildingId(),
-                        availableRoomsDTO.getNumberOfPeople(),
-                        LocalDateTime.parse(availableRoomsDTO.getStartDateTime()),
-                        LocalDateTime.parse(availableRoomsDTO.getEndDateTime())),
+                .findAvailableRooms(buildingId, numberOfPeople, LocalDateTime.parse(startDateTime), LocalDateTime.parse(endDateTime)),
                 HttpStatus.OK);
     }
 
