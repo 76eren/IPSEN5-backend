@@ -1,7 +1,7 @@
 package com.cgi.ipsen5.FavoriteColleagues;
 
 import com.cgi.ipsen5.Dao.UserDao;
-import com.cgi.ipsen5.Dto.User.UserFavoriteColleaguesDTO;
+import com.cgi.ipsen5.Dto.User.UserFavoriteColleagesResponseDTO;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Model.User;
 import com.cgi.ipsen5.Service.FavoriteColleagueService;
@@ -59,22 +59,22 @@ public class FavoriteColleaguesUnitTest {
     public void testGetFavoriteColleaguesFromEmployeeSuccess() {
         UUID colleagueId1 = UUID.randomUUID();
         UUID colleagueId2 = UUID.randomUUID();
-        User colleague1 = new User();
-        colleague1.setId(colleagueId1);
-        User colleague2 = new User();
-        colleague2.setId(colleagueId2);
+        UserFavoriteColleagesResponseDTO colleague1 = new UserFavoriteColleagesResponseDTO();
+        colleague1.setId(colleagueId1.toString());
+        UserFavoriteColleagesResponseDTO colleague2 = new UserFavoriteColleagesResponseDTO();
+        colleague2.setId(colleagueId2.toString());
 
-        List<User> favoriteColleagues = new ArrayList<>();
+        List<UserFavoriteColleagesResponseDTO> favoriteColleagues = new ArrayList<>();
         favoriteColleagues.add(colleague1);
         favoriteColleagues.add(colleague2);
 
         when(userDao.getFavoritesOfUser(employeeId)).thenReturn(favoriteColleagues);
 
-        List<User> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
+        List<UserFavoriteColleagesResponseDTO> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
 
         assertEquals(2, result.size());
-        assertTrue(result.stream().anyMatch(dto -> dto.getId().equals(colleagueId1)));
-        assertTrue(result.stream().anyMatch(dto -> dto.getId().equals(colleagueId2)));
+        assertTrue(result.stream().anyMatch(user -> user.getId().equals(colleagueId1.toString())));
+        assertTrue(result.stream().anyMatch(user -> user.getId().equals(colleagueId2.toString())));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class FavoriteColleaguesUnitTest {
     public void testGetFavoriteColleaguesFromEmployeeUserNotFound() {
         when(userDao.getFavoritesOfUser(employeeId)).thenReturn(new ArrayList<>());
 
-        List<User> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
+        List<UserFavoriteColleagesResponseDTO> result = favoriteColleagueService.getFavoriteColleaguesFromEmployee(employeeId);
 
         assertTrue(result.isEmpty());
     }
