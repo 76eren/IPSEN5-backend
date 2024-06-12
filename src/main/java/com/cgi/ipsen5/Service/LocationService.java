@@ -139,7 +139,10 @@ public class LocationService {
     }
 
     public void remove(UUID id) {
-        Location location = this.getLocationById(id);
-        this.locationDao.remove(location.getId());
+        if(!this.locationDao.existsById(id)) {
+            throw new LocationNotFoundException("Location not found");
+        }
+
+        this.locationDao.remove(id);
     }
 }
