@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/v1/reservations")
@@ -32,6 +33,12 @@ public class ReservationController {
     private final ReservationDao reservationDao;
     private final ReservationMapper reservationMapper;
     private final ReservationService reservationService;
+
+    @GetMapping("/user/{id}")
+    public ApiResponse<List<Reservation>> getReservationsByUserId(@PathVariable UUID id) {
+        return new ApiResponse<>(this.reservationDao.findAll(id));
+    }
+
 
     @PostMapping("/reserve-workplace")
     public ApiResponse<String> reserveWorkplace(@Valid @RequestBody WorkplaceReservationDTO reservationCreateDTO) {
