@@ -137,4 +137,12 @@ public class LocationService {
 
         return this.locationDao.save(location);
     }
+
+    public void remove(UUID id) {
+        if(!this.locationDao.existsById(id)) {
+            throw new LocationNotFoundException("Location not found");
+        }
+
+        this.locationDao.remove(id);
+    }
 }

@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/location/admin").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/location/create").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/location/{id}/edit").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/location/{id}/delete").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/auth/authenticated").permitAll()
                         .anyRequest().authenticated()
                 )

@@ -50,4 +50,8 @@ public class LocationDao {
     public List<Location> findAllByWingFloorBuildingId(UUID buildingId) {
         return this.locationRepository.findAllByWingFloorBuildingIdAndType(buildingId, LocationType.ROOM);
     }
+
+    public void remove(UUID id) {
+        this.locationRepository.deleteById(id);
+    }
 }

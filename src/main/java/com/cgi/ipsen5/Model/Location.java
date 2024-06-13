@@ -1,10 +1,12 @@
 package com.cgi.ipsen5.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,6 +17,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE location SET deleted = true WHERE id=?")
+@SQLRestriction("deleted <> 'true'")
 public class Location {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -49,4 +53,7 @@ public class Location {
     @Column(name = "created_at")
     @JsonProperty
     private LocalDateTime createdAt;
+
+    @Column(name = "deleted")
+    private boolean deleted = Boolean.FALSE;
 }
