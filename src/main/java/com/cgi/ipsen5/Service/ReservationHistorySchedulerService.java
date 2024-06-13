@@ -13,7 +13,7 @@ public class ReservationHistorySchedulerService {
 
     private final ReservationService reservationService;
 
-    @Scheduled(cron = "* * * * * *")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updateReservationHistory() {
         LocalDateTime now = LocalDateTime.now();
         reservationService.moveOldReservationsToHistory(now);

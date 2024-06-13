@@ -12,6 +12,7 @@ import com.cgi.ipsen5.Repository.ReservationHistoryRepository;
 import com.cgi.ipsen5.Repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -85,6 +86,7 @@ public class ReservationService {
         }
     }
 
+    @Transactional
     public void moveOldReservationsToHistory(LocalDateTime currentTime) {
         List<Reservation> oldReservations = reservationRepository.findAllByEndDateTimeBefore(currentTime);
         List<ReservationHistory> reservationHistories = reservationHistoryRepository.findAll();
@@ -106,6 +108,7 @@ public class ReservationService {
             history.setCreatedAt(reservation.getCreatedAt());
 
             reservationHistoryRepository.save(history);
+            reservationRepository.delete(reservation);
         }
     }
 }
