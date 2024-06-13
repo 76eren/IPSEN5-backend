@@ -87,9 +87,15 @@ public class ReservationService {
 
     public void moveOldReservationsToHistory(LocalDateTime currentTime) {
         List<Reservation> oldReservations = reservationRepository.findAllByEndDateTimeBefore(currentTime);
+        List<ReservationHistory> reservationHistories = reservationHistoryRepository.findAll();
 
         for (Reservation reservation : oldReservations) {
             ReservationHistory history = new ReservationHistory();
+
+            if (reservationHistories.stream().anyMatch(r -> r.getOldReservationId().equals(reservation.getId()))) {
+                continue;
+            }
+
             history.setOldReservationId(reservation.getId());
             history.setUser(reservation.getUser());
             history.setLocation(reservation.getLocation());
@@ -100,7 +106,6 @@ public class ReservationService {
             history.setCreatedAt(reservation.getCreatedAt());
 
             reservationHistoryRepository.save(history);
-//            reservationRepository.delete(reservation);
         }
     }
 }
