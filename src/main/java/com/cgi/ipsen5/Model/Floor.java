@@ -3,7 +3,9 @@ package com.cgi.ipsen5.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "floor")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Floor {
     @Id
     @GeneratedValue(generator = "UUID")
