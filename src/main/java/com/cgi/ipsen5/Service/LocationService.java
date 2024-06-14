@@ -5,7 +5,6 @@ import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateEditDTO;
 import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.*;
-import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.LocationType;
 import com.cgi.ipsen5.Model.Reservation;
@@ -95,7 +94,7 @@ public class LocationService {
         return availableLocations.get(randomIndex);
     }
 
-    public List<Location> getLocationsByBuildingId(String buildingName) {
+    public List<Location> getLocationsByBuildingName(String buildingName) {
         Building building = this.buildingService.getBuildingByName(buildingName);
         return this.locationDao.findAllByBuildingId(building.getId());
     }
