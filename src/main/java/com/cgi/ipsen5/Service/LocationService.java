@@ -52,16 +52,19 @@ public class LocationService {
     }
 
     public List<Location> findAvailableRooms(UUID buildingId, Integer numberOfPeople, LocalDateTime start, LocalDateTime end) {
-        List<Location> allLocations = this.locationDao.findAllByCapacity(numberOfPeople);
+        List<Location> allLocations = this.locationDao.findAllByCapacity(buildingId, numberOfPeople);
         if (allLocations.isEmpty()) {
             allLocations = this.locationDao.findAllByWingFloorBuildingId(buildingId);
         }
         List<Location> availableLocations = new ArrayList<>();
 
         for (Location location : allLocations) {
-            List<Reservation> reservations = this.reservationDao.findReservationsBetween(location, start, end);
+            List<Reservation> reservations = this.reservationDao.findReservationsForLocation(location);
             if (reservations.isEmpty()) {
-                availableLocations.add(location);
+                List<Reservation> reservationsBetween = this.reservationDao.findReservationsBetween(location, start, end);
+                if (reservationsBetween.isEmpty()) {
+                    availableLocations.add(location);
+                }
             }
         }
 
