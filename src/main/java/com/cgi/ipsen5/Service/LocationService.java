@@ -9,6 +9,7 @@ import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.LocationType;
 import com.cgi.ipsen5.Model.Reservation;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,18 +38,8 @@ public class LocationService {
     }
 
     public List<Location> findAvailableLocationsByWingId(UUID wingId, LocalDateTime start, LocalDateTime end) {
-        //TODO: Ik heb nu geen manier om de beschikbaarheid van een locatie te checken, dit moet nog misschien verbterd worden
         List<Location> allLocations = this.locationDao.findAllByWingId(wingId);
-        List<Location> availableLocations = new ArrayList<>();
-
-        for (Location location : allLocations) {
-            List<Reservation> reservations = this.reservationDao.findReservationsBetween(location, start, end);
-            if (reservations.isEmpty()) {
-                availableLocations.add(location);
-            }
-        }
-
-        return availableLocations;
+        return getLocations(start, end, allLocations);
     }
 
     public List<Location> findAvailableRooms(UUID buildingId, Integer numberOfPeople, LocalDateTime start, LocalDateTime end) {
@@ -56,15 +47,17 @@ public class LocationService {
         if (allLocations.isEmpty()) {
             allLocations = this.locationDao.findAllByWingFloorBuildingId(buildingId);
         }
+        return getLocations(start, end, allLocations);
+    }
+
+    @NotNull
+    private List<Location> getLocations(LocalDateTime start, LocalDateTime end, @NotNull List<Location> allLocations) {
         List<Location> availableLocations = new ArrayList<>();
 
         for (Location location : allLocations) {
-            List<Reservation> reservations = this.reservationDao.findReservationsForLocation(location);
-            if (reservations.isEmpty()) {
-                List<Reservation> reservationsBetween = this.reservationDao.findReservationsBetween(location, start, end);
-                if (reservationsBetween.isEmpty()) {
-                    availableLocations.add(location);
-                }
+            List<Reservation> overlappingReservations = this.reservationDao.findReservationsBetween(location, start, end);
+            if (overlappingReservations.isEmpty()) {
+                availableLocations.add(location);
             }
         }
 
