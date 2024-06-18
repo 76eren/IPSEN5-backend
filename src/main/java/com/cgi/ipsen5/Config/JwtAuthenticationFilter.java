@@ -46,22 +46,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        final String userId = jwtService.extractUserId(jwt);
-        if (userId == null || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        try {
+            final String userId = jwtService.extractUserId(jwt);
+            if (userId == null || SecurityContextHolder.getContext().getAuthentication() != null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-        Optional<User> user = userDAO.findById(UUID.fromString(userId));
-        if (user.isEmpty() || !jwtService.isTokenValid(jwt, user.get().getId())) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+            Optional<User> user = userDAO.findById(UUID.fromString(userId));
+            if (user.isEmpty() || !jwtService.isTokenValid(jwt, user.get().getId())) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                user.get().getId(), null, user.get().getAuthorities());
-        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    user.get().getId(), null, user.get().getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+        // I added this empty catch block so the doFilterInternal doesn't throw an error and the /authenticated endpoint can be called with an invalid token
+        catch (io.jsonwebtoken.ExpiredJwtException e) {
+
+        }
 
         filterChain.doFilter(request, response);
     }
