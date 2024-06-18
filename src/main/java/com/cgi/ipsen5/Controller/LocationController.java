@@ -44,12 +44,17 @@ public class LocationController {
 
     @GetMapping(value = "/admin")
     public ApiResponse<List<Location>> getLocationsByBuildingId(@RequestParam String buildingName) {
-        return new ApiResponse<>(this.locationService.getLocationsByBuildingId(buildingName), HttpStatus.OK);
+        return new ApiResponse<>(this.locationService.getLocationsByBuildingName(buildingName), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
     public ApiResponse<Location> createNewLocation(@Valid @RequestBody LocationCreateEditDTO locationCreateDTO) {
-        return new ApiResponse<>(this.locationService.createNewLocation(locationCreateDTO), HttpStatus.OK);
+        Location location = this.locationService.createNewLocation(locationCreateDTO);
+
+        if(location == null) {
+            return new ApiResponse<>("Could not save the location", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ApiResponse<>(location, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}/edit")
@@ -58,7 +63,12 @@ public class LocationController {
             @Valid
             @RequestBody LocationCreateEditDTO locationEditDTO
     ) {
-        return new ApiResponse<>(this.locationService.editLocation(id, locationEditDTO), HttpStatus.OK);
+        Location location = this.locationService.editLocation(id, locationEditDTO);
+
+        if(location == null) {
+            return new ApiResponse<>("Could not save the location", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ApiResponse<>(location, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}/delete")
@@ -69,7 +79,7 @@ public class LocationController {
 
     @ExceptionHandler({BuildingNotFoundException.class, WingNotFoundException.class, LocationNotFoundException.class})
     public ApiResponse<String> handleException(Exception e) {
-        return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ApiResponse<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
 
