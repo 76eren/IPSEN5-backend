@@ -1,5 +1,6 @@
 package com.cgi.ipsen5.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -36,7 +37,7 @@ public class User implements UserDetails {
     private String username;
 
     @Column(name = "password")
-    @JsonProperty
+    @JsonIgnore
     private String password;
 
     @Column(name = "last_name")
@@ -68,28 +69,31 @@ public class User implements UserDetails {
     @ManyToOne
     private Wing standardLocation;
 
-
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
