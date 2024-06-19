@@ -29,6 +29,10 @@ public class AuthController {
     private final JwtService jwtService;
     private final ResetPasswordService resetPasswordService;
 
+    @GetMapping("/checkId/{id}")
+    public ApiResponse<IdCheck> checkId(@PathVariable String id, Authentication authentication) {
+        return new ApiResponse<>(new IdCheck(this.authenticationService.isIdOfSelf(UUID.fromString(id), authentication)), HttpStatus.OK);
+    }
 
     @PostMapping(value = "/login")
     public ApiResponse<?> login(@Valid @RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {

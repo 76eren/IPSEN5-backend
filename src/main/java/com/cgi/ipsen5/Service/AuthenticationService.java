@@ -109,4 +109,9 @@ public class AuthenticationService {
         cookie.setMaxAge(0);
         return cookie;
     }
+
+    public boolean isIdOfSelf(UUID id, Authentication authentication) {
+        User authUser = userDAO.findById((UUID) authentication.getPrincipal()).orElse(null);
+        return authUser != null && authUser.getId().equals(id);
+    }
 }
