@@ -9,6 +9,7 @@ import com.cgi.ipsen5.Dto.Location.AvailableRoomsDTO;
 import com.cgi.ipsen5.Model.ApiResponse;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Service.LocationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,36 +36,50 @@ public class LocationController {
     }
 
     @GetMapping(value = "/available-rooms")
-    public ApiResponse<List<Location>> getAvailableRooms(@RequestBody AvailableRoomsDTO availableRoomsDTO) {
+    public ApiResponse<List<Location>> getAvailableRooms(@RequestParam UUID buildingId, @RequestParam Integer numberOfPeople, @RequestParam String startDateTime, @RequestParam String endDateTime) {
         return new ApiResponse<>(this.locationService
-                .findAvailableRooms( availableRoomsDTO.getBuildingId(),
-                        availableRoomsDTO.getNumberOfPeople(),
-                        LocalDateTime.parse(availableRoomsDTO.getStartDateTime()),
-                        LocalDateTime.parse(availableRoomsDTO.getEndDateTime())),
+                .findAvailableRooms(buildingId, numberOfPeople, LocalDateTime.parse(startDateTime), LocalDateTime.parse(endDateTime)),
                 HttpStatus.OK);
     }
 
     @GetMapping(value = "/admin")
     public ApiResponse<List<Location>> getLocationsByBuildingId(@RequestParam String buildingName) {
-        return new ApiResponse<>(this.locationService.getLocationsByBuildingId(buildingName), HttpStatus.OK);
+        return new ApiResponse<>(this.locationService.getLocationsByBuildingName(buildingName), HttpStatus.OK);
     }
 
     @PostMapping(value = "/create")
-    public ApiResponse<Location> createNewLocation(@RequestBody LocationCreateEditDTO locationCreateDTO) {
-        return new ApiResponse<>(this.locationService.createNewLocation(locationCreateDTO), HttpStatus.OK);
+    public ApiResponse<Location> createNewLocation(@Valid @RequestBody LocationCreateEditDTO locationCreateDTO) {
+        Location location = this.locationService.createNewLocation(locationCreateDTO);
+
+        if(location == null) {
+            return new ApiResponse<>("Could not save the location", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ApiResponse<>(location, HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}/edit")
     public ApiResponse<Location> editLocation(
             @PathVariable UUID id,
+            @Valid
             @RequestBody LocationCreateEditDTO locationEditDTO
     ) {
-        return new ApiResponse<>(this.locationService.editLocation(id, locationEditDTO), HttpStatus.OK);
+        Location location = this.locationService.editLocation(id, locationEditDTO);
+
+        if(location == null) {
+            return new ApiResponse<>("Could not save the location", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ApiResponse<>(location, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}/delete")
+    public ApiResponse<String> deleteLocation(@PathVariable UUID id) {
+        this.locationService.remove(id);
+        return new ApiResponse<>("Deleted location successfully", HttpStatus.OK);
     }
 
     @ExceptionHandler({BuildingNotFoundException.class, WingNotFoundException.class, LocationNotFoundException.class})
     public ApiResponse<String> handleException(Exception e) {
-        return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ApiResponse<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
 

@@ -2,6 +2,7 @@ package com.cgi.ipsen5.Service;
 
 import com.cgi.ipsen5.Dto.User.ResetPassword.ChangePasswordDTO;
 import com.cgi.ipsen5.Dto.User.ResetPassword.ResetlinkRequestDTO;
+import com.cgi.ipsen5.Exception.InvalidTokenException;
 import com.cgi.ipsen5.Exception.UserNotFoundException;
 import com.cgi.ipsen5.Exception.UsernameNotFoundException;
 import com.cgi.ipsen5.Model.PasswordResetToken;
@@ -54,7 +55,7 @@ public class ResetPasswordService {
         Optional<PasswordResetToken> optionalToken = tokenRepository.findById(UUID.fromString(tokenIdAsString));
         PasswordResetToken token = optionalToken.get();
         if(!this.isPasswordResetTokenValid(token.getId())){
-            return; //todo exception
+            throw new InvalidTokenException("Reset token is invalid");
         }
         // extract userdata from dto
         String email = changePasswordDTO.getEmail();

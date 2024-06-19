@@ -20,5 +20,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             LocalDateTime endDateTime,
             LocalDateTime startDateTime
     );
+  
     List<Reservation> findAllByEndDateTimeBefore(LocalDateTime endDateTime);
+
+    List<Reservation> findByLocation(Location location);
 }

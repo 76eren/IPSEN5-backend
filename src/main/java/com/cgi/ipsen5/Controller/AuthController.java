@@ -10,6 +10,7 @@ import com.cgi.ipsen5.Service.ResetPasswordService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,7 @@ public class AuthController {
 
 
     @PostMapping(value = "/login")
-    public ApiResponse<?> login(@RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
+    public ApiResponse<?> login(@Valid @RequestBody AuthRequestDTO loginDTO, HttpServletResponse response) {
         authenticationService.login(loginDTO.getUsername(), loginDTO.getPassword(), response);
         return new ApiResponse<>("Login succes", HttpStatus.OK);
     }

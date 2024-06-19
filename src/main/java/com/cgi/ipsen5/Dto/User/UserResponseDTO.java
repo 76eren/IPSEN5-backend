@@ -15,8 +15,8 @@ import java.util.UUID;
 public class UserResponseDTO {
     private UUID id;
     private String email; // This will represent the actual email of the user, aka the username field in the User model
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private Role role;
     private String phoneNumber;
 }

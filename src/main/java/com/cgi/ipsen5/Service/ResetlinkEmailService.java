@@ -22,26 +22,19 @@ public class ResetlinkEmailService {
     @Value("${spring.mail.password}")
     private String mailPassword;
 
-    private String subject = "Resetlink Werkplekreserverings Applicatie";
-
     private String createMailBody(String resetLink) {
-        StringBuilder body = new StringBuilder();
 
-        body.append("<p>Beste medewerker,</p>");
-        body.append("<p>Er is een verzoek ingediend om het wachtwoord te wijzigen voor de werkplek reserveringsapp.</p>");
-        body.append("<p>Deze link is 24 uur geldig.</p>");
-        body.append("<p>Klik op de volgende link om uw wachtwoord te wijzigen: </p>");
-        body.append("<a href=\"http://localhost:4200/#/reset-password/").append(resetLink).append("\">Wachtwoord wijzigen</a>");
-
-        body.append("<p>Met vriendelijke groet,</p>");
-        body.append("<p>Het team</p>");
-
-        return body.toString();
+        return "<p>Beste medewerker,</p>" +
+                "<p>Er is een verzoek ingediend om het wachtwoord te wijzigen voor de werkplek reserveringsapp.</p>" +
+                "<p>Deze link is 24 uur geldig.</p>" +
+                "<p>Klik op de volgende link om uw wachtwoord te wijzigen: </p>" +
+                "<a href=\"http://localhost:4200/#/reset-password/" + resetLink + "\">Wachtwoord wijzigen</a>" +
+                "<p>Met vriendelijke groet,</p>" +
+                "<p>Het team</p>";
     }
 
-
-    //TODO look into security measurements
     private Email createResetMail(String resetLink, String recipient) {
+        String subject = "Resetlink Werkplekreserverings Applicatie";
         return EmailBuilder.startingBlank()
                 .from(senderEmailAddress)
                 .to(recipient)
@@ -62,7 +55,7 @@ public class ResetlinkEmailService {
         mailer.sendMail(mailToSend);
     }
 
-    // SETTERS because JUnit tests cannot read the @Value attributes
+    // SETTERS must be present as JUnit tests cannot read the @Value attributes
     public void setMailHost(String mailHost) {
         this.mailHost = mailHost;
     }

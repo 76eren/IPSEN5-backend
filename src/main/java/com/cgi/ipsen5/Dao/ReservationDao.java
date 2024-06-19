@@ -77,8 +77,8 @@ public class ReservationDao {
         Reservation reservation = optionalReservation.get();
         reservation.setStatus(ReservationStatus.CANCELLED);
         this.reservationRepository.save(reservation);
-        boolean success = this.reservationHistoryDAO.saveReservationHistory(reservation);
         boolean deleted = this.reservationDeletionDAO.deleteReservation(id);
+        boolean success = this.reservationHistoryDAO.saveReservationHistory(reservation);
         return success && deleted;
     }
 
@@ -89,5 +89,9 @@ public class ReservationDao {
     public List<Reservation> findAll(UUID userId) {
         // TODO: check if user exists first
         return this.reservationRepository.findReservationByUserId(userId);
+    }
+
+    public List<Reservation> findReservationsForLocation(Location location) {
+        return this.reservationRepository.findByLocation(location);
     }
 }

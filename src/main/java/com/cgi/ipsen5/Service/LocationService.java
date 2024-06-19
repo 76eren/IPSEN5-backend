@@ -5,10 +5,10 @@ import com.cgi.ipsen5.Dao.ReservationDao;
 import com.cgi.ipsen5.Dto.Reservation.Location.LocationCreateEditDTO;
 import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.*;
-import com.cgi.ipsen5.Exception.LocationNotFoundException;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.LocationType;
 import com.cgi.ipsen5.Model.Reservation;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,30 +37,25 @@ public class LocationService {
     }
 
     public List<Location> findAvailableLocationsByWingId(UUID wingId, LocalDateTime start, LocalDateTime end) {
-        //TODO: Ik heb nu geen manier om de beschikbaarheid van een locatie te checken, dit moet nog misschien verbterd worden
         List<Location> allLocations = this.locationDao.findAllByWingId(wingId);
-        List<Location> availableLocations = new ArrayList<>();
-
-        for (Location location : allLocations) {
-            List<Reservation> reservations = this.reservationDao.findReservationsBetween(location, start, end);
-            if (reservations.isEmpty()) {
-                availableLocations.add(location);
-            }
-        }
-
-        return availableLocations;
+        return getLocations(start, end, allLocations);
     }
 
     public List<Location> findAvailableRooms(UUID buildingId, Integer numberOfPeople, LocalDateTime start, LocalDateTime end) {
-        List<Location> allLocations = this.locationDao.findAllByCapacity(numberOfPeople);
+        List<Location> allLocations = this.locationDao.findAllByCapacity(buildingId, numberOfPeople);
         if (allLocations.isEmpty()) {
             allLocations = this.locationDao.findAllByWingFloorBuildingId(buildingId);
         }
+        return getLocations(start, end, allLocations);
+    }
+
+    @NotNull
+    private List<Location> getLocations(LocalDateTime start, LocalDateTime end, @NotNull List<Location> allLocations) {
         List<Location> availableLocations = new ArrayList<>();
 
         for (Location location : allLocations) {
-            List<Reservation> reservations = this.reservationDao.findReservationsBetween(location, start, end);
-            if (reservations.isEmpty()) {
+            List<Reservation> overlappingReservations = this.reservationDao.findReservationsBetween(location, start, end);
+            if (overlappingReservations.isEmpty()) {
                 availableLocations.add(location);
             }
         }
@@ -95,7 +90,7 @@ public class LocationService {
         return availableLocations.get(randomIndex);
     }
 
-    public List<Location> getLocationsByBuildingId(String buildingName) {
+    public List<Location> getLocationsByBuildingName(String buildingName) {
         Building building = this.buildingService.getBuildingByName(buildingName);
         return this.locationDao.findAllByBuildingId(building.getId());
     }
@@ -136,5 +131,13 @@ public class LocationService {
         location.setCapacity(locationEditDTO.getCapacity());
 
         return this.locationDao.save(location);
+    }
+
+    public void remove(UUID id) {
+        if(!this.locationDao.existsById(id)) {
+            throw new LocationNotFoundException("Location not found");
+        }
+
+        this.locationDao.remove(id);
     }
 }
