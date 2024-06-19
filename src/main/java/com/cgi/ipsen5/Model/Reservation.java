@@ -26,11 +26,11 @@ public class Reservation {
     @JsonProperty
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 

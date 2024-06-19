@@ -6,9 +6,13 @@ import com.cgi.ipsen5.Dto.Reservation.WorkplaceReservationDTO;
 import com.cgi.ipsen5.Exception.ReservationErrorExecption;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
+import com.cgi.ipsen5.Model.ReservationHistory;
 import com.cgi.ipsen5.Model.User;
+import com.cgi.ipsen5.Repository.ReservationHistoryRepository;
+import com.cgi.ipsen5.Repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +25,8 @@ public class ReservationService {
     private final LocationService locationService;
     private final UserService userService;
     private final WingService wingService;
+    private final ReservationRepository reservationRepository;
+    private final ReservationHistoryRepository reservationHistoryRepository;
 
     public Reservation saveWorkplaceReservation(WorkplaceReservationDTO reservationCreateDTO) {
         this.wingService.wingExistsById(UUID.fromString(reservationCreateDTO.getWingId()));
@@ -77,6 +83,32 @@ public class ReservationService {
         if (reservationCreateDTO.getStartDateTime().equals(reservationCreateDTO.getEndDateTime())
                 || LocalDateTime.parse(reservationCreateDTO.getStartDateTime()).isAfter(LocalDateTime.parse(reservationCreateDTO.getEndDateTime()))) {
             throw new ReservationErrorExecption("Invalid date time");
+        }
+    }
+
+    @Transactional
+    public void moveOldReservationsToHistory(LocalDateTime currentTime) {
+        List<Reservation> oldReservations = reservationRepository.findAllByEndDateTimeBefore(currentTime);
+        List<ReservationHistory> reservationHistories = reservationHistoryRepository.findAll();
+
+        for (Reservation reservation : oldReservations) {
+            ReservationHistory history = new ReservationHistory();
+
+            if (reservationHistories.stream().anyMatch(r -> r.getOldReservationId().equals(reservation.getId()))) {
+                continue;
+            }
+
+            history.setOldReservationId(reservation.getId());
+            history.setUser(reservation.getUser());
+            history.setLocation(reservation.getLocation());
+            history.setStatus(reservation.getStatus());
+            history.setStartDateTime(reservation.getStartDateTime());
+            history.setEndDateTime(reservation.getEndDateTime());
+            history.setNumberOfPeople(reservation.getNumberOfPeople());
+            history.setCreatedAt(reservation.getCreatedAt());
+
+            reservationHistoryRepository.save(history);
+            reservationRepository.delete(reservation);
         }
     }
 }

@@ -40,4 +40,6 @@ public interface ReservationHistoryRepository extends JpaRepository<ReservationH
     List<NoShowResponseDTO> findNoShowsByBuildingAndYear(
             @Param("building") UUID building,
             @Param("year") int year);
+
+    boolean existsByOldReservationId(UUID id);
 }

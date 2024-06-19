@@ -18,6 +18,7 @@ import com.cgi.ipsen5.Service.FavoriteColleagueService;
 import com.cgi.ipsen5.Service.ResetPasswordService;
 
 import com.cgi.ipsen5.Service.StandardLocationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -121,7 +122,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/reset-password")
-    public void changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) throws UsernameNotFoundException {
+    public void changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) throws UsernameNotFoundException {
         this.resetPasswordService.changePasswordOfUser(changePasswordDTO);
     }
 

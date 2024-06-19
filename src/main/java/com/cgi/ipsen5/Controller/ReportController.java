@@ -39,6 +39,6 @@ public class ReportController {
 
     @ExceptionHandler({BuildingNotFoundException.class})
     public ApiResponse<String> handleException(Exception e) {
-        return new ApiResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ApiResponse<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

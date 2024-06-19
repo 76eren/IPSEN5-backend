@@ -33,6 +33,7 @@ public class ReservationSeeder {
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+        createReservation(user, LocalDateTime.now().minusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().minusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
     }
 
     public void createReservation(User user, LocalDateTime startDateTime, LocalDateTime endDateTime, int numberOfPeople) {
