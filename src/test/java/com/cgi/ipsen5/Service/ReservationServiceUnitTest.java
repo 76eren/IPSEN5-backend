@@ -8,6 +8,8 @@ import com.cgi.ipsen5.Exception.ReservationErrorExecption;
 import com.cgi.ipsen5.Model.Location;
 import com.cgi.ipsen5.Model.Reservation;
 import com.cgi.ipsen5.Model.User;
+import com.cgi.ipsen5.Repository.ReservationHistoryRepository;
+import com.cgi.ipsen5.Repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +34,11 @@ public class ReservationServiceUnitTest {
     private UserService userService;
     @Mock
     private WingService wingService;
+    @Mock
+    private ReservationRepository reservationRepository;
+    @Mock
+    private ReservationHistoryRepository reservationHistoryRepository;
+
 
     private ReservationService SUT;
 
@@ -44,7 +51,7 @@ public class ReservationServiceUnitTest {
 
     @BeforeEach
     public void setUp() {
-        this.SUT = new ReservationService(reservationDao, locationService, userService, wingService);
+        this.SUT = new ReservationService(reservationDao, locationService, userService, wingService, reservationRepository, reservationHistoryRepository);
         this.dummyUser = new User();
         this.dummyLocation = new Location();
         this.dummyReservation = new Reservation();
