@@ -27,13 +27,13 @@ public class UserSeeder {
         ArrayList<User> users = new ArrayList<>();
 
         users.add(createUser("Eren", "e.koning@cgi.com", "de Koning", "Password#1234", "0612345678"));
+        users.add(createUser("s1136644@student.hsleiden.nl", "s1136644@student.hsleiden.nl", "Smits", "Password#1234", "0620255944"));
         users.add(createUser("Henk", "h.jong@cgi.com", "de Jong", "Cgffknn15!#", "0612345678"));
         users.add(createUser("Lara", "l.croft@cgi.com", "Croft", "Archeologist22!", "0612345680"));
         users.add(createUser("Mohamed", "m.abdellaoui@cgi.com", "Abdellaoui", "Autumn11!", "0612345678"));
         users.add(createUser("Taylor", "t.swift@cgi.com", "Swift", "Winter10!", "0612345678"));
         users.add(createUser("Martin", "m.vliet@cgi.com", "van Vliet", "snail54!", "0612345687"));
         users.add(createUser("Tom", "t.nook@cgi.com", "Nook", "bell514!", "0612345687"));
-        users.add(createUser("s1136644@student.hsleiden.nl", "s1136644@student.hsleiden.nl", "Smits", "Password#1234", "0620255944"));
         users.add(createAdmin("admin", "admin@cgi.com", "admin", "Admin#1234", "0612345678"));
         users.add(createUser("Maya", "m.bee@cgi.com", "Bee", "Maya#1234", "0612345678"));
         users.add(createUser("Jill", "j.valentine@cgi.com", "Valentine", "Apple#1234", "0612345678"));
