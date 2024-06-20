@@ -15,6 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -27,6 +30,7 @@ public class ReservationSeeder {
     @Transactional
     public void seed() {
         User user = this.userDao.findAllUsers().getFirst();
+        User secondUser = this.userDao.findAllUsers().get(1);
 
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
@@ -34,10 +38,17 @@ public class ReservationSeeder {
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
         createReservation(user, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
         createReservation(user, LocalDateTime.now().minusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().minusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+
+        createReservation(secondUser, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+        createReservation(secondUser, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+        createReservation(secondUser, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+        createReservation(secondUser, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+        createReservation(secondUser, LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().plusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
+        createReservation(secondUser, LocalDateTime.now().minusDays((long) (5 + (Math.random() * (10 - 5)))), LocalDateTime.now().minusDays((long) (5 + (Math.random() * (10 - 5)))).plusHours(2), 2);
     }
 
     public void createReservation(User user, LocalDateTime startDateTime, LocalDateTime endDateTime, int numberOfPeople) {
-        Location location = locationDao.getAll().getFirst();
+        List<Location> location = locationDao.getAll();
 
         Reservation reservation = Reservation.builder()
                 .startDateTime(startDateTime)
@@ -45,7 +56,7 @@ public class ReservationSeeder {
                 .user(user)
                 .createdAt(LocalDateTime.now())
                 .numberOfPeople(numberOfPeople)
-                .location(location)
+                .location(location.get((int) (Math.random() * location.size())))
                 .build();
 
         reservationDAO.save(reservation);
